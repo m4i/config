@@ -1,3 +1,8 @@
 # vim: ft=sh
 
 source ${BASH_SOURCE%/*}/../sh/ssh_auth_sock.sh
+
+# OS X には .profile/.bash_profile が用意されていないのでここで読み込む
+if [[ $OSTYPE =~ ^darwin ]]; then
+  source ~/.bashrc
+fi

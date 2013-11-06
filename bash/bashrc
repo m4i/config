@@ -1,5 +1,20 @@
 # vim: fdm=marker
 
+if [[ $OSTYPE =~ ^darwin ]]; then
+  # OS X では ~/.profile 経由で読み込まれたときは、
+  # すでに /etc/profile によって /etc/bashrc が読み込まれているので
+  # そうでない時だけ /etc/bashrc を読み込む
+  #
+  # その時の $BASH_SOURCE:
+  #   - ~/config/bash/bashrc
+  #   - ~/.bashrc
+  #   - ~/config/bash/bash_profile
+  #   - ~/.profile                                                                                    │
+  if [[ "${BASH_SOURCE[2]##*/}" != bash_profile ]]; then
+    source /etc/bashrc
+  fi
+fi
+
 [[ -z "$PS1" ]] && return
 
 ### include {{{1
