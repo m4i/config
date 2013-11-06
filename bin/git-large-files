@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# .git 内の大きなファイルを出力する
+
+set -e
+
+error=0
+count=10
+
+while (($# > 0)); do
+  case "$1" in
+    -n)
+      shift
+      if [[ "$1" =~ ^[1-9][0-9]*$ ]]; then
+        count="$1"
+      else
+        error=1
+      fi
+      ;;
+    *)
+      if [[ "$1" =~ ^-[1-9][0-9]*$ ]]; then
+        count="${1:1}"
+      else
+        error=1
+      fi
+      ;;
+  esac
+  shift
+done
+
+if (($error)); then
+  echo "Usage: ${0##*/} [-n count|-count]" >&2
+  exit $error
+fi
+
+
+git_dir="$(git rev-parse --git-dir)"
+objects="$(git rev-list --objects --all)"
+
+git verify-pack -v "$git_dir"/objects/pack/pack-*.idx | \
+sort -nr -k 3 | head -n $count | cut -d ' ' -f 1-5 | \
+while read line; do
+  file="$(echo "$objects" | grep ${line:0:40} | cut -d ' ' -f 2)"
+  printf '%7d: %s\n' "${line:48}" "$file"
+done

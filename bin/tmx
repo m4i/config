@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+if (($# != 1)); then
+  echo "Usage: ${0##*/} <session-name>" >&2
+  exit 1
+fi
+
+session_name="$1"
+
+conf=~/.tmux.conf
+
+case $OSTYPE in
+  darwin*)
+    conf=~/.tmux/mac.conf
+    ;;
+  *)
+    if [[ -e ~/.tmux/linux.conf ]]; then
+      conf=~/.tmux/linux.conf
+    fi
+    ;;
+esac
+
+if tmux list-sessions 2> /dev/null | grep -q "^$session_name:"; then
+  exec tmux -f "$conf" attach -t "$session_name"
+else
+  exec tmux -f "$conf" new -s "$session_name"
+fi

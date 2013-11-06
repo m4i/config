@@ -1,0 +1,3 @@
+# vim: ft=sh
+
+source ${BASH_SOURCE%/*}/../sh/ssh_auth_sock.sh

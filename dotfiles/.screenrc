@@ -1,0 +1,47 @@
+autodetach      on
+bell_msg        "Bell in window %^G"
+defscrollback   10000
+escape          ^tt
+hardstatus      alwayslastline "%-w%{.C}%n %t%{-}%+w "
+shell           $SHELL
+startup_message off
+term            $TERM
+vbell           off
+
+# 256 colors
+attrcolor   b ".I"
+defbce      on
+termcapinfo xterm* 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# attach 時の自動リサイズを止める
+termcapinfo xterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+
+# Terminal.app, mintty, PuTTY でマウスでスクロール可能にする
+# iTerm2: "Save lines to scrollback when an app status bar is present" => on
+termcapinfo xterm* ti@:te@
+
+
+### key bindings
+
+# select window
+bind ')' select 10
+bind '!' select 11
+bind '@' select 12
+bind '#' select 13
+bind '$' select 14
+bind '%' select 15
+bind '^' select 16
+bind '&' select 17
+bind '*' select 18
+bind '(' select 19
+
+# encoding
+bind -c ENCODING e encoding eucJP
+bind -c ENCODING j encoding jis
+bind -c ENCODING s encoding SJIS
+bind -c ENCODING u encoding UTF-8
+bind e command -c ENCODING
+
+# vi like copy mode
+bindkey -m v eval 'stuff \040'
+bindkey -m y eval 'stuff \015'

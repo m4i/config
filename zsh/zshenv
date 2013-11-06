@@ -1,0 +1,4 @@
+source ${0%/*}/../sh/env.sh
+
+# for Ubuntu:/etc/zsh/zshrc
+skip_global_compinit=1

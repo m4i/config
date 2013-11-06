@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# HTTP Header のみを出力する curl
+
+set -e
+
+if (($# == 0)); then
+  echo "Usage: ${0##*/} [curl-options] <url>" >&2
+  exit 1
+fi
+
+curl -v -s "$@" 2>&1 >/dev/null | sed -e '/^[^<>]/d' -e 's/^[<>] //'

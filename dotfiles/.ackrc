@@ -1,0 +1,14 @@
+--type-add=css=sass,scss
+--type-add=html=hta,htc
+--type-add=js=coffee,json,wsf
+--type-add=perl=eperl
+--type-add=php=ephp
+--type-add=ruby=eruby,haml,ru,thor
+--type-add=scala=jade,mustache,scaml,ssp
+--type-add=scheme=escheme
+--type-add=xml=xsd,xsl
+
+--type-set=creole=creole,wiki
+--type-set=groovy=groovy
+--type-set=ini=ini
+--type-set=po=po

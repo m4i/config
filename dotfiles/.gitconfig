@@ -1,0 +1,80 @@
+[alias]
+	a    = add
+	aa   = add --all
+	ap   = add --patch
+	au   = add --update
+	b    = branch
+	ci   = commit
+	civ  = commit --verbose
+	co   = checkout
+	d    = diff -M -C --color-words
+	dc   = diff -M -C --color-words --cached
+	dh   = diff -M -C --color-words HEAD
+	di   = diff -M -C
+	dic  = diff -M -C --cached
+	dih  = diff -M -C HEAD
+	gca  = gc --aggressive
+	pl   = pull
+	plr  = pull --rebase
+	ps   = push
+	pst  = push --tags
+	s    = status
+	st   = stash
+	stl  = stash list
+	stp  = stash pop
+	sts  = stash show
+	stsp = stash show --patch
+	stv  = stash save
+	stvp = stash save --patch
+
+	log-1               = log --graph --branches --tags                             --date=iso      --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
+	log-1-relative      = log --graph --branches --tags                             --date=relative --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
+	log-name-status     = log --graph --branches --tags -M -C --name-status         --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
+	log-patch           = log --graph --branches --tags -M -C --patch               --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
+	log-patch-words     = log --graph --branches --tags -M -C --patch --color-words --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
+	log-own-1           = log --graph                                               --date=iso      --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
+	log-own-1-relative  = log --graph                                               --date=relative --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
+	log-own-name-status = log --graph                   -M -C --name-status         --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
+	log-own-patch       = log --graph                   -M -C --patch               --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
+	log-own-patch-words = log --graph                   -M -C --patch --color-words --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
+	l    = "!git log-1"
+	lr   = "!git log-1-relative"
+	ln   = "!git log-name-status"
+	lp   = "!git log-patch"
+	lpw  = "!git log-patch-words"
+	lo   = "!git log-own-1"
+	lor  = "!git log-own-1-relative"
+	lon  = "!git log-own-name-status"
+	lop  = "!git log-own-patch"
+	lopw = "!git log-own-patch-words"
+
+	initialize-commit = commit --allow-empty -m 'Initialize repository'
+	export            = "!rm -rf git-export; git archive --prefix=git-export/ HEAD | tar x"
+	untracked-files   = "!git status --short | sed -n 's/^?? //p'"
+
+[color]
+	ui = auto
+
+[core]
+	quotepath         = false
+	autocrlf          = false
+	safecrlf          = false
+	precomposeunicode = true
+	excludesfile      = ~/config/git/gitignore
+
+[push]
+	default = simple
+
+[tig]
+	line-graphics = ascii
+	show-id       = yes
+
+[tig "bind"]
+	generic = g move-first-line
+	generic = G move-last-line
+	generic = ^f move-page-down
+	generic = ^b move-page-up
+
+[include]
+	path = ~/.gitconfig.private
+	path = ~/.gitconfig.local

@@ -1,0 +1,45 @@
+# CVS
+.cvsignore
+CVS/
+
+# Java
+*.class
+*.ear
+*.jar
+*.war
+
+# Python
+*.py[cod]
+
+# Mercurial
+.hg/
+.hgignore
+
+# OSX
+.AppleDouble
+.DS_Store
+.LSOverride
+.Spotlight-V100
+.Trashes
+._*
+Icon
+
+# Subversion
+.svn/
+
+# Vim
+*~
+.*.s[a-w][a-z]
+.netrwhist
+
+# WebDAV
+.DAV/
+
+# Windows
+$RECYCLE.BIN/
+Desktop.ini
+Thumbs.db
+ehthumbs.db
+
+# ctags
+tags
