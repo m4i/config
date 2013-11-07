@@ -65,16 +65,6 @@
 [push]
 	default = simple
 
-[tig]
-	line-graphics = ascii
-	show-id       = yes
-
-[tig "bind"]
-	generic = g move-first-line
-	generic = G move-last-line
-	generic = ^f move-page-down
-	generic = ^b move-page-up
-
 [include]
 	path = ~/.gitconfig.private
 	path = ~/.gitconfig.local

@@ -1,1 +1,8 @@
+set line-graphics  = ascii
+set show-id        = yes
 set vertical-split = yes
+
+bind generic g  move-first-line
+bind generic G  move-last-line
+bind generic ^f move-page-down
+bind generic ^b move-page-up
