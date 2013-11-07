@@ -1,0 +1,140 @@
+#!/usr/bin/env ruby
+
+SERVER_HOST = '127.0.0.1'
+SERVER_PORT = 12224
+KEY_FILE    = File.expand_path('~/.clip-key')
+
+
+if ARGV.first == 'key'
+  File.open(KEY_FILE, 'wb') do |file|
+    file.puts rand(36 ** 256).to_s(36)
+  end
+  puts "generated key #{KEY_FILE.inspect}"
+  exit 0
+end
+
+
+require 'socket'
+require 'timeout'
+
+module Clip
+  MAX_SIZE = 2 ** 20 # 1M
+
+  class Server
+    MAX_SUMMARY_SIZE = 2 ** 10 # 1K
+
+    class << self
+      def start(*args)
+        new(*args).start
+      end
+    end
+
+    def initialize(server_host, server_port, key)
+      @server_host = server_host
+      @server_port = server_port
+      @key         = key
+    end
+
+    def start
+      TCPServer.open(@server_host, @server_port) do |server|
+        Process.daemon
+        while socket = server.accept
+          process(socket)
+        end
+      end
+    end
+
+    private
+
+    def process(socket)
+      client_host =
+        case header = timeout(1) { socket.gets }
+        when /\AHELO (.*)\r\n\z/
+          $1
+        else
+          raise "invalid header: #{header.inspect}"
+        end
+
+      case header = timeout(1) { socket.gets }
+      when /\AAUTH (.*)\r\n\z/
+        raise "invalid key: #{$1.inspect}" unless @key == $1
+      else
+        raise "invalid header: #{header.inspect}"
+      end
+
+      case header = timeout(1) { socket.gets }
+      when "GET\r\n"
+        get(socket, client_host)
+      when /SET (\d+)\r\n/
+        set(socket, client_host, $1.to_i)
+      else
+        raise "invalid header: #{header.inspect}"
+      end
+
+    rescue Exception => ex
+      notify(
+        '',
+        client_host,
+        [
+          "#{ex.class}: #{ex}",
+          *ex.backtrace,
+        ].join("\n" + ' ' * 2)
+      )
+
+    ensure
+      socket.close
+    end
+
+    def get(socket, client_host)
+      buffer = IO.popen('pbpaste', 'rb') do |pipe|
+        pipe.read(MAX_SIZE)
+      end
+
+      socket.write("#{buffer.bytesize}\r\n#{buffer}")
+
+      notify(:GET, client_host, buffer[0, MAX_SUMMARY_SIZE])
+    end
+
+    def set(socket, client_host, bytesize)
+      buffer = socket.read(bytesize)
+
+      IO.popen('pbcopy', 'wb') do |pipe|
+        pipe.write(buffer)
+      end
+
+      notify(:SET, client_host, buffer[0, MAX_SUMMARY_SIZE])
+    end
+
+    def notify(method, client_host, message)
+      return unless terminal_notifier
+
+      # 先頭が `"` から始まるとコマンドwがうまく実行できないため削除する
+      message = message.sub(/\A"+/, '')
+
+      system(
+        terminal_notifier,
+        '-title',    'clip-server',
+        '-subtitle', "#{method} from #{client_host}",
+        '-message',  message,
+      )
+    end
+
+    def terminal_notifier
+      unless @_terminal_notifier == false
+        @_terminal_notifier ||=
+          [ENV['HOME'], ''].map do |base|
+            "#{base}/Applications/terminal-notifier.app/Contents/MacOS/terminal-notifier"
+          end.detect do |path|
+            File.exist?(path)
+          end || false
+      end || nil
+    end
+  end
+end
+
+
+$0 = File.basename(__FILE__)
+
+key = File.read(KEY_FILE).rstrip
+
+Clip::Server.start(SERVER_HOST, SERVER_PORT, key)

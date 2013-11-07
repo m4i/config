@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+
+SERVER_HOST = '127.0.0.1'
+SERVER_PORT = 12224
+KEY_FILE    = File.expand_path('~/.clip-key')
+
+
+require 'socket'
+require 'timeout'
+
+module Clip
+  MAX_SIZE = 2 ** 20 # 1M
+
+  class Client
+    class << self
+      def get(*args)
+        new(*args).get
+      end
+
+      def set(*args)
+        new(*args).set
+      end
+    end
+
+    def initialize(server_host, server_port, key)
+      @server_host = server_host
+      @server_port = server_port
+      @key         = key
+    end
+
+    def get
+      TCPSocket.open(@server_host, @server_port) do |socket|
+        write_header(socket)
+
+        socket.write("GET\r\n")
+
+        header = timeout(10) { socket.gets }
+        if header =~ /\A(\d+)\r\n\z/
+          bytesize = $1.to_i
+        else
+          raise "invalid header: #{header.inspect}"
+        end
+
+        $stdout.write(socket.read(bytesize))
+      end
+    end
+
+    def set
+      TCPSocket.open(@server_host, @server_port) do |socket|
+        write_header(socket)
+
+        buffer = $stdin.read(MAX_SIZE)
+        socket.write("SET #{buffer.bytesize}\r\n#{buffer}")
+      end
+    end
+
+    private
+
+    def write_header(socket)
+      socket.write("HELO #{client_host}\r\n")
+      socket.write("AUTH #@key\r\n")
+    end
+
+    def client_host
+      @_client_host ||= Socket.gethostbyname(Socket.gethostname).first
+    end
+  end
+end
+
+
+$0 = File.basename(__FILE__)
+
+case ARGV.first
+when 'get'
+  Clip::Client.get(SERVER_HOST, SERVER_PORT, File.read(KEY_FILE).rstrip)
+when 'set'
+  Clip::Client.set(SERVER_HOST, SERVER_PORT, File.read(KEY_FILE).rstrip)
+else
+  $stderr.puts "#$0 <get|set>"
+  exit 1
+end
