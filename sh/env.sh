@@ -15,7 +15,13 @@ _add_path() {
 
   if [[ -z "$_path" ]]; then
     eval $name=\'$directory\'    #'
-  elif ! echo "$_path" | grep -Eq "(^|:)$directory(:|$)"; then
+
+  else
+    _path="$(echo "$_path" | sed \
+      -e "s!:$directory:!:!g" \
+      -e "s!:$directory\$!!"  \
+      -e "s!^$directory:!!"   \
+    )"
     if [[ "$direction" = append ]]; then
       eval $name=\'$_path:$directory\'    #'
     else
@@ -40,4 +46,6 @@ _prepend_path() {
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
+_prepend_path PATH /usr/local/sbin
+_prepend_path PATH /usr/local/bin
 _prepend_path PATH ~/bin
