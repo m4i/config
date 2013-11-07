@@ -62,7 +62,8 @@ module Clip
     end
 
     def client_host
-      @_client_host ||= Socket.gethostbyname(Socket.gethostname).first
+      hostname = Socket.gethostname
+      @_client_host ||= Socket.gethostbyname(hostname).first rescue hostname
     end
   end
 end
