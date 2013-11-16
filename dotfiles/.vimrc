@@ -694,15 +694,17 @@ for [key, com] in items({
 endfor
 
 let g:quickrun_config = {}
-let g:quickrun_config.markdown = {
-\ 'outputter' : 'null',
-\ 'command'   : 'open',
-\ 'cmdopt'    : '--background -a',
-\ 'args'      : 'Marked',
-\ 'exec'      : '%c %o %a %s',
-\ }
 
-autocmd AUVIMRC BufWritePost *.md,*.markdown QuickRun
+if s:ismac
+  let g:quickrun_config.markdown = {
+  \ 'outputter' : 'null',
+  \ 'command'   : 'open',
+  \ 'cmdopt'    : '--background -a',
+  \ 'args'      : 'Marked',
+  \ 'exec'      : '%c %o %a %s',
+  \ }
+  autocmd AUVIMRC BufWritePost *.md,*.markdown QuickRun
+endif
 
 
 
