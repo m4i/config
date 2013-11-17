@@ -53,11 +53,9 @@ case "$OSTYPE" in
     ;;
 esac
 
-alias ll='ls -l'
-alias l.='ls -d .*'
-alias ll.='ll -d .*'
-alias la='ls -A'
-alias lla='la -l'
+alias l='ls -l'
+alias l.='l -d .*'
+alias la='l -A'
 
 
 
