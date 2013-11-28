@@ -378,6 +378,25 @@ endif
 
 
 
+" Unite Menu {{{1
+
+let g:unite_source_menu_menus = {}
+let g:unite_source_menu_menus.global = {
+      \   'description': 'Global Menu',
+      \   'command_candidates': [
+      \     ['Toggle paste',   'set paste! | set paste?'],
+      \     ['Edit .vimrc',    'tabedit $MYVIMRC'],
+      \     ['Reload .vimrc',  'source $MYVIMRC'],
+      \   ]
+      \ }
+
+
+
+
+
+
+
+
 " Mappings {{{1
 
 nnoremap <Leader>ve :<C-u>tabedit $MYVIMRC<CR>
@@ -757,16 +776,6 @@ elseif executable('ack-grep')
   let g:unite_source_grep_default_opts  = '--no-heading --no-color -a'
   let g:unite_source_grep_recursive_opt = ''
 endif
-
-let g:unite_source_menu_menus = {}
-let g:unite_source_menu_menus.global = {
-      \   'description': 'Global menu',
-      \   'command_candidates': [
-      \     ['Toggle paste',   'set paste! | set paste?'],
-      \     ['Edit .vimrc',    'tabedit $MYVIMRC'],
-      \     ['Reload .vimrc',  'source $MYVIMRC'],
-      \   ]
-      \ }
 
 nnoremap [unite]   <Nop>
 nmap     <Leader>u [unite]
