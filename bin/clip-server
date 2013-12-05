@@ -106,28 +106,17 @@ module Clip
     end
 
     def notify(method, client_host, message)
-      return unless terminal_notifier
-
-      # 先頭が `"` から始まるとコマンドwがうまく実行できないため削除する
-      message = message.sub(/\A"+/, '')
-
-      system(
-        terminal_notifier,
-        '-title',    'clip-server',
-        '-subtitle', "#{method} from #{client_host}",
-        '-message',  message,
-      )
+      IO.popen('osascript', 'w') do |pipe|
+        pipe.puts 'display notification "%s" with title "%s" subtitle "%s"' % [
+          escape(message),
+          'clip-server',
+          escape("#{method} from #{client_host}"),
+        ]
+      end
     end
 
-    def terminal_notifier
-      unless @_terminal_notifier == false
-        @_terminal_notifier ||=
-          [ENV['HOME'], ''].map do |base|
-            "#{base}/Applications/terminal-notifier.app/Contents/MacOS/terminal-notifier"
-          end.detect do |path|
-            File.exist?(path)
-          end || false
-      end || nil
+    def escape(string)
+      string.gsub(/["\\]/) { '\\' + $& }
     end
   end
 end
