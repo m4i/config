@@ -98,8 +98,8 @@ _prepend_path PATH ~/.nodebrew/current/bin
 ### Ruby {{{1
 
 # alias
-alias b='bundle exec'
-alias r='bundle exec rails'
+alias b='bin-or-bundle-exec'
+alias r='b rails'
 
 # chruby
 if [[ -e /usr/local/share/chruby/chruby.sh ]]; then
