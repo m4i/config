@@ -681,6 +681,14 @@ vmap     [align]:  \tsp
 
 
 
+" coffee-script {{{2
+
+call add(g:unite_source_menu_menus.global.command_candidates,
+      \ ['CoffeeWatch', 'CoffeeWatch vertical'])
+
+
+
+
 " neocomplcache {{{2
 
 let g:neocomplcache_enable_at_startup  = 1
