@@ -514,7 +514,8 @@ augroup AUVIMRC
 
   autocmd BufNewFile,BufRead *.js.erb              setfiletype js
 
-  autocmd BufNewFile,BufRead *.md                  setfiletype markdown
+  " modula2 とかぶるので強制的に設定
+  autocmd BufNewFile,BufRead *.md                  set filetype=markdown
 
   autocmd BufNewFile,BufRead *.ru                  setfiletype ruby
   autocmd BufNewFile,BufRead .autotest             setfiletype ruby
