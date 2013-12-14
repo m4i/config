@@ -177,6 +177,7 @@ if executable('git')
 
   " visual
   NeoBundle 'altercation/vim-colors-solarized'
+  NeoBundle 'tomasr/molokai'
 
   " misc
   NeoBundle 'AnsiEsc.vim'
@@ -271,6 +272,7 @@ set showmode
 set showtabline=2
 
 " misc
+set background=dark
 set fileformats=unix,dos,mac
 set helplang=ja
 set hidden
@@ -654,7 +656,6 @@ match WhitespaceEOL /\s\+$\|　/
 autocmd AUVIMRC VimEnter,WinEnter * match WhitespaceEOL /\s\+$\|　/
 
 if isdirectory($bundle_dir . '/vim-colors-solarized')
-  set background=dark
   let g:solarized_termcolors = 256
   let g:solarized_termtrans  = 1
   let g:solarized_contrast   = 'normal'
