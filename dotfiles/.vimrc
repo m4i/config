@@ -278,7 +278,7 @@ set history=100
 
 if has('clipboard')
   set clipboard&
-  set clipboard+=unnamedplus,unnamed
+  set clipboard+=unnamed
 endif
 
 if has('win32')
