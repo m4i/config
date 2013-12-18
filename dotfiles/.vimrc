@@ -179,6 +179,7 @@ if executable('git')
   NeoBundle 'altercation/vim-colors-solarized'
 
   " misc
+  NeoBundle 'AnsiEsc.vim'
   NeoBundle 'Shougo/vimfiler'
   NeoBundle 'm4i/HierarchicalBackup'
   NeoBundle 'thinca/vim-quickrun'
