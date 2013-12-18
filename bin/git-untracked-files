@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Q. なんで --porcelain じゃなくて --short 使ってるの？
+# A. --porcelain: .git のあるディレクトリからの相対パス
+#    --short:     cwd からの相対パス
+#    だから
+#
+# Q. なんで gitconfig に書かないの？
+# A. gitconfig で ! を使うと cwd が .git のあるディレクトリになってしまうから
+
+git status --short | sed -n 's/^?? //p'

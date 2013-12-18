@@ -50,7 +50,6 @@
 
 	initialize-commit = commit --allow-empty -m 'Initialize repository'
 	export            = "!rm -rf git-export; git archive --prefix=git-export/ HEAD | tar x"
-	untracked-files   = "!git status --short | sed -n 's/^?? //p'"
 
 [color]
 	ui = auto
