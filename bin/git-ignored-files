@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# gitignore されているファイルの一覧を出力する
+# gitignore 対象でも commit 済みのものは出力されない
+
+set -e
+
+case $# in
+  0) _path=.;;
+  1) _path="$1";;
+  *)
+    echo "Usage: git ignored-files [path]" >&2
+    exit 1
+    ;;
+esac
+
+if [[ ! -e "$_path" ]]; then
+  echo "ERROR: No such file or directory -- $_path" >&2
+  exit 2
+fi
+
+# git のエラーがあれば早く検出して終了したいので片方は先に実行する
+untracked_files="$(git ls-files --others --exclude-standard "$_path")"
+
+# commit されていないすべてのファイルから untracked files を引いたものが
+# gitignore されているファイルと考える
+echo "$untracked_files" \
+  | diff - <(git ls-files --others "$_path") \
+  | sed -n 's/^> //p'
