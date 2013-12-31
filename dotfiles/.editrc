@@ -1,0 +1,9 @@
+mysql:bind "^u" vi-kill-line-prev
+mysql:bind "^w" ed-delete-prev-word
+
+mysql:bind -s "^xc" "SHOW VARIABLES LIKE 'character\\_set\\_%'; SHOW VARIABLES LIKE 'collation\\_%'; SELECT * FROM information_schema.SCHEMATA; SHOW TABLE STATUS;\n"
+mysql:bind -s "^xd" "SHOW DATABASES;\n"
+mysql:bind -s "^xt" "SHOW TABLES;\n"
+mysql:bind -s "^xu" "SELECT Host, User, Password FROM mysql.user ORDER BY User, Host; SELECT Db, User, Host FROM mysql.db ORDER BY DB, User, Host;\n"
+
+mysql:bind -s "^xs" "SELECT * FROM "
