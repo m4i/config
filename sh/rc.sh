@@ -35,6 +35,7 @@ case "$OSTYPE" in
   darwin*)
     ;;
   *)
+    alias crontab='crontab -i'
     alias pstree='pstree --ascii'
     ;;
 esac
