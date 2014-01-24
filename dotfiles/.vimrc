@@ -184,6 +184,7 @@ if executable('git')
   NeoBundle 'Shougo/vimfiler'
   NeoBundle 'm4i/HierarchicalBackup'
   NeoBundle 'thinca/vim-quickrun'
+  NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'vim-jp/vimdoc-ja'
   NeoBundle 'xolox/vim-session'
     NeoBundle 'xolox/vim-misc'
@@ -688,6 +689,21 @@ vmap     [align]:  \tsp
 
 call add(g:unite_source_menu_menus.global.command_candidates,
       \ ['CoffeeWatch', 'CoffeeWatch vertical'])
+
+
+
+
+" fugitive {{{2
+
+nnoremap [fugitive] <Nop>
+nmap     <Leader>g  [fugitive]
+
+nnoremap [fugitive]b :<C-u>Gblame<CR>
+nnoremap [fugitive]c :<C-u>Gcommit<CR>
+nnoremap [fugitive]d :<C-u>Gdiff<CR>
+nnoremap [fugitive]r :<C-u>Gread<CR>
+nnoremap [fugitive]s :<C-u>Gstatus<CR>
+nnoremap [fugitive]w :<C-u>Gwrite<CR>
 
 
 
