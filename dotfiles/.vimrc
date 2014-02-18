@@ -521,6 +521,7 @@ augroup AUVIMRC
   " modula2 とかぶるので強制的に設定
   autocmd BufNewFile,BufRead *.md                  set filetype=markdown
 
+  autocmd BufNewFile,BufRead *.cap                 setfiletype ruby
   autocmd BufNewFile,BufRead *.ru                  setfiletype ruby
   autocmd BufNewFile,BufRead .autotest             setfiletype ruby
   autocmd BufNewFile,BufRead .pryrc                setfiletype ruby
