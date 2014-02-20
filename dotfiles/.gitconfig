@@ -27,16 +27,16 @@
 	stv  = stash save
 	stvp = stash save --patch
 
-	log-1               = log --graph --all --date-order                             --date=iso      --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
-	log-1-relative      = log --graph --all --date-order                             --date=relative --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
-	log-name-status     = log --graph --all --date-order -M -C --name-status         --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
-	log-patch           = log --graph --all --date-order -M -C --patch               --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
-	log-patch-words     = log --graph --all --date-order -M -C --patch --color-words --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
-	log-own-1           = log --graph                                                --date=iso      --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
-	log-own-1-relative  = log --graph                                                --date=relative --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(green)%d%Creset %s'
-	log-own-name-status = log --graph                    -M -C --name-status         --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
-	log-own-patch       = log --graph                    -M -C --patch               --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
-	log-own-patch-words = log --graph                                -M -C --patch --color-words --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(green)%d%Creset%n%B'
+	log-1               = log --graph --all --date-order                             --date=iso      --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(auto)%d%Creset %s'
+	log-1-relative      = log --graph --all --date-order                             --date=relative --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(auto)%d%Creset %s'
+	log-name-status     = log --graph --all --date-order -M -C --name-status         --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(auto)%d%Creset%n%B'
+	log-patch           = log --graph --all --date-order -M -C --patch               --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(auto)%d%Creset%n%B'
+	log-patch-words     = log --graph --all --date-order -M -C --patch --color-words --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(auto)%d%Creset%n%B'
+	log-own-1           = log --graph                                                --date=iso      --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(auto)%d%Creset %s'
+	log-own-1-relative  = log --graph                                                --date=relative --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(auto)%d%Creset %s'
+	log-own-name-status = log --graph                    -M -C --name-status         --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(auto)%d%Creset%n%B'
+	log-own-patch       = log --graph                    -M -C --patch               --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(auto)%d%Creset%n%B'
+	log-own-patch-words = log --graph                    -M -C --patch --color-words --date=iso      --pretty='%n%n%n%C(yellow)%h: %ar (%ad)%Creset %C(magenta)%an%Creset%C(auto)%d%Creset%n%B'
 	l    = "!git log-1"
 	lr   = "!git log-1-relative"
 	ln   = "!git log-name-status"
