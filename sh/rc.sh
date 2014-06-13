@@ -6,6 +6,7 @@ sh_dir="${BASH_SOURCE:-$0}"
 sh_dir="${sh_dir%/*}"
 
 source "$sh_dir/cdd.sh"
+source "$sh_dir/deprecated-net-tools.sh"
 
 unset sh_dir
 
