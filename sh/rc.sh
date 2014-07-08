@@ -42,6 +42,8 @@ case "$OSTYPE" in
     ;;
 esac
 
+alias tig='tig --find-renames --find-copies'
+
 
 
 
