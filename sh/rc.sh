@@ -7,6 +7,7 @@ sh_dir="${sh_dir%/*}"
 
 source "$sh_dir/cdd.sh"
 source "$sh_dir/deprecated-net-tools.sh"
+source "$sh_dir/peco.sh"
 
 unset sh_dir
 
