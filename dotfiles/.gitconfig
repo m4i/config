@@ -21,10 +21,10 @@
 	s    = status
 	st   = stash
 	stl  = stash list
-	stp  = stash pop
+	stp  = stash pop  --index
 	sts  = stash show
 	stsp = stash show --patch
-	stv  = stash save
+	stv  = stash save --include-untracked
 	stvp = stash save --patch
 
 	log-1               = log --graph --all --date-order                             --date=iso      --pretty='%C(yellow)%h%Creset %C(green)%ad%Creset %C(magenta)%an%Creset%C(auto)%d%Creset %s'
