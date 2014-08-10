@@ -262,7 +262,7 @@ set list
 set listchars=tab:>-,trail:!,nbsp:!
 set nowrap
 set wildmenu
-execute "set colorcolumn=" . join(range(81, 120), ',')
+execute "set colorcolumn=" . join(range(81, 100), ',')
 
 " frame display
 set laststatus=2
