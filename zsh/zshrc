@@ -35,6 +35,8 @@ PROMPT="$PROMPT"' %F{green}%~%f'                  #  ~/current/directory
 PROMPT="$PROMPT"$'\n'
 PROMPT="$PROMPT"'%B%(?.%F{green}.%F{red})%#%f%b ' # %
 
+RPROMPT='%D{%F %T}'
+
 
 
 
@@ -136,3 +138,12 @@ if (($? == 0)); then
   source $aws_zsh_completer_path
 fi
 unset aws_zsh_completer_path
+
+
+
+
+### include {{{1
+
+# 最初の include 時点だとうまくいかないものはここで
+
+source ${0%/*}/peco.zsh
