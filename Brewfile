@@ -2,11 +2,12 @@ tap homebrew/binary
 tap phinze/cask
 
 update
-upgrade
+#upgrade
 
 install brew-cask
 install chruby
 install colordiff
+install direnv
 install gnu-sed
 install grep
 install hub
@@ -26,6 +27,7 @@ install tree
 install wget
 install zsh
 install zsh-completions
+install motemen/ghq/ghq
 
 cask install appcleaner
 cask install clipmenu
