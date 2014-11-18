@@ -163,6 +163,8 @@ if executable('git')
 
   " filetype
   NeoBundle 'kchmck/vim-coffee-script'
+  NeoBundle 'leafgarland/typescript-vim'
+  NeoBundle 'slim-template/vim-slim'
   NeoBundle 'tpope/vim-haml'
   NeoBundle 'tpope/vim-rails'
   NeoBundle 'zaiste/tmux.vim'
@@ -567,6 +569,7 @@ augroup AUVIMRC
   autocmd FileType scala      setlocal sw=2 sts=2 ts=8 et
   autocmd FileType scss       setlocal sw=2 sts=2 ts=2 et
   autocmd FileType sh         setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType slim       setlocal sw=2 sts=2 ts=2 et
   autocmd FileType sql        setlocal sw=4 sts=4 ts=4 et
   autocmd FileType vb         setlocal sw=4 sts=4 ts=4 et
   autocmd FileType vim        setlocal sw=2 sts=2 ts=8 et
