@@ -89,3 +89,6 @@ cd() {
   }
   return $ret
 }
+
+# direnv
+eval "$(direnv hook bash)"

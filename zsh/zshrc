@@ -139,6 +139,9 @@ if (($? == 0)); then
 fi
 unset aws_zsh_completer_path
 
+# direnv
+eval "$(direnv hook zsh)"
+
 
 
 
