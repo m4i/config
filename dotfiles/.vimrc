@@ -294,11 +294,12 @@ end
 
 autocmd AUVIMRC BufWritePre * let &backupext = strftime('~%Y%m%dT%H%M%S~')
 
+" 重いのでコメントアウト
 " http://d.hatena.ne.jp/thinca/20090530/1243615055
-augroup AUVIMRC
-  autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
-  autocmd CursorHold,CursorHoldI,WinEnter * setlocal cursorline
-augroup END
+"augroup AUVIMRC
+"  autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
+"  autocmd CursorHold,CursorHoldI,WinEnter * setlocal cursorline
+"augroup END
 
 
 " バックアップ用ディレクトリがなければ作成
