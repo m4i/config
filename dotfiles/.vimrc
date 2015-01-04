@@ -421,6 +421,8 @@ noremap  k gk
 noremap gj  j
 noremap gk  k
 
+nnoremap Y y$
+
 " 検索語が画面の真ん中に来るようにする
 nnoremap n nzz
 nnoremap n nzz
