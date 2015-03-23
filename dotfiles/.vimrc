@@ -243,6 +243,9 @@ set backupdir^=$vim_tmp_dir/backup
 set directory&
 set directory^=$vim_tmp_dir/swap//
 
+" undo
+set undodir=$vim_tmp_dir/undo
+
 " indent
 set autoindent
 set smartindent
@@ -314,6 +317,11 @@ endif
 let s:primary_directory = split(&directory, ',')[0]
 if !isdirectory(s:primary_directory)
   call s:MakeDir(s:primary_directory, 0700)
+endif
+
+" undo 用ディレクトリがなければ作成
+if !isdirectory(&undodir)
+  call s:MakeDir(&undodir, 0700)
 endif
 
 
