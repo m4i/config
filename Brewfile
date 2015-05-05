@@ -29,8 +29,8 @@ install zsh
 install zsh-completions
 install motemen/ghq/ghq
 
-cask install appcleaner
-cask install clipmenu
-cask install mailplane
+cask install appcleaner --force
+cask install clipmenu --force
+cask install mailplane --force
 
 cleanup
