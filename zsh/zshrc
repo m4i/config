@@ -140,7 +140,9 @@ fi
 unset aws_zsh_completer_path
 
 # direnv
-eval "$(direnv hook zsh)"
+if type direnv >/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
 
 
 
