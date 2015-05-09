@@ -139,17 +139,18 @@ if executable('git')
   endif
 
   set runtimepath+=$bundle_dir/neobundle.vim
-  call neobundle#rc($bundle_dir)
+  call neobundle#begin($bundle_dir)
 
   NeoBundleFetch 'Shougo/neobundle.vim'
 
-  NeoBundle 'Shougo/vimproc', {
-        \   'build': {
-        \     'unix':    'make -f make_unix.mak',
-        \     'mac':     'make -f make_mac.mak',
-        \     'cygwin':  'make -f make_cygwin.mak',
-        \     'windows': 'make -f make_mingw32.mak',
-        \   },
+  NeoBundle 'Shougo/vimproc.vim', {
+        \ 'build' : {
+        \     'windows' : 'tools\\update-dll-mingw',
+        \     'cygwin' : 'make -f make_cygwin.mak',
+        \     'mac' : 'make -f make_mac.mak',
+        \     'linux' : 'make',
+        \     'unix' : 'gmake',
+        \    },
         \ }
 
   " edit
@@ -194,6 +195,8 @@ if executable('git')
   "if has('ruby')
   "  NeoBundle 'fkfk/rbpit.vim'
   "endif
+
+  call neobundle#end()
 
   NeoBundleCheck
 endif
