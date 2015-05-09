@@ -38,6 +38,14 @@ _prepend_path() {
   _add_path prepend "$1" "$2"
 }
 
+_prepend_paths() {
+  local name="$1"
+  shift
+  for directory in "$@"; do
+    _add_path prepend "$name" "$directory"
+  done
+}
+
 
 
 
@@ -48,4 +56,5 @@ export LC_CTYPE=en_US.UTF-8
 
 _prepend_path PATH /usr/local/sbin
 _prepend_path PATH /usr/local/bin
+_prepend_paths PATH ~/local/*/bin
 _prepend_path PATH ~/bin
