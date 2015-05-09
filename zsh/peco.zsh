@@ -12,8 +12,10 @@ function peco-select-history() {
     CURSOR=$#BUFFER
     zle clear-screen
 }
-zle -N peco-select-history
-bindkey '^r' peco-select-history
+if type peco >/dev/null; then
+  zle -N peco-select-history
+  bindkey '^r' peco-select-history
+fi
 
 function look() {
   SHELL=zsh ghq look $(ghq list | peco)
