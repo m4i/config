@@ -143,7 +143,7 @@ if executable('git')
 
   NeoBundleFetch 'Shougo/neobundle.vim'
 
-  NeoBundle 'Shougo/vimproc.vim', {
+  NeoBundle 'Shougo/vimproc.vim', 'ver.8.0', {
         \ 'build' : {
         \     'windows' : 'tools\\update-dll-mingw',
         \     'cygwin' : 'make -f make_cygwin.mak',
@@ -155,7 +155,7 @@ if executable('git')
 
   " edit
   NeoBundle 'Align'
-  NeoBundle 'Shougo/neocomplcache'
+  NeoBundle 'Shougo/neocomplcache', 'ver.8.0'
   NeoBundle 'deris/vim-rengbang'
   NeoBundle 'm4i/vim-fakeclip', 'clip-client'
   NeoBundle 'mattn/emmet-vim'
@@ -173,10 +173,10 @@ if executable('git')
   "NeoBundle 'vim-creole'
 
   " unite
-  NeoBundle 'Shougo/unite.vim'
-  NeoBundle 'h1mesuke/unite-outline'
-  NeoBundle 'tsukkee/unite-help'
-  NeoBundle 'tsukkee/unite-tag'
+  NeoBundle 'Shougo/unite.vim', 'ver.6.1'
+  NeoBundle 'Shougo/unite-outline', 'f03cfe4'
+  NeoBundle 'tsukkee/unite-help', '5a8dc6c'
+  NeoBundle 'tsukkee/unite-tag', '0.2.0'
 
   " visual
   NeoBundle 'altercation/vim-colors-solarized'
@@ -184,7 +184,7 @@ if executable('git')
 
   " misc
   NeoBundle 'AnsiEsc.vim'
-  NeoBundle 'Shougo/vimfiler'
+  NeoBundle 'Shougo/vimfiler', 'ver.4.1'
   NeoBundle 'm4i/HierarchicalBackup'
   NeoBundle 'thinca/vim-quickrun'
   NeoBundle 'tpope/vim-fugitive'
