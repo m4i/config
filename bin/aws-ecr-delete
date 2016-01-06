@@ -1,0 +1,42 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: ${0##*/} <repository_name> <pattern> [--dry-run]" >&2
+  exit 1
+}
+
+case $# in
+  3)
+    if [[ "$3" != '--dry-run' ]]; then
+      usage
+    fi
+    dry_run=true
+    ;;
+  2)
+    dry_run=false
+    ;;
+  *)
+    usage
+    ;;
+esac
+
+repository_name=$1
+pattern=$2
+
+images="$(aws ecr list-images --repository-name $repository_name)"
+echo "$images"
+
+if [[ "$pattern" -eq null ]]; then
+  filter='.imageTag == null'
+else
+  filter='.imageTag and (.imageTag | test("'$pattern'"))'
+fi
+filter=".imageIds | map(select($filter)) | .[].imageDigest"
+
+for digest in $(echo "$images" | jq "$filter" -r); do
+  command="aws ecr batch-delete-image --repository-name $repository_name --image-ids imageDigest=$digest"
+  echo $command
+  if [[ "$dry_run" = false ]]; then
+    $command
+  fi
+done
