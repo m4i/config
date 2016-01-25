@@ -1,0 +1,7 @@
+#!/bin/bash
+
+args="${@:1:$#-1}"
+pattern="${@:$#}"
+
+exec docker run --rm --net=host redis:2.8 sh -c \
+  "redis-cli $args KEYS $pattern | xargs -d '\\n' redis-cli $args DEL"
