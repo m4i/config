@@ -158,17 +158,6 @@ root="$(builtin cd "${BASH_SOURCE%/*}" && pwd)"
 abbr_root="$(echo "$root" | sed "s@^$HOME@~@")"
 
 
-## bin {{{2
-
-if [[ ! -e ~/bin ]]; then
-  ee mkdir ~/bin
-fi
-
-for file in $(ls "$root/bin"); do
-  link "$root/bin/$file" ~/"bin/$file"
-done
-
-
 ## dotfiles {{{2
 
 for file in $(ls -A "$root/dotfiles"); do
