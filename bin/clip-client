@@ -34,7 +34,7 @@ module Clip
 
         socket.write("GET\r\n")
 
-        header = timeout(10) { socket.gets }
+        header = Timeout.timeout(10) { socket.gets }
         if header =~ /\A(\d+)\r\n\z/
           bytesize = $1.to_i
         else
