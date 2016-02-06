@@ -191,7 +191,8 @@ if executable('git')
   NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'vim-jp/vimdoc-ja'
   NeoBundle 'xolox/vim-session'
-    NeoBundle 'xolox/vim-misc'
+  NeoBundle 'xolox/vim-misc'
+  NeoBundle 'wakatime/vim-wakatime'
 
   "if has('ruby')
   "  NeoBundle 'fkfk/rbpit.vim'
