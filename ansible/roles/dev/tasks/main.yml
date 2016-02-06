@@ -1,1 +1,2 @@
 - include: ghq.yml
+- include: go.yml

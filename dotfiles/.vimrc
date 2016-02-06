@@ -163,6 +163,7 @@ if executable('git')
   NeoBundle 'tpope/vim-endwise'
 
   " filetype
+  NeoBundle 'fatih/vim-go'
   NeoBundle 'kchmck/vim-coffee-script'
   NeoBundle 'leafgarland/typescript-vim'
   NeoBundle 'markcornick/vim-terraform'

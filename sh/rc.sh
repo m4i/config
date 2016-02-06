@@ -93,6 +93,15 @@ alias g=git
 
 
 
+### Go {{{1
+
+export GOPATH=~
+export GOROOT=~/.local/go
+_prepend_path PATH $GOROOT/bin
+
+
+
+
 ### Node.js {{{1
 
 _prepend_path PATH ~/.nodebrew/current/bin
