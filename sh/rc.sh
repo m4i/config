@@ -115,20 +115,24 @@ alias b='bin-or-bundle-exec'
 alias r='b rails'
 
 # chruby
-if [[ -e /usr/local/share/chruby/chruby.sh ]]; then
-  source /usr/local/share/chruby/chruby.sh
+for prefix in ~/.local/chruby /usr/local; do
+  if [[ -e $prefix/share/chruby/chruby.sh ]]; then
+    source $prefix/share/chruby/chruby.sh
 
-  # for chef embedded ruby
-  if [[ -e /opt/chef/embedded ]]; then
-    RUBIES+=(/opt/chef/embedded)
-  fi
+    # for chef embedded ruby
+    if [[ -e /opt/chef/embedded ]]; then
+      RUBIES+=(/opt/chef/embedded)
+    fi
 
-  if [[ -e /usr/local/share/chruby/auto.sh ]]; then
-    # chruby 0.3.6 では RUBY_AUTO_VERSION を unset しないと
-    # 更に shell を実行した時に auto-switch が効かない
-    unset RUBY_AUTO_VERSION
-    source /usr/local/share/chruby/auto.sh
+    if [[ -e $prefix/share/chruby/auto.sh ]]; then
+      # chruby 0.3.6 では RUBY_AUTO_VERSION を unset しないと
+      # 更に shell を実行した時に auto-switch が効かない
+      unset RUBY_AUTO_VERSION
+      source $prefix/share/chruby/auto.sh
+    fi
+    break
   fi
+done
 
 # rbenv
 elif [[ -e ~/.rbenv ]]; then

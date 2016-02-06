@@ -1,0 +1,20 @@
+- package:
+    name: make
+  become: yes
+
+- file:
+    path: "{{ ansible_env.HOME }}/.local/src"
+    state: directory
+
+- unarchive:
+    src: https://github.com/postmodern/chruby/archive/v{{ chruby.version }}.tar.gz
+    dest: "{{ ansible_env.HOME }}/.local/src"
+    copy: no
+    creates: "{{ ansible_env.HOME }}/.local/src/chruby-{{ chruby.version }}"
+
+- command: make install
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/chruby-{{ chruby.version }}"
+    creates: "{{ ansible_env.HOME }}/.local/chruby"
+  environment:
+    PREFIX: "{{ ansible_env.HOME }}/.local/chruby"

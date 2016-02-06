@@ -1,0 +1,20 @@
+- package:
+    name: make
+  become: yes
+
+- file:
+    path: "{{ ansible_env.HOME }}/.local/src"
+    state: directory
+
+- unarchive:
+    src: https://github.com/postmodern/ruby-install/archive/v{{ ruby_install.version }}.tar.gz
+    dest: "{{ ansible_env.HOME }}/.local/src"
+    copy: no
+    creates: "{{ ansible_env.HOME }}/.local/src/ruby-install-{{ ruby_install.version }}"
+
+- command: make install
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/ruby-install-{{ ruby_install.version }}"
+    creates: "{{ ansible_env.HOME }}/.local/ruby-install"
+  environment:
+    PREFIX: "{{ ansible_env.HOME }}/.local/ruby-install"

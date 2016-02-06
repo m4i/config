@@ -1,7 +1,10 @@
 if { read -r RUBY_AUTO_VERSION < .ruby-version; } 2>/dev/null; then
-  if [[ -e /usr/local/share/chruby/chruby.sh ]]; then
-    source /usr/local/share/chruby/chruby.sh
-    chruby "$RUBY_AUTO_VERSION"
-    export RUBY_AUTO_VERSION
-  fi
+  for prefix in ~/.local/chruby /usr/local; do
+    if [[ -e $prefix/share/chruby/chruby.sh ]]; then
+      source $prefix/share/chruby/chruby.sh
+      chruby "$RUBY_AUTO_VERSION"
+      export RUBY_AUTO_VERSION
+      break
+    fi
+  done
 fi

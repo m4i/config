@@ -1,2 +1,4 @@
+- include: chruby.yml
 - include: ghq.yml
 - include: go.yml
+- include: ruby-install.yml
