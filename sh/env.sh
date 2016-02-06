@@ -56,7 +56,8 @@ export LC_CTYPE=en_US.UTF-8
 
 _prepend_path PATH /usr/local/sbin
 _prepend_path PATH /usr/local/bin
-_prepend_paths PATH ~/.local/bin
+_prepend_path PATH ~/.local/bin
+_prepend_paths PATH ~/.local/*/bin
 _prepend_paths PATH ~/local/*/bin
 _prepend_path PATH ~/src/github.com/m4i/config/bin
 _prepend_path PATH ~/bin

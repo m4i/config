@@ -97,7 +97,6 @@ alias g=git
 
 export GOPATH=~
 export GOROOT=~/.local/go
-_prepend_path PATH $GOROOT/bin
 
 
 
