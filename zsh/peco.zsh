@@ -10,7 +10,6 @@ function peco-select-history() {
         eval $tac | \
         peco --query "$LBUFFER")
     CURSOR=$#BUFFER
-    zle clear-screen
 }
 if type peco >/dev/null; then
   zle -N peco-select-history
