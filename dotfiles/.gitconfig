@@ -60,7 +60,7 @@
 	autocrlf          = false
 	safecrlf          = false
 	precomposeunicode = true
-	excludesfile      = ~/config/git/gitignore
+	excludesfile      = ~/src/github.com/m4i/config/git/gitignore
 
 [pager]
 	diff = diff-highlight | less
