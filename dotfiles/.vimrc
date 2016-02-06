@@ -841,6 +841,9 @@ nnoremap <silent> [unite]m  :<C-u>UniteWithCurrentDir -buffer-name=files -start-
 nnoremap <silent> [unite]a  :<C-u>Unite               -buffer-name=files -start-insert file_rec/async<CR>
 nnoremap <silent> [unite]k  :<C-u>Unite               -buffer-name=files -start-insert bookmark<CR>
 
+nnoremap <silent> [unite]t  :<C-u>Unite               -buffer-name=tabs    -start-insert tab<CR>
+nnoremap <silent> [unite]w  :<C-u>Unite               -buffer-name=windows -start-insert window<CR>
+
 nnoremap <silent> [unite]"  :<C-u>Unite -buffer-name=register -no-start-insert register<CR>
 nnoremap <silent> <Leader>p :<C-u>Unite -buffer-name=yank     -no-start-insert history/yank<CR>
 
@@ -863,7 +866,7 @@ nnoremap <silent> <C-h><C-h> :<C-u>UniteWithCursorWord -buffer-name=help -no-sta
 " unite-outline
 nnoremap <silent> [unite]o :<C-u>Unite -no-start-insert outline<CR>
 " unite-tag
-nnoremap <silent> [unite]t :<C-u>UniteWithCursorWord -buffer-name=tag tag<CR>
+nnoremap <silent> [unite]g :<C-u>UniteWithCursorWord -buffer-name=tag tag<CR>
 
 autocmd AUVIMRC FileType unite call s:unite_my_settings()
 function! s:unite_my_settings()
