@@ -8,6 +8,10 @@ compinit -d ~/tmp/zcompdump
 autoload -Uz bashcompinit
 bashcompinit
 
+fpath=(~/.local/ghq/zsh $fpath)
+autoload -Uz ghq
+autoload -Uz compinit; compinit
+
 
 
 

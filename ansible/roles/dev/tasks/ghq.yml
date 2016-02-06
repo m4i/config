@@ -2,11 +2,20 @@
     name: unzip
 
 - file:
-    path: "{{ ansible_env.HOME }}/bin"
+    path: "{{ ansible_env.HOME }}/.local/ghq"
     state: directory
 
 - unarchive:
     src: https://github.com/motemen/ghq/releases/download/v{{ ghq.version }}/ghq_linux_amd64.zip
-    dest: "{{ ansible_env.HOME }}/bin"
+    dest: "{{ ansible_env.HOME }}/.local/ghq"
     copy: no
-    creates: "{{ ansible_env.HOME }}/bin/ghq"
+    creates: "{{ ansible_env.HOME }}/.local/ghq/ghq"
+
+- file:
+    path: "{{ ansible_env.HOME }}/bin"
+    state: directory
+
+- file:
+    src: "{{ ansible_env.HOME }}/.local/ghq/ghq"
+    path: "{{ ansible_env.HOME }}/bin/ghq"
+    state: link
