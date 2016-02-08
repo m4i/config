@@ -1,0 +1,13 @@
+- package:
+    name: unzip
+  become: yes
+
+- file:
+    path: "{{ ansible_env.HOME }}/bin"
+    state: directory
+
+- unarchive:
+    src: https://releases.hashicorp.com/consul/{{ consul.version }}/consul_{{ consul.version }}_linux_amd64.zip
+    dest: "{{ ansible_env.HOME }}/bin"
+    copy: no
+    creates: "{{ ansible_env.HOME }}/bin/consul"
