@@ -134,14 +134,16 @@ for prefix in ~/.local/chruby /usr/local; do
   fi
 done
 
-# rbenv
-elif [[ -e ~/.rbenv ]]; then
-  _prepend_path PATH ~/.rbenv/bin
-  eval "$(rbenv init -)"
+if ! type chruby >/dev/null; then
+  # rbenv
+  if [[ -e ~/.rbenv ]]; then
+    _prepend_path PATH ~/.rbenv/bin
+    eval "$(rbenv init -)"
 
-# rvm
-elif [[ -e ~/.rvm ]]; then
-  source ~/.rvm/scripts/rvm
+  # rvm
+  elif [[ -e ~/.rvm ]]; then
+    source ~/.rvm/scripts/rvm
+  fi
 fi
 
 
