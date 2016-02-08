@@ -1,9 +1,12 @@
 - file:
-    path: "{{ ansible_env.HOME }}/.local"
+    path: "{{ prefix }}"
     state: directory
+
+- file:
+    path: "{{ prefix }}/go"
+    state: absent
 
 - unarchive:
     src: https://storage.googleapis.com/golang/go{{ go.version }}.linux-amd64.tar.gz
-    dest: "{{ ansible_env.HOME }}/.local"
+    dest: "{{ prefix }}"
     copy: no
-    creates: "{{ ansible_env.HOME }}/.local/go"

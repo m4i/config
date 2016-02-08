@@ -3,18 +3,24 @@
   become: yes
 
 - file:
-    path: "{{ ansible_env.HOME }}/.local/src"
-    state: directory
+    path: /tmp/chruby-{{ chruby.version }}
+    state: absent
 
 - unarchive:
     src: https://github.com/postmodern/chruby/archive/v{{ chruby.version }}.tar.gz
-    dest: "{{ ansible_env.HOME }}/.local/src"
+    dest: /tmp
     copy: no
-    creates: "{{ ansible_env.HOME }}/.local/src/chruby-{{ chruby.version }}"
+
+- file:
+    path: "{{ prefix }}/chruby"
+    state: absent
 
 - command: make install
   args:
-    chdir: "{{ ansible_env.HOME }}/.local/src/chruby-{{ chruby.version }}"
-    creates: "{{ ansible_env.HOME }}/.local/chruby"
+    chdir: /tmp/chruby-{{ chruby.version }}
   environment:
-    PREFIX: "{{ ansible_env.HOME }}/.local/chruby"
+    PREFIX: "{{ prefix }}/chruby"
+
+- file:
+    path: /tmp/chruby-{{ chruby.version }}
+    state: absent

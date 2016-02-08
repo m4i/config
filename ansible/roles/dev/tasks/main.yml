@@ -1,6 +1,41 @@
+- command: "{{ prefix }}/chruby/bin/chruby-exec --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
 - include: chruby.yml
+  when: "_version|failed or not _version.stdout.endswith(' ' + chruby.version)"
+
+- command: "{{ bindir }}/consul version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
 - include: consul.yml
+  when: "_version|failed or not _version.stdout_lines[0].endswith('v' + consul.version)"
+
+- command: "{{ bindir }}/consul-template -version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
 - include: consul-template.yml
+  when: "_version|failed or not _version.stderr.endswith('v' + consul_template.version)"
+
+- command: "{{ bindir }}/ghq --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
 - include: ghq.yml
+  when: "_version|failed or not _version.stdout.endswith(' ' + ghq.version)"
+
+- command: "{{ prefix }}/go/bin/go version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
 - include: go.yml
+  when: "_version|failed or _version.stdout.find('go' + go.version + ' ') == -1"
+
+- command: "{{ prefix }}/ruby-install/bin/ruby-install --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
 - include: ruby-install.yml
+  when: "_version|failed or not _version.stdout.endswith(' ' + ruby_install.version)"

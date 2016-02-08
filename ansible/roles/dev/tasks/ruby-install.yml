@@ -3,18 +3,24 @@
   become: yes
 
 - file:
-    path: "{{ ansible_env.HOME }}/.local/src"
-    state: directory
+    path: /tmp/ruby-install-{{ ruby_install.version }}
+    state: absent
 
 - unarchive:
     src: https://github.com/postmodern/ruby-install/archive/v{{ ruby_install.version }}.tar.gz
-    dest: "{{ ansible_env.HOME }}/.local/src"
+    dest: /tmp
     copy: no
-    creates: "{{ ansible_env.HOME }}/.local/src/ruby-install-{{ ruby_install.version }}"
+
+- file:
+    path: "{{ prefix }}/ruby-install"
+    state: absent
 
 - command: make install
   args:
-    chdir: "{{ ansible_env.HOME }}/.local/src/ruby-install-{{ ruby_install.version }}"
-    creates: "{{ ansible_env.HOME }}/.local/ruby-install"
+    chdir: /tmp/ruby-install-{{ ruby_install.version }}
   environment:
-    PREFIX: "{{ ansible_env.HOME }}/.local/ruby-install"
+    PREFIX: "{{ prefix }}/ruby-install"
+
+- file:
+    path: /tmp/ruby-install-{{ ruby_install.version }}
+    state: absent
