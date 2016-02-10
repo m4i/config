@@ -537,6 +537,8 @@ augroup AUVIMRC
 
   autocmd BufNewFile,BufRead *.css.erb             setfiletype css
 
+  autocmd BufNewFile,BufRead *.ctmpl               setfiletype gohtmltmpl
+
   autocmd BufNewFile,BufRead *.scaml               setfiletype haml
 
   autocmd BufNewFile,BufRead *.js.erb              setfiletype js
