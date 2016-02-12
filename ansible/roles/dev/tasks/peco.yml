@@ -1,0 +1,21 @@
+- file:
+    path: /tmp/peco_linux_amd64
+    state: absent
+
+- unarchive:
+    src: https://github.com/peco/peco/releases/download/v{{ peco.version }}/peco_linux_amd64.tar.gz
+    dest: /tmp
+    copy: no
+
+- file:
+    path: "{{ bindir }}"
+    state: directory
+
+- copy:
+    src: /tmp/peco_linux_amd64/peco
+    dest: "{{ bindir }}"
+    mode: ugo+x
+
+- file:
+    path: /tmp/peco_linux_amd64
+    state: absent
