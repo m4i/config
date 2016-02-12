@@ -2,15 +2,13 @@
 
 ### compinit {{{1
 
+fpath=(~/.local/share/zsh/completions $fpath)
+
 autoload -Uz compinit
 compinit -d ~/tmp/zcompdump
 
 autoload -Uz bashcompinit
 bashcompinit
-
-fpath=(~/.local/ghq/zsh $fpath)
-autoload -Uz ghq
-autoload -Uz compinit; compinit
 
 
 

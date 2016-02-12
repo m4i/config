@@ -2,23 +2,35 @@
     name: unzip
 
 - file:
-    path: "{{ prefix }}/ghq"
+    path: /tmp/ghq
     state: absent
 
 - file:
-    path: "{{ prefix }}/ghq"
+    path: /tmp/ghq
     state: directory
 
 - unarchive:
     src: https://github.com/motemen/ghq/releases/download/v{{ ghq.version }}/ghq_linux_amd64.zip
-    dest: "{{ prefix }}/ghq"
+    dest: /tmp/ghq
     copy: no
 
 - file:
     path: "{{ bindir }}"
     state: directory
 
+- copy:
+    src: /tmp/ghq/ghq
+    dest: "{{ bindir }}"
+    mode: ugo+x
+
 - file:
-    path: "{{ bindir }}/ghq"
-    src: "{{ prefix }}/ghq/ghq"
-    state: link
+    path: "{{ prefix }}/share/zsh/completions"
+    state: directory
+
+- copy:
+    src: /tmp/ghq/zsh/_ghq
+    dest: "{{ prefix }}/share/zsh/completions"
+
+- file:
+    path: /tmp/ghq
+    state: absent
