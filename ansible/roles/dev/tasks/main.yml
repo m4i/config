@@ -1,3 +1,5 @@
+- include: packages.yml
+
 - command: "{{ prefix }}/chruby/bin/chruby-exec --version"
   register: _version
   changed_when: false
