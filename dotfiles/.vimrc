@@ -606,6 +606,7 @@ augroup END
 " Template {{{2
 
 augroup AUVIMRC
+  autocmd BufNewFile *.rb    0r ~/.vim/templates/template.rb
   autocmd BufNewFile Gemfile 0r ~/.vim/templates/Gemfile
 augroup END
 
