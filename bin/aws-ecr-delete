@@ -23,7 +23,7 @@ esac
 repository_name=$1
 pattern=$2
 
-images="$(aws ecr list-images --repository-name $repository_name)"
+images="$(aws-ecr-list-all-images $repository_name)"
 echo "$images"
 
 if [[ "$pattern" -eq null ]]; then
