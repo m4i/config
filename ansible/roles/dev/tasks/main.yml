@@ -42,6 +42,13 @@
 - include: go.yml
   when: "_version|failed or _version.stdout.find('go' + go.version + ' ') == -1"
 
+- command: "{{ bindir }}/jq --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- include: jq.yml
+  when: "_version|failed or not _version.stdout == 'jq-' + jq.version"
+
 - command: "{{ bindir }}/hub --version"
   register: _version
   changed_when: false

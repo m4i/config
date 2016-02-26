@@ -12,6 +12,8 @@ go:
   version: "1.6"
 hub:
   version: 2.2.3
+jq:
+  version: "1.5"
 peco:
   version: 0.3.5
 ruby_install:
