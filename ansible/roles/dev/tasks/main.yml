@@ -42,6 +42,13 @@
 - include: go.yml
   when: "_version|failed or _version.stdout.find('go' + go.version + ' ') == -1"
 
+- command: "{{ bindir }}/hub --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- include: hub.yml
+  when: "_version|failed or not _version.stdout_lines[1].endswith(' ' + hub.version)"
+
 - command: "{{ bindir }}/peco --version"
   register: _version
   changed_when: false

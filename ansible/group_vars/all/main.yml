@@ -10,6 +10,8 @@ ghq:
   version: 0.7.2
 go:
   version: "1.6"
+hub:
+  version: 2.2.3
 peco:
   version: 0.3.5
 ruby_install:
