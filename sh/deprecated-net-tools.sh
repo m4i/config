@@ -4,7 +4,7 @@ net_tools_deprecated_message () {
   echo -n 'net-tools コマンドはもう非推奨ですよ？おじさんなんじゃないですか？ '
 }
 
-if type ip >/dev/null; then
+if type ip >/dev/null 2>&1; then
   arp () {
     net_tools_deprecated_message
     echo 'Use `ip n`'
