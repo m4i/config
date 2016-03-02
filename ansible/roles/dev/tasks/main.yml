@@ -21,6 +21,13 @@
 - include: consul-template.yml
   when: "_version|failed or not _version.stderr.endswith('v' + consul_template.version)"
 
+- command: "{{ bindir }}/direnv version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- include: direnv.yml
+  when: "_version|failed or not _version.stdout == direnv.version"
+
 - command: "{{ bindir }}/docker-compose version"
   register: _version
   changed_when: false
