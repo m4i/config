@@ -18,3 +18,5 @@ peco:
   version: 0.3.5
 ruby_install:
   version: 0.6.0
+tig:
+  version: 2.1.1

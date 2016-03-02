@@ -69,3 +69,10 @@
   ignore_errors: true
 - include: ruby-install.yml
   when: "_version|failed or not _version.stdout.endswith(' ' + ruby_install.version)"
+
+- command: "{{ prefix }}/tig/bin/tig --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- include: tig.yml
+  when: "_version|failed or not _version.stdout.endswith(' ' + tig.version)"
