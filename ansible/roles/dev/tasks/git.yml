@@ -1,0 +1,17 @@
+- apt_repository:
+    repo: ppa:git-core/ppa
+  become: yes
+
+- apt:
+    name: git
+  become: yes
+
+- file:
+    path: "{{ bindir }}"
+    state: directory
+
+- copy:
+    src: /usr/share/doc/git/contrib/diff-highlight/diff-highlight
+    dest: "{{ bindir }}"
+    remote_src: yes
+    mode: ugo+x
