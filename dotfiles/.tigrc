@@ -1,14 +1,2 @@
-set line-graphics  = ascii
-set show-id        = yes
-set vertical-split = yes
-
-bind generic g  move-first-line
-bind generic G  move-last-line
-bind generic ^f move-page-down
-bind generic ^b move-page-up
-
-# http://blog.kyanny.me/entry/2012/07/22/033134
-# open commit at github
-bind main o !@hub browse -- commit/%(commit)
-bind diff o !@hub browse -- commit/%(commit)
-bind log  o !@hub browse -- commit/%(commit)
+set line-graphics = ascii
+set main-view     = id date:short author:abbreviated commit-title:graph=v2,refs
