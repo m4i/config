@@ -1,12 +1,18 @@
-- file:
-    path: "{{ prefix }}"
-    state: directory
+- command: "{{ prefix }}/go/bin/go version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or _version.stdout.find('go' + go.version + ' ') == -1"
+  block:
+  - file:
+      path: "{{ prefix }}"
+      state: directory
 
-- file:
-    path: "{{ prefix }}/go"
-    state: absent
+  - file:
+      path: "{{ prefix }}/go"
+      state: absent
 
-- unarchive:
-    src: https://storage.googleapis.com/golang/go{{ go.version }}.linux-amd64.tar.gz
-    dest: "{{ prefix }}"
-    copy: no
+  - unarchive:
+      src: https://storage.googleapis.com/golang/go{{ go.version }}.linux-amd64.tar.gz
+      dest: "{{ prefix }}"
+      copy: no

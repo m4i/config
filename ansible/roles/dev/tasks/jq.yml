@@ -1,9 +1,15 @@
-- file:
-    path: "{{ bindir }}"
-    state: directory
+- command: "{{ bindir }}/jq --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout == 'jq-' + jq.version"
+  block:
+  - file:
+      path: "{{ bindir }}"
+      state: directory
 
-- get_url:
-    url: https://github.com/stedolan/jq/releases/download/jq-{{ jq.version }}/jq-linux64
-    dest: "{{ bindir }}/jq"
-    mode: ugo+x
-    force: yes
+  - get_url:
+      url: https://github.com/stedolan/jq/releases/download/jq-{{ jq.version }}/jq-linux64
+      dest: "{{ bindir }}/jq"
+      mode: ugo+x
+      force: yes

@@ -1,29 +1,35 @@
-- file:
-    path: /tmp/hub-linux-amd64-{{ hub.version }}
-    state: absent
+- command: "{{ bindir }}/hub --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout_lines[1].endswith(' ' + hub.version)"
+  block:
+  - file:
+      path: /tmp/hub-linux-amd64-{{ hub.version }}
+      state: absent
 
-- unarchive:
-    src: https://github.com/github/hub/releases/download/v{{ hub.version }}/hub-linux-amd64-{{ hub.version }}.tgz
-    dest: /tmp
-    copy: no
+  - unarchive:
+      src: https://github.com/github/hub/releases/download/v{{ hub.version }}/hub-linux-amd64-{{ hub.version }}.tgz
+      dest: /tmp
+      copy: no
 
-- file:
-    path: "{{ bindir }}"
-    state: directory
+  - file:
+      path: "{{ bindir }}"
+      state: directory
 
-- copy:
-    src: /tmp/hub-linux-amd64-{{ hub.version }}/bin/hub
-    dest: "{{ bindir }}"
-    mode: ugo+x
+  - copy:
+      src: /tmp/hub-linux-amd64-{{ hub.version }}/bin/hub
+      dest: "{{ bindir }}"
+      mode: ugo+x
 
-- file:
-    path: "{{ prefix }}/share/zsh/completions"
-    state: directory
+  - file:
+      path: "{{ prefix }}/share/zsh/completions"
+      state: directory
 
-- copy:
-    src: /tmp/hub-linux-amd64-{{ hub.version }}/etc/hub.zsh_completion
-    dest: "{{ prefix }}/share/zsh/completions/_hub"
+  - copy:
+      src: /tmp/hub-linux-amd64-{{ hub.version }}/etc/hub.zsh_completion
+      dest: "{{ prefix }}/share/zsh/completions/_hub"
 
-- file:
-    path: /tmp/hub-linux-amd64-{{ hub.version }}
-    state: absent
+  - file:
+      path: /tmp/hub-linux-amd64-{{ hub.version }}
+      state: absent

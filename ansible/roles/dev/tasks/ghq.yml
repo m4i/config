@@ -1,36 +1,42 @@
-- package:
-    name: unzip
+- command: "{{ bindir }}/ghq --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout.endswith(' ' + ghq.version)"
+  block:
+  - package:
+      name: unzip
 
-- file:
-    path: /tmp/ghq
-    state: absent
+  - file:
+      path: /tmp/ghq
+      state: absent
 
-- file:
-    path: /tmp/ghq
-    state: directory
+  - file:
+      path: /tmp/ghq
+      state: directory
 
-- unarchive:
-    src: https://github.com/motemen/ghq/releases/download/v{{ ghq.version }}/ghq_linux_amd64.zip
-    dest: /tmp/ghq
-    copy: no
+  - unarchive:
+      src: https://github.com/motemen/ghq/releases/download/v{{ ghq.version }}/ghq_linux_amd64.zip
+      dest: /tmp/ghq
+      copy: no
 
-- file:
-    path: "{{ bindir }}"
-    state: directory
+  - file:
+      path: "{{ bindir }}"
+      state: directory
 
-- copy:
-    src: /tmp/ghq/ghq
-    dest: "{{ bindir }}"
-    mode: ugo+x
+  - copy:
+      src: /tmp/ghq/ghq
+      dest: "{{ bindir }}"
+      mode: ugo+x
 
-- file:
-    path: "{{ prefix }}/share/zsh/completions"
-    state: directory
+  - file:
+      path: "{{ prefix }}/share/zsh/completions"
+      state: directory
 
-- copy:
-    src: /tmp/ghq/zsh/_ghq
-    dest: "{{ prefix }}/share/zsh/completions"
+  - copy:
+      src: /tmp/ghq/zsh/_ghq
+      dest: "{{ prefix }}/share/zsh/completions"
 
-- file:
-    path: /tmp/ghq
-    state: absent
+  - file:
+      path: /tmp/ghq
+      state: absent

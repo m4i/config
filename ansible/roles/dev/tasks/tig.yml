@@ -1,36 +1,42 @@
-- apt:
-    name: "{{ item }}"
-  with_items:
-    - g++
-    - libncursesw5-dev
-    - make
-  become: yes
+- command: "{{ prefix }}/tig/bin/tig --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout.endswith(' ' + tig.version)"
+  block:
+  - apt:
+      name: "{{ item }}"
+    with_items:
+      - g++
+      - libncursesw5-dev
+      - make
+    become: yes
 
-- file:
-    path: /tmp/tig-{{ tig.version }}
-    state: absent
+  - file:
+      path: /tmp/tig-{{ tig.version }}
+      state: absent
 
-- unarchive:
-    src: http://jonas.nitro.dk/tig/releases/tig-{{ tig.version }}.tar.gz
-    dest: /tmp
-    copy: no
+  - unarchive:
+      src: http://jonas.nitro.dk/tig/releases/tig-{{ tig.version }}.tar.gz
+      dest: /tmp
+      copy: no
 
-- file:
-    path: "{{ prefix }}/tig"
-    state: absent
+  - file:
+      path: "{{ prefix }}/tig"
+      state: absent
 
-- command: ./configure prefix={{ prefix }}/tig
-  args:
-    chdir: /tmp/tig-{{ tig.version }}
+  - command: ./configure prefix={{ prefix }}/tig
+    args:
+      chdir: /tmp/tig-{{ tig.version }}
 
-- command: make
-  args:
-    chdir: /tmp/tig-{{ tig.version }}
+  - command: make
+    args:
+      chdir: /tmp/tig-{{ tig.version }}
 
-- command: make install
-  args:
-    chdir: /tmp/tig-{{ tig.version }}
+  - command: make install
+    args:
+      chdir: /tmp/tig-{{ tig.version }}
 
-- file:
-    path: /tmp/tig-{{ tig.version }}
-    state: absent
+  - file:
+      path: /tmp/tig-{{ tig.version }}
+      state: absent

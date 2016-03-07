@@ -1,12 +1,18 @@
-- package:
-    name: unzip
-  become: yes
+- command: "{{ bindir }}/consul version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout_lines[0].endswith('v' + consul.version)"
+  block:
+  - package:
+      name: unzip
+    become: yes
 
-- file:
-    path: "{{ bindir }}"
-    state: directory
+  - file:
+      path: "{{ bindir }}"
+      state: directory
 
-- unarchive:
-    src: https://releases.hashicorp.com/consul/{{ consul.version }}/consul_{{ consul.version }}_linux_amd64.zip
-    dest: "{{ bindir }}"
-    copy: no
+  - unarchive:
+      src: https://releases.hashicorp.com/consul/{{ consul.version }}/consul_{{ consul.version }}_linux_amd64.zip
+      dest: "{{ bindir }}"
+      copy: no

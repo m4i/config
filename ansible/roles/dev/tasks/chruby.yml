@@ -1,26 +1,32 @@
-- package:
-    name: make
-  become: yes
+- command: "{{ prefix }}/chruby/bin/chruby-exec --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout.endswith(' ' + chruby.version)"
+  block:
+  - package:
+      name: make
+    become: yes
 
-- file:
-    path: /tmp/chruby-{{ chruby.version }}
-    state: absent
+  - file:
+      path: /tmp/chruby-{{ chruby.version }}
+      state: absent
 
-- unarchive:
-    src: https://github.com/postmodern/chruby/archive/v{{ chruby.version }}.tar.gz
-    dest: /tmp
-    copy: no
+  - unarchive:
+      src: https://github.com/postmodern/chruby/archive/v{{ chruby.version }}.tar.gz
+      dest: /tmp
+      copy: no
 
-- file:
-    path: "{{ prefix }}/chruby"
-    state: absent
+  - file:
+      path: "{{ prefix }}/chruby"
+      state: absent
 
-- command: make install
-  args:
-    chdir: /tmp/chruby-{{ chruby.version }}
-  environment:
-    PREFIX: "{{ prefix }}/chruby"
+  - command: make install
+    args:
+      chdir: /tmp/chruby-{{ chruby.version }}
+    environment:
+      PREFIX: "{{ prefix }}/chruby"
 
-- file:
-    path: /tmp/chruby-{{ chruby.version }}
-    state: absent
+  - file:
+      path: /tmp/chruby-{{ chruby.version }}
+      state: absent

@@ -1,26 +1,32 @@
-- package:
-    name: make
-  become: yes
+- command: "{{ prefix }}/ruby-install/bin/ruby-install --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout.endswith(' ' + ruby_install.version)"
+  block:
+  - package:
+      name: make
+    become: yes
 
-- file:
-    path: /tmp/ruby-install-{{ ruby_install.version }}
-    state: absent
+  - file:
+      path: /tmp/ruby-install-{{ ruby_install.version }}
+      state: absent
 
-- unarchive:
-    src: https://github.com/postmodern/ruby-install/archive/v{{ ruby_install.version }}.tar.gz
-    dest: /tmp
-    copy: no
+  - unarchive:
+      src: https://github.com/postmodern/ruby-install/archive/v{{ ruby_install.version }}.tar.gz
+      dest: /tmp
+      copy: no
 
-- file:
-    path: "{{ prefix }}/ruby-install"
-    state: absent
+  - file:
+      path: "{{ prefix }}/ruby-install"
+      state: absent
 
-- command: make install
-  args:
-    chdir: /tmp/ruby-install-{{ ruby_install.version }}
-  environment:
-    PREFIX: "{{ prefix }}/ruby-install"
+  - command: make install
+    args:
+      chdir: /tmp/ruby-install-{{ ruby_install.version }}
+    environment:
+      PREFIX: "{{ prefix }}/ruby-install"
 
-- file:
-    path: /tmp/ruby-install-{{ ruby_install.version }}
-    state: absent
+  - file:
+      path: /tmp/ruby-install-{{ ruby_install.version }}
+      state: absent

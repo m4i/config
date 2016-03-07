@@ -1,9 +1,15 @@
-- file:
-    path: "{{ bindir }}"
-    state: directory
+- command: "{{ bindir }}/direnv version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout == direnv.version"
+  block:
+  - file:
+      path: "{{ bindir }}"
+      state: directory
 
-- get_url:
-    url: https://github.com/zimbatm/direnv/releases/download/v{{ direnv.version }}/direnv.linux-amd64
-    dest: "{{ bindir }}/direnv"
-    mode: ugo+x
-    force: yes
+  - get_url:
+      url: https://github.com/zimbatm/direnv/releases/download/v{{ direnv.version }}/direnv.linux-amd64
+      dest: "{{ bindir }}/direnv"
+      mode: ugo+x
+      force: yes

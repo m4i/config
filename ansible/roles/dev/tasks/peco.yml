@@ -1,21 +1,27 @@
-- file:
-    path: /tmp/peco_linux_amd64
-    state: absent
+- command: "{{ bindir }}/peco --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stderr.endswith('v' + peco.version)"
+  block:
+  - file:
+      path: /tmp/peco_linux_amd64
+      state: absent
 
-- unarchive:
-    src: https://github.com/peco/peco/releases/download/v{{ peco.version }}/peco_linux_amd64.tar.gz
-    dest: /tmp
-    copy: no
+  - unarchive:
+      src: https://github.com/peco/peco/releases/download/v{{ peco.version }}/peco_linux_amd64.tar.gz
+      dest: /tmp
+      copy: no
 
-- file:
-    path: "{{ bindir }}"
-    state: directory
+  - file:
+      path: "{{ bindir }}"
+      state: directory
 
-- copy:
-    src: /tmp/peco_linux_amd64/peco
-    dest: "{{ bindir }}"
-    mode: ugo+x
+  - copy:
+      src: /tmp/peco_linux_amd64/peco
+      dest: "{{ bindir }}"
+      mode: ugo+x
 
-- file:
-    path: /tmp/peco_linux_amd64
-    state: absent
+  - file:
+      path: /tmp/peco_linux_amd64
+      state: absent
