@@ -1,0 +1,18 @@
+- command: "{{ bindir }}/terraform version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout_lines[0].endswith('v' + terraform.version)"
+  block:
+  - package:
+      name: unzip
+    become: yes
+
+  - file:
+      path: "{{ bindir }}"
+      state: directory
+
+  - unarchive:
+      src: https://releases.hashicorp.com/terraform/{{ terraform.version }}/terraform_{{ terraform.version }}_linux_amd64.zip
+      dest: "{{ bindir }}"
+      copy: no

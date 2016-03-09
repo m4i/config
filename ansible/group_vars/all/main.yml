@@ -20,5 +20,7 @@ peco:
   version: 0.3.5
 ruby_install:
   version: 0.6.0
+terraform:
+  version: 0.6.12
 tig:
   version: 2.1.1

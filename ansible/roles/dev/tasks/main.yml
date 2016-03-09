@@ -12,4 +12,5 @@
 - include: jq.yml
 - include: peco.yml
 - include: ruby-install.yml
+- include: terraform.yml
 - include: tig.yml
