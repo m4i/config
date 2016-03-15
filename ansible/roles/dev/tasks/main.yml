@@ -10,6 +10,7 @@
 - include: go.yml
 - include: hub.yml
 - include: jq.yml
+- include: nodebrew.yml
 - include: peco.yml
 - include: ruby-install.yml
 - include: terraform.yml

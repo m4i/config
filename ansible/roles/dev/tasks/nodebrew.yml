@@ -1,0 +1,8 @@
+- shell: curl -L git.io/nodebrew | perl - setup
+  args:
+    creates: "{{ ansible_env.HOME }}/.nodebrew"
+
+- file:
+    path: "{{ prefix }}/share/zsh/completions/_nodebrew"
+    src: "{{ ansible_env.HOME }}/.nodebrew/completions/zsh/_nodebrew"
+    state: link
