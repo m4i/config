@@ -1,4 +1,5 @@
-- apt:
+- when: ansible_os_family == 'Debian'
+  apt:
     name: "{{item}}"
   with_items:
     - colordiff
@@ -10,4 +11,57 @@
     - xtail
     - zlib1g-dev                # nokogiri
   become: yes
-  when: ansible_os_family == 'Debian'
+
+- when: ansible_os_family == 'Darwin'
+  block:
+  - homebrew_tap:
+      tap: "{{ item }}"
+    with_items:
+      - homebrew/dupes
+      #- caskroom/cask
+
+  - homebrew:
+      update_homebrew: yes
+
+  - homebrew:
+      name: "{{ item.name | default(item) }}"
+      state: "{{ item.state | default(homebrew_state) }}"
+      install_options: "{{ item.install_options | default() }}"
+
+    with_items:
+      - readline
+      - openssl
+      - name: openssl
+        state: linked
+        install_options: force
+      - ansible
+      - colordiff
+      - coreutils
+      - findutils
+      - gnu-sed
+      - gnu-tar
+      - grep
+      - nkf
+      - nmap
+      - reattach-to-user-namespace
+      - ssh-copy-id
+      - the_silver_searcher
+      - tmux
+      - tree
+      - watch
+      - xz
+      #- caskroom/cask/brew-cask
+
+  - homebrew_cask:
+      name: "{{ item.name | default(item) }}"
+      state: "{{ homebrew_state }}"
+    with_items:
+      - appcleaner
+      - clipy
+      - firefox
+      - flux
+      - google-chrome
+      - google-japanese-ime
+      - iterm2
+      - karabiner
+      - mailplane
