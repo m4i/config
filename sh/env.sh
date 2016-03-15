@@ -47,10 +47,28 @@ function _add_path() {
 
 
 
-### Environment Variables {{{1
+### $LANG {{{1
 
-export LANG=en_US.UTF-8
-export LC_CTYPE=en_US.UTF-8
+function _set_locale() {
+  local locales="$(locale -a)"
+  local locale=
+  for regex in "$@"; do
+    locale=$(echo "$locales" | grep -i "$regex")
+    if [[ -n "$locale" ]]; then break; fi
+  done
+  if [[ -z "$locale" ]]; then
+    locale=C
+  fi
+  export LANG=$locale
+  export LC_CTYPE=$locale
+}
+
+_set_locale 'en_US.UTF-\?8' 'C.UTF-\?8'
+
+
+
+
+### $PATH {{{1
 
 _prepend_path PATH /usr/local/sbin
 _prepend_path PATH /usr/local/bin
