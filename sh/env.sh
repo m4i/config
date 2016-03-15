@@ -18,7 +18,7 @@ function _add_path() {
   local paths="$(eval "echo \$$env_name")"
 
   local adding_paths=
-  if echo "$adding_path" | grep -q \*; then
+  if [[ "$adding_path" == *\** ]]; then
     adding_paths=($(eval "ls -d $adding_path" 2>/dev/null))
   else
     adding_paths=("$adding_path")
