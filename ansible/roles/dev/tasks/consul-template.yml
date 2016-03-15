@@ -17,4 +17,5 @@
       src: https://releases.hashicorp.com/consul-template/{{ consul_template.version }}/consul-template_{{ consul_template.version }}_{{ ansible_system | lower }}_amd64.zip
       dest: "{{ bindir }}"
       copy: no
+    # Fail to validate the SSL certificate on Darwin
     when: ansible_system != 'Darwin'

@@ -18,7 +18,6 @@
       tap: "{{ item }}"
     with_items:
       - homebrew/dupes
-      #- caskroom/cask
 
   - homebrew:
       update_homebrew: yes
@@ -34,6 +33,7 @@
       - name: openssl
         state: linked
         install_options: force
+
       - ansible
       - colordiff
       - coreutils
@@ -50,7 +50,6 @@
       - tree
       - watch
       - xz
-      #- caskroom/cask/brew-cask
 
   - homebrew_cask:
       name: "{{ item.name | default(item) }}"
