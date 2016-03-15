@@ -180,8 +180,7 @@ append_one "source $abbr_root/bash/bash_profile" "$bash_profile"
 
 ## zsh {{{2
 
-append_one "source $abbr_root/zsh/zshenv" ~/.zshenv
-append_one "source $abbr_root/zsh/zshrc"  ~/.zshrc
+link $root/zsh/.zshenv-home ~/.zshenv
 
 
 ## misc {{{2

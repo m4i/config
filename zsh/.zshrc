@@ -5,7 +5,7 @@
 fpath=(~/.local/share/zsh/completions $fpath)
 
 autoload -Uz compinit
-compinit -d ~/tmp/zcompdump
+compinit
 
 autoload -Uz bashcompinit
 bashcompinit
@@ -15,10 +15,10 @@ bashcompinit
 
 ### include {{{1
 
-source ${0%/*}/options.zsh
+source $ZDOTDIR/options.zsh
 
 # compinit/bashcompinit よりも後に読み込む必要あり
-source ${0%/*}/../sh/rc.sh
+source $ZDOTDIR/../sh/rc.sh
 
 
 
@@ -153,4 +153,4 @@ fi
 
 # 最初の include 時点だとうまくいかないものはここで
 
-source ${0%/*}/peco.zsh
+source $ZDOTDIR/peco.zsh
