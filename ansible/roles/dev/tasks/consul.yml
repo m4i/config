@@ -7,12 +7,14 @@
   - package:
       name: unzip
     become: yes
+    when: ansible_system != 'Darwin'
 
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - unarchive:
-      src: https://releases.hashicorp.com/consul/{{ consul.version }}/consul_{{ consul.version }}_linux_amd64.zip
+      src: https://releases.hashicorp.com/consul/{{ consul.version }}/consul_{{ consul.version }}_{{ ansible_system | lower }}_amd64.zip
       dest: "{{ bindir }}"
       copy: no
+    when: ansible_system != 'Darwin'

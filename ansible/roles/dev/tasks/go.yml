@@ -13,6 +13,6 @@
       state: absent
 
   - unarchive:
-      src: https://storage.googleapis.com/golang/go{{ go.version }}.linux-amd64.tar.gz
+      src: https://storage.googleapis.com/golang/go{{ go.version }}.{{ ansible_system | lower }}-amd64.tar.gz
       dest: "{{ prefix }}"
       copy: no

@@ -1,13 +1,15 @@
+homebrew_state: present
+
 chruby:
   version: 0.3.9
 consul:
   version: 0.6.3
 consul_template:
-  version: 0.12.1
+  version: 0.14.0
 direnv:
   version: 2.6.0
 docker_compose:
-  version: 1.6.0
+  version: 1.6.2
 ghq:
   version: 0.7.2
 go:

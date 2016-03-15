@@ -6,6 +6,8 @@
   block:
   - package:
       name: unzip
+    become: yes
+    when: ansible_system != 'Darwin'
 
   - file:
       path: /tmp/ghq
@@ -16,7 +18,7 @@
       state: directory
 
   - unarchive:
-      src: https://github.com/motemen/ghq/releases/download/v{{ ghq.version }}/ghq_linux_amd64.zip
+      src: https://github.com/motemen/ghq/releases/download/v{{ ghq.version }}/ghq_{{ ansible_system | lower }}_amd64.zip
       dest: /tmp/ghq
       copy: no
 

@@ -11,6 +11,7 @@
       - libncursesw5-dev
       - make
     become: yes
+    when: ansible_system != 'Darwin'
 
   - file:
       path: /tmp/tig-{{ tig.version }}
