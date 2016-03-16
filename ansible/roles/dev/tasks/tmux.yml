@@ -1,0 +1,47 @@
+- command: "{{ prefix }}/tmux/bin/tmux -V"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout.endswith(' ' + tmux.version)"
+  block:
+  - when: ansible_os_family == 'Debian'
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - libevent-dev
+      - libncurses5-dev
+    become: yes
+
+  - when: ansible_os_family == 'Darwin'
+    homebrew:
+      name: libevent-dev
+      state: "{{ homebrew_state }}"
+
+  - file:
+      path: /tmp/tmux-{{ tmux.version }}
+      state: absent
+
+  - unarchive:
+      src: https://github.com/tmux/tmux/releases/download/{{ tmux.version }}/tmux-{{ tmux.version }}.tar.gz
+      dest: /tmp
+      copy: no
+
+  - file:
+      path: "{{ prefix }}/tmux"
+      state: absent
+
+  - command: ./configure prefix={{ prefix }}/tmux
+    args:
+      chdir: /tmp/tmux-{{ tmux.version }}
+
+  - command: make
+    args:
+      chdir: /tmp/tmux-{{ tmux.version }}
+
+  - command: make install
+    args:
+      chdir: /tmp/tmux-{{ tmux.version }}
+
+  - file:
+      path: /tmp/tmux-{{ tmux.version }}
+      state: absent

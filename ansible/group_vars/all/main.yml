@@ -26,3 +26,5 @@ terraform:
   version: 0.6.12
 tig:
   version: 2.1.1
+tmux:
+  version: "2.1"
