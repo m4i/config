@@ -4,3 +4,7 @@
     prefix: "{{ ansible_env.HOME }}/.local"
   roles:
     - dev
+
+- hosts: secret
+  roles:
+    - secret
