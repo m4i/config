@@ -14,7 +14,7 @@
 
   - when: ansible_os_family == 'Darwin'
     homebrew:
-      name: libevent-dev
+      name: libevent
       state: "{{ homebrew_state }}"
 
   - file:
