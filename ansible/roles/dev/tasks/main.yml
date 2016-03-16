@@ -13,6 +13,7 @@
 - include: nodebrew.yml
 - include: peco.yml
 - include: ruby-install.yml
+- include: slackcat.yml
 - include: terraform.yml
 - include: tig.yml
 - include: tmux.yml

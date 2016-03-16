@@ -1,0 +1,15 @@
+- command: "{{ bindir }}/slackcat --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout.endswith(' ' + slackcat.version)"
+  block:
+  - file:
+      path: "{{ bindir }}"
+      state: directory
+
+  - get_url:
+      url: https://github.com/vektorlab/slackcat/releases/download/v{{ slackcat.version }}/slackcat-{{ slackcat.version }}-{{ ansible_system | lower }}-amd64
+      dest: "{{ bindir }}/slackcat"
+      mode: ugo+x
+      force: yes

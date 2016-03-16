@@ -22,6 +22,8 @@ peco:
   version: 0.3.5
 ruby_install:
   version: 0.6.0
+slackcat:
+  version: "0.9"
 terraform:
   version: 0.6.12
 tig:
