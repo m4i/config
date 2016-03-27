@@ -14,11 +14,6 @@
 
 - when: ansible_os_family == 'Darwin'
   block:
-  - homebrew_tap:
-      tap: "{{ item }}"
-    with_items:
-      - homebrew/dupes
-
   - homebrew:
       update_homebrew: yes
 
@@ -26,7 +21,6 @@
       name: "{{ item.name | default(item) }}"
       state: "{{ item.state | default(homebrew_state) }}"
       install_options: "{{ item.install_options | default() }}"
-
     with_items:
       - readline
       - openssl
@@ -34,13 +28,20 @@
         state: linked
         install_options: force
 
+      - name: findutils
+        install_options: with-default-names
+      - name: gnu-sed
+        install_options: with-default-names
+      - name: gnu-tar
+        install_options: with-default-names
+      - name: homebrew/dupes/diffutils
+        install_options: with-default-names
+      - name: homebrew/dupes/grep
+        install_options: with-default-names
+
       - ansible
       - colordiff
       - coreutils
-      - findutils
-      - gnu-sed
-      - gnu-tar
-      - grep
       - nkf
       - nmap
       - reattach-to-user-namespace
