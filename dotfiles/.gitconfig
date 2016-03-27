@@ -56,11 +56,12 @@
 	ui = auto
 
 [core]
-	quotepath         = false
+	attributesfile    = ~/src/github.com/m4i/config/git/gitattributes
 	autocrlf          = false
-	safecrlf          = false
-	precomposeunicode = true
 	excludesfile      = ~/src/github.com/m4i/config/git/gitignore
+	precomposeunicode = true
+	quotepath         = false
+	safecrlf          = false
 
 [pager]
 	diff = diff-highlight | less
