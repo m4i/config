@@ -1,0 +1,21 @@
+dependencies:
+  - role: packages
+
+  - role: apex
+  - role: chruby
+  - role: consul-template
+  - role: consul
+  - role: direnv
+  - role: docker-compose
+  - role: ghq
+  - role: git
+  - role: go
+  - role: hub
+  - role: jq
+  - role: nodebrew
+  - role: peco
+  - role: ruby-install
+  - role: slackcat
+  - role: terraform
+  - role: tig
+  - role: tmux

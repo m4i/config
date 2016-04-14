@@ -1,0 +1,13 @@
+- apt:
+    name: "{{item}}"
+  with_items:
+    - colordiff
+    - libxml2-dev               # nokogiri
+    - libxslt-dev               # nokogiri
+    - multitail
+    - python-mysqldb            # ansible mysql_user
+    - silversearcher-ag
+    - tree
+    - xtail
+    - zlib1g-dev                # nokogiri
+  become: yes
