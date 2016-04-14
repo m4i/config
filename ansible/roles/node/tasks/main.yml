@@ -1,0 +1,10 @@
+- shell: ~/.nodebrew/nodebrew ls | grep 'v{{ node.version }}$'
+  register: _result
+  changed_when: false
+  ignore_errors: true
+
+- command: ~/.nodebrew/nodebrew install-binary v{{ node.version }}
+  when: _result|failed
+
+- command: ~/.nodebrew/nodebrew use v{{ node.version }}
+  when: "_result|failed or not _result.stdout_lines[1].startswith('current:')"

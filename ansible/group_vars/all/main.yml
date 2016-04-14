@@ -20,6 +20,8 @@ hub:
   version: 2.2.3
 jq:
   version: "1.5"
+node:
+  version: 4.3.2
 peco:
   version: 0.3.5
 ruby_install:

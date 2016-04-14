@@ -12,7 +12,7 @@ dependencies:
   - role: go
   - role: hub
   - role: jq
-  - role: nodebrew
+  - role: node
   - role: peco
   - role: ruby-install
   - role: slackcat
