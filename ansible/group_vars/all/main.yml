@@ -1,5 +1,7 @@
 homebrew_state: present
 
+apex:
+  version: 0.8.0
 chruby:
   version: 0.3.9
 consul:
