@@ -4,6 +4,6 @@ mysql:bind "^w" ed-delete-prev-word
 mysql:bind -s "^xc" "SHOW VARIABLES LIKE 'character\\_set\\_%'; SHOW VARIABLES LIKE 'collation\\_%'; SELECT * FROM information_schema.SCHEMATA; SHOW TABLE STATUS;\n"
 mysql:bind -s "^xd" "SHOW DATABASES;\n"
 mysql:bind -s "^xt" "SHOW TABLES;\n"
-mysql:bind -s "^xu" "SELECT Host, User, Password FROM mysql.user ORDER BY User, Host; SELECT Db, User, Host FROM mysql.db ORDER BY DB, User, Host;\n"
+mysql:bind -s "^xu" "SELECT Host, User, Password, Select_priv AS S, Update_priv AS U, Grant_priv AS G FROM mysql.user ORDER BY User, Host; SELECT Db, Host, User, Select_priv AS S, Update_priv AS U, Grant_priv AS G FROM mysql.db ORDER BY DB, Host, User; SELECT Db, Table_name, Host, User, Table_priv, Column_priv FROM mysql.tables_priv ORDER BY Db, Table_name, Host, User;\n"
 
 mysql:bind -s "^xs" "SELECT * FROM "
