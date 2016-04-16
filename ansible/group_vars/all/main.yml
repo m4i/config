@@ -9,13 +9,13 @@ consul:
 consul_template:
   version: 0.14.0
 direnv:
-  version: 2.6.0
+  version: 2.8.1
 docker_compose:
-  version: 1.6.2
+  version: 1.7.0
 ghq:
-  version: 0.7.2
+  version: 0.7.4
 go:
-  version: "1.6"
+  version: 1.6.1
 hub:
   version: 2.2.3
 jq:
@@ -27,10 +27,10 @@ peco:
 ruby_install:
   version: 0.6.0
 slackcat:
-  version: "0.9"
+  version: "1.0"
 terraform:
   version: 0.6.14
 tig:
   version: 2.1.1
 tmux:
-  version: "2.1"
+  version: "2.2"
