@@ -19,3 +19,4 @@ dependencies:
   - role: terraform
   - role: tig
   - role: tmux
+  - role: tpm
