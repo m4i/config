@@ -29,7 +29,7 @@ ruby_install:
 slackcat:
   version: "1.0"
 terraform:
-  version: 0.6.14
+  version: 0.6.15
 tig:
   version: 2.1.1
 tmux:

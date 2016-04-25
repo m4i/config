@@ -3,8 +3,8 @@ dependencies:
 
   - role: apex
   - role: chruby
-  - role: consul-template
   - role: consul
+  - role: consul-template
   - role: direnv
   - role: docker-compose
   - role: ghq
