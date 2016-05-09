@@ -55,9 +55,10 @@ else
   alias ls='ls --color=auto'
 fi
 
-alias l='ls -l'
-alias l.='l -d .*'
-alias la='l -A'
+alias l='ls -CF'
+alias la='ls -AF'
+alias ll='ls -AFl'
+alias l.='ll -d .*'
 
 
 
