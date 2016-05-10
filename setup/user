@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu
+
+function main() {
+  ### dotfiles
+
+  for file in $(ls -A dotfiles); do
+    if [[ -e ~/$file ]] && [[ ! -L ~/$file ]]; then
+      run mv ~/$file ~/$file.$(date +%Y%m%dT%H%M%S)
+    fi
+    run ln -snf $PWD/dotfiles/$file ~/$file
+  done
+
+  ### misc
+
+  run mkdir -p ~/tmp
+  run chmod 0700 ~/tmp
+}
+
+function run() {
+  echo "$@"
+  "$@"
+}
+
+cd $(dirname $0)/..
+main

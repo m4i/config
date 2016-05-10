@@ -1,25 +1,34 @@
 # vim: fdm=marker
 
+M4I_CONFIG=$HOME/src/github.com/m4i/config
+
+source $M4I_CONFIG/sh/env.sh
+
 if [[ $OSTYPE =~ ^darwin ]]; then
-  # OS X では ~/.profile 経由で読み込まれたときは、
-  # すでに /etc/profile によって /etc/bashrc が読み込まれているので
-  # そうでない時だけ /etc/bashrc を読み込む
+  # OS X では /etc/bashrc は /etc/profile によってしか読み込まれない。
+  # 新規に bash を立ち上げた時にも読み込みたいので、 ~/.bashrc が
+  # ~/.bash_profile から読み込まれているのでなければ /etc/bashrc を読み込む。
   #
   # その時の $BASH_SOURCE:
-  #   - ~/config/bash/bashrc
   #   - ~/.bashrc
-  #   - ~/config/bash/bash_profile
-  #   - ~/.profile                                                                                    │
-  if [[ "${BASH_SOURCE[2]##*/}" != bash_profile ]]; then
+  #   - ~/.bash_profile
+  if [[ "${BASH_SOURCE[1]}" != $HOME/.bash_profile ]]; then
     source /etc/bashrc
   fi
 fi
 
-[[ -z "$PS1" ]] && return
+
+
 
 ### include {{{1
 
-source ${BASH_SOURCE%/*}/../sh/rc.sh
+if [[ -f /etc/skel/.bashrc ]]; then
+  source /etc/skel/.bashrc
+fi
+
+[[ "$-" =~ i ]] || return
+
+source $M4I_CONFIG/sh/rc.sh
 
 
 
