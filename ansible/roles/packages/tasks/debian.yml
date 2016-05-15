@@ -1,13 +1,18 @@
 - apt:
     name: "{{item}}"
   with_items:
+    - build-essential
     - colordiff
+    - curl
     - libxml2-dev               # nokogiri
     - libxslt-dev               # nokogiri
     - multitail
     - python-mysqldb            # ansible mysql_user
+    - screen
     - silversearcher-ag
     - tree
+    - vim
     - xtail
     - zlib1g-dev                # nokogiri
+    - zsh
   become: yes
