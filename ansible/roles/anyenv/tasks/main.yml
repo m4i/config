@@ -1,0 +1,3 @@
+- git:
+    repo: https://github.com/riywo/anyenv
+    dest: "{{ prefix }}/anyenv"

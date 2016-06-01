@@ -1,0 +1,12 @@
+- shell: anyenv version | grep '^rbenv:'
+  register: _result
+  changed_when: false
+  ignore_errors: true
+
+- command: anyenv install rbenv
+  when: _result|failed
+
+- set_fact:
+    rbenv:
+      prefix:  "{{ prefix }}/anyenv/envs/rbenv"
+      command: "{{ prefix }}/anyenv/envs/rbenv/bin/rbenv"

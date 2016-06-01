@@ -1,0 +1,10 @@
+- command: ls {{ rbenv.prefix }}/versions
+  register: _versions
+  changed_when: false
+  ignore_errors: true
+
+- command: "{{ rbenv.command }} install {{ ruby.version }}"
+  when: _versions|failed or not ruby.version in _versions.stdout_lines
+
+- command: "{{ rbenv.command }} global {{ ruby.version }}"
+  when: "lookup('file', rbenv.prefix + '/version') != ruby.version"

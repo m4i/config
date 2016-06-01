@@ -1,18 +1,10 @@
-- command: "{{ prefix }}/go/bin/go version"
-  register: _version
+- command: ls {{ goenv.prefix }}/versions
+  register: _versions
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or _version.stdout.find('go' + go.version + ' ') == -1"
-  block:
-  - file:
-      path: "{{ prefix }}"
-      state: directory
 
-  - file:
-      path: "{{ prefix }}/go"
-      state: absent
+- command: "{{ goenv.command }} install {{ go.version }}"
+  when: _versions|failed or not go.version in _versions.stdout_lines
 
-  - unarchive:
-      src: https://storage.googleapis.com/golang/go{{ go.version }}.{{ ansible_system | lower }}-amd64.tar.gz
-      dest: "{{ prefix }}"
-      copy: no
+- command: "{{ goenv.command }} global {{ go.version }}"
+  when: "lookup('file', goenv.prefix + '/version') != go.version"

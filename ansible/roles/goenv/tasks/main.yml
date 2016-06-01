@@ -1,0 +1,12 @@
+- shell: anyenv version | grep '^goenv:'
+  register: _result
+  changed_when: false
+  ignore_errors: true
+
+- command: anyenv install goenv
+  when: _result|failed
+
+- set_fact:
+    goenv:
+      prefix:  "{{ prefix }}/anyenv/envs/goenv"
+      command: "{{ prefix }}/anyenv/envs/goenv/bin/goenv"

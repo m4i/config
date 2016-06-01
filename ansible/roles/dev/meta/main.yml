@@ -2,7 +2,6 @@ dependencies:
   - role: packages
 
   - role: apex
-  - role: chruby
   - role: consul
   - role: consul-template
   - role: direnv
@@ -14,7 +13,7 @@ dependencies:
   - role: jq
   - role: node
   - role: peco
-  - role: ruby-install
+  - role: ruby
   - role: slackcat
   - role: terraform
   - role: tig

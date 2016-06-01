@@ -1,0 +1,12 @@
+- shell: anyenv version | grep '^ndenv:'
+  register: _result
+  changed_when: false
+  ignore_errors: true
+
+- command: anyenv install ndenv
+  when: _result|failed
+
+- set_fact:
+    ndenv:
+      prefix:  "{{ prefix }}/anyenv/envs/ndenv"
+      command: "{{ prefix }}/anyenv/envs/ndenv/bin/ndenv"
