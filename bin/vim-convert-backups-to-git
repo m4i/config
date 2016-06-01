@@ -1,0 +1,98 @@
+#!/bin/bash
+#
+# Convert vim backup files to git repository
+
+set -eu
+
+function usage() {
+  echo "vim-convert-backups-to-git <backup-dir> <dest> <interval>" >&2
+}
+
+function main() {
+  if (($# != 3)); then
+    usage
+    exit 1
+  fi
+
+  local backup_dir="$1"
+  local dest="$2"
+  local interval="$3"
+
+  if [[ ! "$backup_dir" =~ /$ ]]; then
+    backup_dir="$backup_dir/"
+  fi
+
+  if [[ -e "$dest" ]]; then
+    echo "ERROR: $dest already exists."
+    usage
+    exit 2
+  fi
+
+  run mkdir -p "$dest"
+  cd "$dest"
+  run git init
+
+  local prev_mtime=0
+  local prev_mtime_group=0
+  local paths=
+
+  local backups="$(find "$backup_dir" -name .git -prune -printf '' -o -type f -print \
+                     | xargs stat -c '%Y %n' | sort -n)"
+  while read line; do
+    local mtime=${line%% *}
+    local mtime_group=$((mtime / interval))
+    if ((mtime_group != prev_mtime_group)) && ((prev_mtime > 0)); then
+      commit_changes $prev_mtime $prev_mtime_group "$paths"
+      paths=
+    fi
+    prev_mtime=$mtime
+    prev_mtime_group=$mtime_group
+
+    local backup_path="${line#* }"
+    local relative_backup_path="${backup_path:${#backup_dir}}"
+    local file_path="${relative_backup_path%~*~}"
+    local file_dir="$(dirname "$file_path")"
+
+    if [[ -e "$file_dir" ]]; then
+      if [[ ! -d "$file_dir" ]]; then
+        echo "ERROR: $file_dir already exists."
+        exit 3
+      fi
+    else
+      run mkdir -p "$file_dir"
+    fi
+
+    run cp -a "$backup_path" "$file_path"
+    paths="$paths
+$relative_backup_path"
+  done <<EOF
+$backups
+EOF
+
+  commit_changes $prev_mtime $prev_mtime_group "$paths"
+}
+
+function commit_changes() {
+  local mtime=$1
+  local mtime_group=$2
+  local paths="$3"
+
+  local from="$(date -d @$((mtime_group * interval)) --rfc-3339=seconds)"
+  local to="$(date -d @$(((mtime_group + 1) * interval - 1)) --rfc-3339=seconds)"
+  commit $mtime "Changes from $from to $to
+$paths"
+}
+
+function commit() {
+  epoch=$1
+  message="$2"
+  run git add .
+  GIT_COMMITTER_DATE=$epoch run git commit --date=$epoch --allow-empty -m "$message"
+}
+
+function run() {
+  echo "$@"
+  "$@"
+}
+
+main "$@"
