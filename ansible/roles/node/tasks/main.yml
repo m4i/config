@@ -1,10 +1,21 @@
-- command: ls {{ ndenv.prefix }}/versions
+- command: ls {{ ndenv_prefix }}/versions
   register: _versions
   changed_when: false
   ignore_errors: true
 
-- command: "{{ ndenv.command }} install v{{ node.version }}"
-  when: _versions|failed or not 'v' + node.version in _versions.stdout_lines
+- command: ndenv install {{ node.version }}
+  environment:
+    PATH:       "{{ ndenv_prefix }}/bin:{{ ansible_env.PATH }}"
+    NDENV_ROOT: "{{ ndenv_prefix }}"
+  when: _versions|failed or not node.version in _versions.stdout_lines
 
-- command: "{{ ndenv.command }} global v{{ node.version }}"
-  when: "lookup('file', ndenv.prefix + '/version') != 'v' + node.version"
+- command: cat {{ ndenv_prefix }}/version
+  register: _version
+  changed_when: false
+  ignore_errors: true
+
+- command: ndenv global {{ node.version }}
+  environment:
+    PATH:       "{{ ndenv_prefix }}/bin:{{ ansible_env.PATH }}"
+    NDENV_ROOT: "{{ ndenv_prefix }}"
+  when: _version|failed or _version.stdout != node.version

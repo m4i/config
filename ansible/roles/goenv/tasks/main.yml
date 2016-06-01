@@ -1,12 +1,12 @@
-- shell: anyenv version | grep '^goenv:'
-  register: _result
+- command: test -e {{ anyenv_prefix }}/envs/goenv
+  register: _exists
   changed_when: false
   ignore_errors: true
 
 - command: anyenv install goenv
-  when: _result|failed
+  environment:
+    PATH: "{{ anyenv_prefix }}/bin:{{ ansible_env.PATH }}"
+  when: _exists|failed
 
 - set_fact:
-    goenv:
-      prefix:  "{{ prefix }}/anyenv/envs/goenv"
-      command: "{{ prefix }}/anyenv/envs/goenv/bin/goenv"
+    goenv_prefix: "{{ anyenv_prefix }}/envs/goenv"

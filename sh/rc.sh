@@ -122,29 +122,31 @@ _prepend_path PATH ~/.nodebrew/current/bin
 alias b='bin-or-bundle-exec'
 alias r='b rails'
 
-# chruby
-_prefix=~/.local/chruby
-if [[ -e $_prefix/share/chruby/chruby.sh ]]; then
-  source $_prefix/share/chruby/chruby.sh
+if ! type rbenv >/dev/null 2>&1; then
+  # chruby
+  _prefix=~/.local/chruby
+  if [[ -e $_prefix/share/chruby/chruby.sh ]]; then
+    source $_prefix/share/chruby/chruby.sh
 
-  if [[ -e $_prefix/share/chruby/auto.sh ]]; then
-    # chruby 0.3.6 では RUBY_AUTO_VERSION を unset しないと
-    # 更に shell を実行した時に auto-switch が効かない
-    unset RUBY_AUTO_VERSION
-    source $_prefix/share/chruby/auto.sh
+    if [[ -e $_prefix/share/chruby/auto.sh ]]; then
+      # chruby 0.3.6 では RUBY_AUTO_VERSION を unset しないと
+      # 更に shell を実行した時に auto-switch が効かない
+      unset RUBY_AUTO_VERSION
+      source $_prefix/share/chruby/auto.sh
+    fi
+
+  # rbenv
+  elif [[ -e ~/.rbenv ]]; then
+    _prepend_path PATH ~/.rbenv/bin
+    eval "$(rbenv init -)"
+
+  # rvm
+  elif [[ -e ~/.rvm ]]; then
+    source ~/.rvm/scripts/rvm
   fi
 
-# rbenv
-elif [[ -e ~/.rbenv ]]; then
-  _prepend_path PATH ~/.rbenv/bin
-  eval "$(rbenv init -)"
-
-# rvm
-elif [[ -e ~/.rvm ]]; then
-  source ~/.rvm/scripts/rvm
+  unset _prefix
 fi
-
-unset _prefix
 
 
 

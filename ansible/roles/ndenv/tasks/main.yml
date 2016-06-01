@@ -1,12 +1,12 @@
-- shell: anyenv version | grep '^ndenv:'
-  register: _result
+- command: test -e {{ anyenv_prefix }}/envs/ndenv
+  register: _exists
   changed_when: false
   ignore_errors: true
 
 - command: anyenv install ndenv
-  when: _result|failed
+  environment:
+    PATH: "{{ anyenv_prefix }}/bin:{{ ansible_env.PATH }}"
+  when: _exists|failed
 
 - set_fact:
-    ndenv:
-      prefix:  "{{ prefix }}/anyenv/envs/ndenv"
-      command: "{{ prefix }}/anyenv/envs/ndenv/bin/ndenv"
+    ndenv_prefix: "{{ anyenv_prefix }}/envs/ndenv"

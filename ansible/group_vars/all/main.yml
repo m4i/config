@@ -21,7 +21,7 @@ hub:
 jq:
   version: "1.5"
 node:
-  version: 6.2.0
+  version: v6.2.0
 peco:
   version: 0.3.5
 ruby:

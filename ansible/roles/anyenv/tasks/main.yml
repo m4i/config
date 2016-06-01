@@ -1,3 +1,6 @@
+- set_fact:
+    anyenv_prefix: "{{ prefix }}/anyenv"
+
 - git:
     repo: https://github.com/riywo/anyenv
-    dest: "{{ prefix }}/anyenv"
+    dest: "{{ anyenv_prefix }}"

@@ -1,12 +1,12 @@
-- shell: anyenv version | grep '^rbenv:'
-  register: _result
+- command: test -e {{ anyenv_prefix }}/envs/rbenv
+  register: _exists
   changed_when: false
   ignore_errors: true
 
 - command: anyenv install rbenv
-  when: _result|failed
+  environment:
+    PATH: "{{ anyenv_prefix }}/bin:{{ ansible_env.PATH }}"
+  when: _exists|failed
 
 - set_fact:
-    rbenv:
-      prefix:  "{{ prefix }}/anyenv/envs/rbenv"
-      command: "{{ prefix }}/anyenv/envs/rbenv/bin/rbenv"
+    rbenv_prefix: "{{ anyenv_prefix }}/envs/rbenv"
