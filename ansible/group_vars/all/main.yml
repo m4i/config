@@ -22,6 +22,8 @@ jq:
   version: "1.5"
 node:
   version: v6.2.0
+packer:
+  version: 0.10.1
 peco:
   version: 0.3.5
 ruby:

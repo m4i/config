@@ -12,6 +12,7 @@ dependencies:
   - role: hub
   - role: jq
   - role: node
+  - role: packer
   - role: peco
   - role: ruby
   - role: slackcat
