@@ -1,42 +1,39 @@
 #!/bin/bash
 
-usage() {
-  echo "Usage: ${0##*/} <repository_name> <pattern> [--dry-run]" >&2
-  exit 1
-}
+set -eu
 
-case $# in
-  3)
-    if [[ "$3" != '--dry-run' ]]; then
-      usage
-    fi
-    dry_run=true
-    ;;
-  2)
-    dry_run=false
-    ;;
-  *)
-    usage
-    ;;
-esac
+if (($# != 2)); then
+  echo "Usage: ${0##*/} <repository_name> <pattern|UNTAGGED>" >&2
+  exit 1
+fi
 
 repository_name=$1
 pattern=$2
 
-images="$(aws-ecr-list-all-images $repository_name)"
-echo "$images"
-
-if [[ "$pattern" -eq null ]]; then
-  filter='.imageTag == null'
-else
-  filter='.imageTag and (.imageTag | test("'$pattern'"))'
+tag_status=
+if [[ "$pattern" = UNTAGGED ]]; then
+  tag_status=UNTAGGED
 fi
-filter=".imageIds | map(select($filter)) | .[].imageDigest"
 
-for digest in $(echo "$images" | jq "$filter" -r); do
-  command="aws ecr batch-delete-image --repository-name $repository_name --image-ids imageDigest=$digest"
-  echo $command
-  if [[ "$dry_run" = false ]]; then
-    $command
-  fi
-done
+images="$(aws-ecr-list-all-images $repository_name $tag_status)"
+
+if [[ "$pattern" != UNTAGGED ]]; then
+  filter=".imageTag and (.imageTag | test(\"$pattern\"))"
+  filter="{ imageIds: .imageIds | map(select($filter)) }"
+  images="$(echo "$images" | jq "$filter")"
+fi
+
+echo "$images"
+echo -n 'Delete? [yN]: '
+read input
+
+if [[ "$input" = y ]]; then
+  # TODO: divide into a group of 100
+  tmpfile=$(mktemp --suffix .${0##*/})
+  trap 'rm $tmpfile' EXIT
+  echo "$images" > $tmpfile
+
+  aws ecr batch-delete-image \
+    --repository-name $repository_name \
+    --cli-input-json file://$tmpfile
+fi

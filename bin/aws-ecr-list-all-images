@@ -1,30 +1,43 @@
 #!/bin/bash
 
+set -eu
+
 usage() {
-  echo "Usage: ${0##*/} <repository_name>" >&2
+  echo "Usage: ${0##*/} <repository_name> [TAGGED|UNTAGGED]" >&2
   exit 1
 }
 
-if (($# != 1)); then
-  usage
-fi
+tag_status=
+case $# in
+  1)
+    repository_name=$1
+    ;;
+  2)
+    repository_name=$1
+    tag_status=$2
+    ;;
+  *)
+    usage
+esac
 
-repository_name=$1
 
 jsons=()
 next_token=
 
 while :; do
-  command="aws ecr list-images --repository-name $repository_name"
-  if [[ -n "$next_token" ]]; then
-    command="$command --next-token $next_token"
+  options=(--repository-name $repository_name)
+  if [[ -n "$tag_status" ]]; then
+    options+=(--filter tagStatus=$tag_status)
   fi
-  json="$($command)"
+  if [[ -n "$next_token" ]]; then
+    options+=(--next-token $next_token)
+  fi
+  json="$(aws ecr list-images ${options[@]})"
   jsons+=("$json")
   next_token=$(echo "$json" | jq -r .nextToken)
 
   if [[ $next_token = null ]]; then
-    echo "${jsons[@]}" | jq -s '[.[].imageIds] | flatten | { "imageIds": . }'
+    echo "${jsons[@]}" | jq -s '[.[].imageIds] | flatten | { imageIds: . }'
     break
   fi
 done
