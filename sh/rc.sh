@@ -109,13 +109,6 @@ export GOROOT=~/.local/go
 
 
 
-### Node.js {{{1
-
-_prepend_path PATH ~/.nodebrew/current/bin
-
-
-
-
 ### Ruby {{{1
 
 # alias
