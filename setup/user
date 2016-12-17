@@ -5,17 +5,34 @@ set -eu
 function main() {
   ### dotfiles
 
-  for file in $(ls -A dotfiles); do
-    if [[ -e ~/$file ]] && [[ ! -L ~/$file ]]; then
-      run mv ~/$file ~/$file.$(date +%Y%m%dT%H%M%S)
+  cd dotfiles
+  for file in $(ls -A); do
+    if [[ "$file" = .config ]]; then
+      for _file in $(ls -A "$file"); do
+        link_to_dotfile "$file/$_file"
+      done
+    else
+      link_to_dotfile "$file"
     fi
-    run ln -snf $PWD/dotfiles/$file ~/$file
   done
+  cd ..
 
   ### misc
 
   run mkdir -p ~/tmp
   run chmod 0700 ~/tmp
+}
+
+function link_to_dotfile() {
+  local file="$1"
+
+  local target="$PWD/$file"
+  local link=~/"$file"
+
+  if [[ -e  "$link" ]] && [[ ! -L "$link" ]]; then
+    run mv "$link" "$link.$(date +%Y%m%dT%H%M%S)"
+  fi
+  run ln -snf "$target" "$link"
 }
 
 function run() {
