@@ -135,10 +135,16 @@ chpwd() {
 }
 
 # aws-cli
-aws_zsh_completer_path="$(command -v aws_zsh_completer.sh)"
-if (($? == 0)); then
+pyenv_prefix="$(pyenv prefix 2>/dev/null)"
+if [[ -n "$pyenv_prefix" ]]; then
+  aws_zsh_completer_path="$pyenv_prefix/bin/aws_zsh_completer.sh"
+else
+  aws_zsh_completer_path="$(command -v aws_zsh_completer.sh)"
+fi
+if [[ -e "$aws_zsh_completer_path" ]]; then
   source $aws_zsh_completer_path
 fi
+unset pyenv_prefix
 unset aws_zsh_completer_path
 
 # direnv
