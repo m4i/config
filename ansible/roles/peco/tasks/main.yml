@@ -2,7 +2,7 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stderr.endswith('v' + peco.version)"
+- when: "_version|failed or not _version.stdout.endswith('v' + peco.version)"
   vars:
     _system: "{{ ansible_system | lower }}"
     _ext: "{% if ansible_system == 'Linux' %}tar.gz{% else %}zip{% endif %}"
