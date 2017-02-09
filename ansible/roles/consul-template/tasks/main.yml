@@ -2,7 +2,7 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stderr.endswith('v' + consul_template.version)"
+- when: "_version|failed or not _version.stderr.find('v' + consul_template.version + ' ')"
   block:
   - package:
       name: unzip
