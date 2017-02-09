@@ -1,14 +1,11 @@
+# dependency: make
+
 - command: "{{ prefix }}/ruby-install/bin/ruby-install --version"
   register: _version
   changed_when: false
   ignore_errors: true
 - when: "_version|failed or not _version.stdout.endswith(' ' + ruby_install.version)"
   block:
-  - package:
-      name: make
-    become: yes
-    when: ansible_system != 'Darwin'
-
   - file:
       path: /tmp/ruby-install-{{ ruby_install.version }}
       state: absent

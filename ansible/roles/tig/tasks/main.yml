@@ -1,18 +1,11 @@
+# dependency: g++ libncursesw5-dev make
+
 - command: "{{ prefix }}/tig/bin/tig --version"
   register: _version
   changed_when: false
   ignore_errors: true
 - when: "_version|failed or not _version.stdout.endswith(' ' + tig.version)"
   block:
-  - apt:
-      name: "{{ item }}"
-    with_items:
-      - g++
-      - libncursesw5-dev
-      - make
-    become: yes
-    when: ansible_system != 'Darwin'
-
   - file:
       path: /tmp/tig-{{ tig.version }}
       state: absent

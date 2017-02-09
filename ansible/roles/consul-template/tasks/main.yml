@@ -1,14 +1,11 @@
+# dependency: unzip
+
 - command: "{{ bindir }}/consul-template -version"
   register: _version
   changed_when: false
   ignore_errors: true
 - when: "_version|failed or not _version.stderr.find('v' + consul_template.version + ' ')"
   block:
-  - package:
-      name: unzip
-    become: yes
-    when: ansible_system != 'Darwin'
-
   - file:
       path: "{{ bindir }}"
       state: directory

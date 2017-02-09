@@ -1,14 +1,11 @@
+# dependency: unzip
+
 - command: "{{ bindir }}/packer version"
   register: _version
   changed_when: false
   ignore_errors: true
 - when: "_version|failed or not _version.stdout_lines[0].endswith('v' + packer.version)"
   block:
-  - package:
-      name: unzip
-    become: yes
-    when: ansible_system != 'Darwin'
-
   - file:
       path: "{{ bindir }}"
       state: directory

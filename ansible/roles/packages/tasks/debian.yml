@@ -4,13 +4,17 @@
     - build-essential
     - colordiff
     - curl
+    - libevent-dev              # tmux
+    - libncurses5-dev           # tmux
+    - libncursesw5-dev          # tig
     - libxml2-dev               # nokogiri
     - libxslt-dev               # nokogiri
     - multitail
-    - python-mysqldb            # ansible mysql_user
+    - python-mysqldb            # ansible/mysql_user
     - screen
     - silversearcher-ag
     - tree
+    - unzip                     # ansible/unarchive
     - vim
     - xtail
     - zlib1g-dev                # nokogiri

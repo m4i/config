@@ -1,17 +1,11 @@
+# dependency: libevent-dev libncurses5-dev make
+
 - command: "{{ prefix }}/tmux/bin/tmux -V"
   register: _version
   changed_when: false
   ignore_errors: true
 - when: "_version|failed or not _version.stdout.endswith(' ' + tmux.version)"
   block:
-  - when: ansible_os_family == 'Debian'
-    apt:
-      name: "{{ item }}"
-    with_items:
-      - libevent-dev
-      - libncurses5-dev
-    become: yes
-
   - when: ansible_os_family == 'Darwin'
     homebrew:
       name: libevent

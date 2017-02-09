@@ -1,14 +1,11 @@
+# dependency: unzip
+
 - command: "{{ bindir }}/ghq --version"
   register: _version
   changed_when: false
   ignore_errors: true
 - when: "_version|failed or not _version.stdout.endswith(' ' + ghq.version)"
   block:
-  - package:
-      name: unzip
-    become: yes
-    when: ansible_system != 'Darwin'
-
   - file:
       path: /tmp/ghq
       state: absent
