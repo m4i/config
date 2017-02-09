@@ -4,6 +4,7 @@
     - build-essential
     - colordiff
     - curl
+    - libcurl4-openssl-dev      # git
     - libevent-dev              # tmux
     - libncurses5-dev           # tmux
     - libncursesw5-dev          # tig

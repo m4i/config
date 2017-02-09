@@ -1,30 +1,38 @@
-- file:
-    path: "{{ bindir }}"
-    state: directory
+# dependency: libcurl4-openssl-dev
 
-- when: ansible_os_family == 'Debian'
+- command: "{{ prefix }}/git/bin/git --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+- when: "_version|failed or not _version.stdout.endswith(' ' + git.version)"
   block:
-  - apt_repository:
-      repo: ppa:git-core/ppa
-    become: yes
+  - file:
+      path: /tmp/git-{{ git.version }}
+      state: absent
 
-  - apt:
-      name: git
-    become: yes
+  - unarchive:
+      src: https://github.com/git/git/archive/v{{ git.version }}.tar.gz
+      dest: /tmp
+      remote_src: yes
+
+  - file:
+      path: "{{ prefix }}/git"
+      state: absent
+
+  - command: make prefix={{ prefix }}/git NO_TCLTK=1 NO_GETTEXT=1 all
+    args:
+      chdir: /tmp/git-{{ git.version }}
+
+  - command: make prefix={{ prefix }}/git NO_TCLTK=1 NO_GETTEXT=1 install
+    args:
+      chdir: /tmp/git-{{ git.version }}
 
   - copy:
-      src: /usr/share/doc/git/contrib/diff-highlight/diff-highlight
-      dest: "{{ bindir }}"
+      src: /tmp/git-{{ git.version }}/contrib/diff-highlight/diff-highlight
+      dest: "{{ prefix }}/git/bin"
       remote_src: yes
       mode: ugo+x
 
-- when: ansible_os_family == 'Darwin'
-  block:
-  - homebrew:
-      name: git
-      state: "{{ homebrew_state }}"
-
   - file:
-      path: "{{ bindir }}/diff-highlight"
-      src: /usr/local/share/git-core/contrib/diff-highlight/diff-highlight
-      state: link
+      path: /tmp/git-{{ git.version }}
+      state: absent

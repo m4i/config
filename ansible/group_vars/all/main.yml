@@ -14,6 +14,8 @@ docker_compose:
   version: 1.7.0
 ghq:
   version: 0.7.4
+git:
+  version: 2.11.1
 go:
   version: 1.6.2
 hub:
