@@ -1,7 +1,24 @@
 #!/bin/bash
 
+if (($# == 0)); then
+  echo "Usage: ${0##*/} [redis-cli options] <pattern>" >&2
+  exit 1
+fi
+
 args="${@:1:$#-1}"
 pattern="${@:$#}"
 
-exec docker run --rm --net=host redis:2.8 sh -c \
-  "redis-cli $args KEYS $pattern | xargs -d '\\n' redis-cli $args DEL"
+keys="$(redis-cli $args KEYS "$pattern")"
+
+if [[ ! "$keys" =~ ^\s*1\) ]]; then
+  echo "$keys"
+  exit
+fi
+
+echo "$keys"
+echo -n 'Delete? [yN]: '
+read input
+
+if [[ "$input" = y ]]; then
+  redis-cli $args DEL $(echo "$keys" | sed 's/^[^"]*"\|"\r$//g')
+fi

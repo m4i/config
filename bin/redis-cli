@@ -1,4 +1,7 @@
 #!/bin/sh
 
 touch ~/.rediscli_history
-exec docker run -it --rm --net=host -v $HOME/.rediscli_history:/root/.rediscli_history redis:2.8 redis-cli "$@"
+
+exec docker run -it --rm --net host \
+  --volume $HOME/.rediscli_history:/root/.rediscli_history \
+  redis:2.8 redis-cli "$@"
