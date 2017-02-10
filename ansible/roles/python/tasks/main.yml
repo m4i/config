@@ -45,3 +45,8 @@
   - file:
       path: /tmp/Python-{{ version }}
       state: absent
+
+- when: _major_version == '2'
+  pip:
+    name: virtualenv
+    executable: "{{ _pip }}"
