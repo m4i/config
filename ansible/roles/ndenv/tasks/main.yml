@@ -1,12 +1,19 @@
-- command: test -e {{ anyenv_prefix }}/envs/ndenv
+- set_fact:
+    ndenv_prefix: "{{ anyenv_prefix }}/envs/ndenv"
+
+- command: test -e {{ ndenv_prefix }}
   register: _exists
   changed_when: false
   ignore_errors: true
 
-- command: anyenv install ndenv
+- when: _exists|failed
+  command: anyenv install ndenv
   environment:
     PATH: "{{ anyenv_prefix }}/bin:{{ ansible_env.PATH }}"
-  when: _exists|failed
 
-- set_fact:
-    ndenv_prefix: "{{ anyenv_prefix }}/envs/ndenv"
+- when: not _exists|failed
+  command: git pull
+  args:
+    chdir: "{{ ndenv_prefix }}"
+  register: _result
+  changed_when: _result.stdout != 'Already up-to-date.'

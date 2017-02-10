@@ -1,12 +1,19 @@
-- command: test -e {{ anyenv_prefix }}/envs/goenv
+- set_fact:
+    goenv_prefix: "{{ anyenv_prefix }}/envs/goenv"
+
+- command: test -e {{ goenv_prefix }}
   register: _exists
   changed_when: false
   ignore_errors: true
 
-- command: anyenv install goenv
+- when: _exists|failed
+  command: anyenv install goenv
   environment:
     PATH: "{{ anyenv_prefix }}/bin:{{ ansible_env.PATH }}"
-  when: _exists|failed
 
-- set_fact:
-    goenv_prefix: "{{ anyenv_prefix }}/envs/goenv"
+- when: not _exists|failed
+  command: git pull
+  args:
+    chdir: "{{ goenv_prefix }}"
+  register: _result
+  changed_when: _result.stdout != 'Already up-to-date.'

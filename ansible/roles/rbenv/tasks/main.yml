@@ -1,12 +1,19 @@
-- command: test -e {{ anyenv_prefix }}/envs/rbenv
+- set_fact:
+    rbenv_prefix: "{{ anyenv_prefix }}/envs/rbenv"
+
+- command: test -e {{ rbenv_prefix }}
   register: _exists
   changed_when: false
   ignore_errors: true
 
-- command: anyenv install rbenv
+- when: _exists|failed
+  command: anyenv install rbenv
   environment:
     PATH: "{{ anyenv_prefix }}/bin:{{ ansible_env.PATH }}"
-  when: _exists|failed
 
-- set_fact:
-    rbenv_prefix: "{{ anyenv_prefix }}/envs/rbenv"
+- when: not _exists|failed
+  command: git pull
+  args:
+    chdir: "{{ rbenv_prefix }}"
+  register: _result
+  changed_when: _result.stdout != 'Already up-to-date.'
