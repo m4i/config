@@ -2,14 +2,14 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout == direnv.version"
+- when: "_version|failed or not _version.stdout == version"
   block:
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - get_url:
-      url: https://github.com/zimbatm/direnv/releases/download/v{{ direnv.version }}/direnv.{{ ansible_system | lower }}-amd64
+      url: https://github.com/zimbatm/direnv/releases/download/v{{ version }}/direnv.{{ ansible_system|lower }}-amd64
       dest: "{{ bindir }}/direnv"
       mode: ugo+x
       force: yes

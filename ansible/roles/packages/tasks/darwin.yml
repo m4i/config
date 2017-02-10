@@ -2,9 +2,9 @@
     update_homebrew: yes
 
 - homebrew:
-    name: "{{ item.name | default(item) }}"
-    state: "{{ item.state | default(homebrew_state) }}"
-    install_options: "{{ item.install_options | default() }}"
+    name: "{{ item.name|default(item) }}"
+    state: "{{ item.state|default(homebrew_state) }}"
+    install_options: "{{ item.install_options|default() }}"
   with_items:
     - readline
     - openssl
@@ -36,7 +36,7 @@
     - xz
 
 - homebrew_cask:
-    name: "{{ item.name | default(item) }}"
+    name: "{{ item.name|default(item) }}"
     state: "{{ homebrew_state }}"
   with_items:
     - appcleaner

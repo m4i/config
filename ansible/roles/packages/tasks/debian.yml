@@ -20,4 +20,3 @@
     - xtail
     - zlib1g-dev                # nokogiri
     - zsh
-  become: yes

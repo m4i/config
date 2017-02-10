@@ -2,14 +2,14 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or _version.stdout_lines[0].find(' ' + docker_compose.version + ',') == -1"
+- when: "_version|failed or _version.stdout_lines[0].find(' ' + version + ',') == -1"
   block:
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - get_url:
-      url: https://github.com/docker/compose/releases/download/{{ docker_compose.version }}/docker-compose-{{ ansible_system }}-x86_64
+      url: https://github.com/docker/compose/releases/download/{{ version }}/docker-compose-{{ ansible_system }}-x86_64
       dest: "{{ bindir }}/docker-compose"
       mode: ugo+x
       force: yes

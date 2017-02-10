@@ -1,10 +1,13 @@
 # dependency: libevent-dev libncurses5-dev make
 
-- command: "{{ prefix }}/tmux/bin/tmux -V"
+- set_fact:
+    _prefix: "{{ prefix }}/tmux"
+
+- command: "{{ _prefix }}/bin/tmux -V"
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout.endswith(' ' + tmux.version)"
+- when: "_version|failed or not _version.stdout.endswith(' ' + version)"
   block:
   - when: ansible_os_family == 'Darwin'
     homebrew:
@@ -12,30 +15,30 @@
       state: "{{ homebrew_state }}"
 
   - file:
-      path: /tmp/tmux-{{ tmux.version }}
+      path: /tmp/tmux-{{ version }}
       state: absent
 
   - unarchive:
-      src: https://github.com/tmux/tmux/releases/download/{{ tmux.version }}/tmux-{{ tmux.version }}.tar.gz
+      src: https://github.com/tmux/tmux/releases/download/{{ version }}/tmux-{{ version }}.tar.gz
       dest: /tmp
-      copy: no
+      remote_src: yes
 
-  - file:
-      path: "{{ prefix }}/tmux"
-      state: absent
-
-  - command: ./configure prefix={{ prefix }}/tmux
+  - command: ./configure prefix={{ _prefix }}
     args:
-      chdir: /tmp/tmux-{{ tmux.version }}
+      chdir: /tmp/tmux-{{ version }}
 
   - command: make
     args:
-      chdir: /tmp/tmux-{{ tmux.version }}
+      chdir: /tmp/tmux-{{ version }}
+
+  - file:
+      path: "{{ _prefix }}"
+      state: absent
 
   - command: make install
     args:
-      chdir: /tmp/tmux-{{ tmux.version }}
+      chdir: /tmp/tmux-{{ version }}
 
   - file:
-      path: /tmp/tmux-{{ tmux.version }}
+      path: /tmp/tmux-{{ version }}
       state: absent

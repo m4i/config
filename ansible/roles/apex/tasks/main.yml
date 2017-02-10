@@ -2,15 +2,14 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout.endswith(' ' + apex.version)"
-
+- when: "_version|failed or not _version.stdout.endswith(' ' + version)"
   block:
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - get_url:
-      url: https://github.com/apex/apex/releases/download/v{{ apex.version }}/apex_{{ ansible_system | lower }}_amd64
+      url: https://github.com/apex/apex/releases/download/v{{ version }}/apex_{{ ansible_system|lower }}_amd64
       dest: "{{ bindir }}/apex"
       mode: ugo+x
       force: yes

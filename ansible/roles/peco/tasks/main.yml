@@ -2,29 +2,29 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout.endswith('v' + peco.version)"
+- when: "_version|failed or not _version.stdout.endswith('v' + version)"
   vars:
-    _system: "{{ ansible_system | lower }}"
-    _ext: "{% if ansible_system == 'Linux' %}tar.gz{% else %}zip{% endif %}"
+    _basename: peco_{{ ansible_system|lower }}_amd64
+    _ext: "{{ 'tar.gz' if ansible_system == 'Linux' else 'zip' }}"
   block:
   - file:
-      path: /tmp/peco_{{ _system }}_amd64
+      path: /tmp/{{ _basename }}
       state: absent
 
   - unarchive:
-      src: https://github.com/peco/peco/releases/download/v{{ peco.version }}/peco_{{ _system }}_amd64.{{ _ext }}
+      src: https://github.com/peco/peco/releases/download/v{{ version }}/{{ _basename }}.{{ _ext }}
       dest: /tmp
-      copy: no
+      remote_src: yes
 
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - copy:
-      src: /tmp/peco_{{ _system }}_amd64/peco
+      src: /tmp/{{ _basename }}/peco
       dest: "{{ bindir }}"
       mode: ugo+x
 
   - file:
-      path: /tmp/peco_{{ _system }}_amd64
+      path: /tmp/{{ _basename }}
       state: absent

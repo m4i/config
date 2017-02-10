@@ -1,38 +1,41 @@
 # dependency: libcurl4-openssl-dev
 
-- command: "{{ prefix }}/git/bin/git --version"
+- set_fact:
+    _prefix: "{{ prefix }}/git"
+
+- command: "{{ _prefix }}/bin/git --version"
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout.endswith(' ' + git.version)"
+- when: "_version|failed or not _version.stdout.endswith(' ' + version)"
   block:
   - file:
-      path: /tmp/git-{{ git.version }}
+      path: /tmp/git-{{ version }}
       state: absent
 
   - unarchive:
-      src: https://github.com/git/git/archive/v{{ git.version }}.tar.gz
+      src: https://github.com/git/git/archive/v{{ version }}.tar.gz
       dest: /tmp
       remote_src: yes
 
+  - command: make prefix={{ _prefix }} NO_TCLTK=1 NO_GETTEXT=1 all
+    args:
+      chdir: /tmp/git-{{ version }}
+
   - file:
-      path: "{{ prefix }}/git"
+      path: "{{ _prefix }}"
       state: absent
 
-  - command: make prefix={{ prefix }}/git NO_TCLTK=1 NO_GETTEXT=1 all
+  - command: make prefix={{ _prefix }} NO_TCLTK=1 NO_GETTEXT=1 install
     args:
-      chdir: /tmp/git-{{ git.version }}
-
-  - command: make prefix={{ prefix }}/git NO_TCLTK=1 NO_GETTEXT=1 install
-    args:
-      chdir: /tmp/git-{{ git.version }}
+      chdir: /tmp/git-{{ version }}
 
   - copy:
-      src: /tmp/git-{{ git.version }}/contrib/diff-highlight/diff-highlight
-      dest: "{{ prefix }}/git/bin"
+      src: /tmp/git-{{ version }}/contrib/diff-highlight/diff-highlight
+      dest: "{{ _prefix }}/bin"
       remote_src: yes
       mode: ugo+x
 
   - file:
-      path: /tmp/git-{{ git.version }}
+      path: /tmp/git-{{ version }}
       state: absent

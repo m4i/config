@@ -4,15 +4,15 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout_lines[0].endswith('v' + packer.version)"
+- when: "_version|failed or not _version.stdout_lines[0].endswith('v' + version)"
   block:
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - unarchive:
-      src: https://releases.hashicorp.com/packer/{{ packer.version }}/packer_{{ packer.version }}_{{ ansible_system | lower }}_amd64.zip
+      src: https://releases.hashicorp.com/packer/{{ version }}/packer_{{ version }}_{{ ansible_system|lower }}_amd64.zip
       dest: "{{ bindir }}"
-      copy: no
+      remote_src: yes
     # Fail to validate the SSL certificate on Darwin
     when: ansible_system != 'Darwin'

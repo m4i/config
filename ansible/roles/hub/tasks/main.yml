@@ -2,25 +2,25 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout_lines[1].endswith(' ' + hub.version)"
+- when: "_version|failed or not _version.stdout_lines[1].endswith(' ' + version)"
   vars:
-    _system: "{{ ansible_system | lower }}"
+    _basename: hub-{{ ansible_system|lower }}-amd64-{{ version }}
   block:
   - file:
-      path: /tmp/hub-{{ _system }}-amd64-{{ hub.version }}
+      path: /tmp/{{ _basename }}
       state: absent
 
   - unarchive:
-      src: https://github.com/github/hub/releases/download/v{{ hub.version }}/hub-{{ _system }}-amd64-{{ hub.version }}.tgz
+      src: https://github.com/github/hub/releases/download/v{{ version }}/{{ _basename }}.tgz
       dest: /tmp
-      copy: no
+      remote_src: yes
 
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - copy:
-      src: /tmp/hub-{{ _system }}-amd64-{{ hub.version }}/bin/hub
+      src: /tmp/{{ _basename }}/bin/hub
       dest: "{{ bindir }}"
       mode: ugo+x
 
@@ -29,9 +29,9 @@
       state: directory
 
   - copy:
-      src: /tmp/hub-{{ _system }}-amd64-{{ hub.version }}/etc/hub.zsh_completion
+      src: /tmp/{{ _basename }}/etc/hub.zsh_completion
       dest: "{{ prefix }}/share/zsh/completions/_hub"
 
   - file:
-      path: /tmp/hub-{{ _system }}-amd64-{{ hub.version }}
+      path: /tmp/{{ _basename }}
       state: absent

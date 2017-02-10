@@ -2,16 +2,16 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout == 'jq-' + jq.version"
+- when: "_version|failed or not _version.stdout == 'jq-' + version"
   vars:
-    _arch: "{% if ansible_system == 'Darwin' %}osx-amd64{% else %}{{ ansible_system | lower }}64{% endif %}"
+    _arch: "{{ 'osx-amd64' if ansible_system == 'Darwin' else 'linux64' }}"
   block:
   - file:
       path: "{{ bindir }}"
       state: directory
 
   - get_url:
-      url: https://github.com/stedolan/jq/releases/download/jq-{{ jq.version }}/jq-{{ _arch }}
+      url: https://github.com/stedolan/jq/releases/download/jq-{{ version }}/jq-{{ _arch }}
       dest: "{{ bindir }}/jq"
       mode: ugo+x
       force: yes

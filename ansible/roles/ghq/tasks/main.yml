@@ -4,7 +4,7 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout.endswith(' ' + ghq.version)"
+- when: "_version|failed or not _version.stdout.endswith(' ' + version)"
   block:
   - file:
       path: /tmp/ghq
@@ -15,9 +15,9 @@
       state: directory
 
   - unarchive:
-      src: https://github.com/motemen/ghq/releases/download/v{{ ghq.version }}/ghq_{{ ansible_system | lower }}_amd64.zip
+      src: https://github.com/motemen/ghq/releases/download/v{{ version }}/ghq_{{ ansible_system|lower }}_amd64.zip
       dest: /tmp/ghq
-      copy: no
+      remote_src: yes
 
   - file:
       path: "{{ bindir }}"

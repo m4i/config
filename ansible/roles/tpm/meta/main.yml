@@ -1,2 +1,2 @@
 dependencies:
-  - role: git
+  - { role: git, version: "{{ git_version }}" }

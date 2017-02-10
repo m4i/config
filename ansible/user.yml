@@ -1,0 +1,28 @@
+- hosts: all
+  vars:
+    prefix: "{{ ansible_env.HOME }}/.local"
+    bindir: "{{ ansible_env.HOME }}/.local/bin"
+  roles:
+    - goenv
+    - ndenv
+    - rbenv
+    - tpm
+    - { role: apex,            version: "{{ apex_version            }}" }
+    - { role: consul,          version: "{{ consul_version          }}" }
+    - { role: consul-template, version: "{{ consul_template_version }}" }
+    - { role: direnv,          version: "{{ direnv_version          }}" }
+    - { role: docker-compose,  version: "{{ docker_compose_version  }}" }
+    - { role: ghq,             version: "{{ ghq_version             }}" }
+    - { role: git,             version: "{{ git_version             }}" }
+    - { role: hub,             version: "{{ hub_version             }}" }
+    - { role: jq,              version: "{{ jq_version              }}" }
+    - { role: packer,          version: "{{ packer_version          }}" }
+    - { role: peco,            version: "{{ peco_version            }}" }
+    - { role: slackcat,        version: "{{ slackcat_version        }}" }
+    - { role: terraform,       version: "{{ terraform_version       }}" }
+    - { role: tig,             version: "{{ tig_version             }}" }
+    - { role: tmux,            version: "{{ tmux_version            }}" }
+
+- hosts: secret
+  roles:
+    - secret
