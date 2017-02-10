@@ -1,0 +1,44 @@
+- set_fact:
+    _major_version: "{{ version|first }}"
+- set_fact:
+    _prefix: "{{ prefix }}/python{{ _major_version }}"
+- set_fact:
+    _python: "{{ _prefix }}/bin/python{{ _major_version }}"
+
+- command: "{{ _python }} --version"
+  register: _version
+  changed_when: false
+  ignore_errors: true
+# Python 3.X => stdout, 2.X => stderr
+- when: "_version|failed or not (_version.stdout or _version.stderr).endswith(' ' + version)"
+  block:
+  - file:
+      path: /tmp/Python-{{ version }}
+      state: absent
+
+  - unarchive:
+      src: https://www.python.org/ftp/python/{{ version }}/Python-{{ version }}.tar.xz
+      dest: /tmp
+      remote_src: yes
+
+  - command: ./configure --prefix={{ _prefix }} --enable-optimizations
+    args:
+      chdir: /tmp/Python-{{ version }}
+
+  - command: make
+    args:
+      chdir: /tmp/Python-{{ version }}
+
+  - file:
+      path: "{{ _prefix }}"
+      state: absent
+
+  - command: make install
+    args:
+      chdir: /tmp/Python-{{ version }}
+
+  - command: "{{ _python }} -m ensurepip --upgrade"
+
+  - file:
+      path: /tmp/Python-{{ version }}
+      state: absent

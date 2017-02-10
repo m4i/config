@@ -18,6 +18,7 @@
     - { role: jq,              version: "{{ jq_version              }}" }
     - { role: packer,          version: "{{ packer_version          }}" }
     - { role: peco,            version: "{{ peco_version            }}" }
+    - { role: python,          version: "{{ python3_version         }}" }
     - { role: slackcat,        version: "{{ slackcat_version        }}" }
     - { role: terraform,       version: "{{ terraform_version       }}" }
     - { role: tig,             version: "{{ tig_version             }}" }
