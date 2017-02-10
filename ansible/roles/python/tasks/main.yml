@@ -4,6 +4,9 @@
     _prefix: "{{ prefix }}/python{{ _major_version }}"
 - set_fact:
     _python: "{{ _prefix }}/bin/python{{ _major_version }}"
+    _pip: "{{ _prefix }}/bin/pip{{ _major_version }}"
+- set_fact:
+    pip{{ _major_version }}: "{{ _pip }}"
 
 - command: "{{ _python }} --version"
   register: _version

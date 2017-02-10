@@ -7,6 +7,7 @@
     - ndenv
     - rbenv
     - tpm
+    - { role: ansible,         version: "{{ ansible_version_        }}" }
     - { role: apex,            version: "{{ apex_version            }}" }
     - { role: consul,          version: "{{ consul_version          }}" }
     - { role: consul-template, version: "{{ consul_template_version }}" }

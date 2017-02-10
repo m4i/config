@@ -1,0 +1,4 @@
+- pip:
+    name: ansible
+    version: "{{ version }}"
+    executable: "{{ pip2 }}"
