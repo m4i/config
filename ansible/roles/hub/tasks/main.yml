@@ -1,8 +1,8 @@
 - command: "{{ bindir }}/hub --version"
   register: _version
-  changed_when: false
+  changed_when: "_version|failed or not _version.stdout_lines[1].endswith(' ' + version)"
   ignore_errors: true
-- when: "_version|failed or not _version.stdout_lines[1].endswith(' ' + version)"
+- when: _version.changed
   vars:
     _basename: hub-{{ ansible_system|lower }}-amd64-{{ version }}
   block:

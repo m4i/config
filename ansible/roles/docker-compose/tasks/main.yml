@@ -1,8 +1,8 @@
 - command: "{{ bindir }}/docker-compose version"
   register: _version
-  changed_when: false
+  changed_when: "_version|failed or _version.stdout_lines[0].find(' ' + version + ',') == -1"
   ignore_errors: true
-- when: "_version|failed or _version.stdout_lines[0].find(' ' + version + ',') == -1"
+- when: _version.changed
   block:
   - file:
       path: "{{ bindir }}"

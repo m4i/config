@@ -10,10 +10,10 @@
 
 - command: "{{ _python }} --version"
   register: _version
-  changed_when: false
+  # Python 3.X => stdout, 2.X => stderr
+  changed_when: "_version|failed or not (_version.stdout or _version.stderr).endswith(' ' + version)"
   ignore_errors: true
-# Python 3.X => stdout, 2.X => stderr
-- when: "_version|failed or not (_version.stdout or _version.stderr).endswith(' ' + version)"
+- when: _version.changed
   block:
   - file:
       path: /tmp/Python-{{ version }}

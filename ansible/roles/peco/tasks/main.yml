@@ -1,8 +1,8 @@
 - command: "{{ bindir }}/peco --version"
   register: _version
-  changed_when: false
+  changed_when: "_version|failed or not _version.stdout.endswith('v' + version)"
   ignore_errors: true
-- when: "_version|failed or not _version.stdout.endswith('v' + version)"
+- when: _version.changed
   vars:
     _basename: peco_{{ ansible_system|lower }}_amd64
     _ext: "{{ 'tar.gz' if ansible_system == 'Linux' else 'zip' }}"
