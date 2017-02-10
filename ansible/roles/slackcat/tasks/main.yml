@@ -2,7 +2,7 @@
   register: _version
   changed_when: false
   ignore_errors: true
-- when: "_version|failed or not _version.stdout.endswith(' ' + version)"
+- when: "_version|failed or _version.stdout.find(' ' + version + ',') == -1"
   block:
   - file:
       path: "{{ bindir }}"
