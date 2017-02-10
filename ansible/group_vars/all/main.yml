@@ -1,5 +1,6 @@
 homebrew_state: present
 
+ansible_version_:        2.2.1.0
 apex_version:            0.12.0
 chruby_version:          0.3.9
 consul_template_version: 0.18.1

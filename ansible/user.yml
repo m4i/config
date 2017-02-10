@@ -3,6 +3,7 @@
     prefix: "{{ ansible_env.HOME }}/.local"
     bindir: "{{ ansible_env.HOME }}/.local/bin"
   roles:
+    - awscli
     - goenv
     - ndenv
     - rbenv
