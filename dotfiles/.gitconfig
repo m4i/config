@@ -75,5 +75,7 @@
 	root = ~/src
 
 [include]
-	path = ~/.gitconfig.private
-	path = ~/.gitconfig.local
+	path = ~/src/bitbucket.org/m4i/config/git/gitconfig.private
+
+[includeIf "gitdir:~/src/github.com/winworks/"]
+	path = ~/src/bitbucket.org/m4i/config/git/gitconfig.winworks

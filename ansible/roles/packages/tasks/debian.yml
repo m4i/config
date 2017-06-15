@@ -1,5 +1,6 @@
 - apt:
     name: "{{item}}"
+    install_recommends: no
   with_items:
     - build-essential
     - colordiff

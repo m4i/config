@@ -1,3 +1,2 @@
-/ansible/*.retry
 /ansible/ansible-vault-password
 /zsh/.zcompdump

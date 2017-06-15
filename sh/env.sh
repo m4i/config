@@ -77,11 +77,11 @@ fi
 
 _prepend_path PATH /usr/local/sbin
 _prepend_path PATH /usr/local/bin
-_prepend_path PATH ~/bin
-_prepend_path PATH ~/.local/bin
 _prepend_path PATH '~/.local/*/bin'
+_prepend_path PATH ~/.local/bin
 _prepend_path PATH ~/src/github.com/m4i/config/bin
 _prepend_path PATH ~/src/bitbucket.org/m4i/config/bin
+_prepend_path PATH ~/bin
 PATH=$PATH:./node_modules/.bin
 
 
