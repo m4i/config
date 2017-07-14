@@ -103,8 +103,7 @@ fi
 
 ### Go {{{1
 
-export GOPATH=~
-export GOROOT=~/.local/go
+export GOPATH=~/.local/go:~
 
 
 
