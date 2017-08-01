@@ -16,7 +16,7 @@ unset _sh_dir
 
 ### BASE {{{1
 
-export GREP_OPTIONS=--color=auto
+alias grep='grep --color=auto'
 
 if ! EDITOR="$(command -v vim)"; then
   EDITOR="$(command -v vi)"
