@@ -72,17 +72,24 @@ _set_locale 'en_US.UTF-\?8' 'C.UTF-\?8'
 ### $PATH {{{1
 
 if [[ $OSTYPE =~ ^darwin ]]; then
+  # Homebrew
   _prepend_path PATH /usr/local/opt/coreutils/libexec/gnubin
+  _prepend_path PATH /usr/local/opt/python/libexec/bin
 fi
 
 _prepend_path PATH /usr/local/sbin
 _prepend_path PATH /usr/local/bin
 _prepend_path PATH '~/.local/*/bin'
 _prepend_path PATH ~/.local/bin
+
+# Python
+_prepend_path PATH '~/Library/Python/*/bin'
+# Ruby
+_prepend_path PATH '~/.gem/*/*/bin'
+
 _prepend_path PATH ~/src/github.com/m4i/config/bin
 _prepend_path PATH ~/src/bitbucket.org/m4i/config/bin
 _prepend_path PATH ~/bin
-PATH=$PATH:./node_modules/.bin
 
 
 
