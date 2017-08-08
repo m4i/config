@@ -1,2 +1,2 @@
 set line-graphics = ascii
-set main-view     = id date:short author:abbreviated commit-title:graph=v2,refs
+set main-view     = id date:custom author:abbreviated commit-title:graph=v2,refs
