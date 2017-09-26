@@ -79,6 +79,8 @@ fi
 
 _prepend_path PATH /usr/local/sbin
 _prepend_path PATH /usr/local/bin
+
+_prepend_path PATH '~/.local/share/vim/plugged/*/bin'
 _prepend_path PATH '~/.local/*/bin'
 _prepend_path PATH ~/.local/bin
 _prepend_path PATH '~/Library/Python/*/bin'

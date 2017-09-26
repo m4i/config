@@ -63,27 +63,6 @@ alias l.='ll -d .*'
 
 
 
-### vim {{{1
-
-case "$OSTYPE" in
-  darwin*)
-    _macvim=$HOME/Applications/_MacVim.app
-    if [[ ! -e $_macvim ]]; then
-      _macvim=/Applications/_MacVim.app
-    fi
-    if [[ -e $_macvim ]]; then
-      EDITOR=$_macvim/Contents/MacOS/Vim
-      alias vim=$EDITOR
-      alias vi=$EDITOR
-      alias gvim="$EDITOR -g --remote-tab-silent"
-    fi
-    unset _macvim
-    ;;
-esac
-
-
-
-
 ### Git {{{1
 
 alias g=git

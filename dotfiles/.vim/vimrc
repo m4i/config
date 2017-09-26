@@ -1,0 +1,22 @@
+set runtimepath&
+
+augroup vimrc
+  autocmd!
+augroup END
+
+let g:mapleader = ' '
+
+source $VIMRUNTIME/macros/matchit.vim
+source ~/.vim/rc/plugins.vim
+source ~/.vim/rc/options.vim
+source ~/.vim/rc/commands.vim
+source ~/.vim/rc/map.vim
+source ~/.vim/rc/filetype.vim
+source ~/.vim/rc/statusline.vim
+
+" reset to default
+let g:mapleader = '\'
+
+" vim: expandtab softtabstop=2 shiftwidth=2
+" vim: fileencoding=utf-8 fileformat=unix
+" vim: foldmethod=marker
