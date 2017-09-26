@@ -13,6 +13,7 @@
 	di   = diff -M -C
 	dic  = diff -M -C --cached
 	dih  = diff -M -C HEAD
+	g    = grep
 	gca  = gc --aggressive
 	pl   = pull
 	plr  = pull --rebase
@@ -56,9 +57,8 @@
 	ui = auto
 
 [core]
-	attributesfile    = ~/src/github.com/m4i/config/git/gitattributes
+	attributesfile    = ~/.config/git/attributes
 	autocrlf          = false
-	excludesfile      = ~/src/github.com/m4i/config/git/gitignore
 	precomposeunicode = true
 	quotepath         = false
 	safecrlf          = false
