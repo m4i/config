@@ -81,12 +81,7 @@ _prepend_path PATH /usr/local/sbin
 _prepend_path PATH /usr/local/bin
 _prepend_path PATH '~/.local/*/bin'
 _prepend_path PATH ~/.local/bin
-
-# Python
 _prepend_path PATH '~/Library/Python/*/bin'
-# Ruby
-_prepend_path PATH '~/.gem/*/*/bin'
-
 _prepend_path PATH ~/src/github.com/m4i/config/bin
 _prepend_path PATH ~/src/bitbucket.org/m4i/config/bin
 _prepend_path PATH ~/bin
@@ -96,4 +91,7 @@ _prepend_path PATH ~/bin
 
 ### Environment Variables {{{1
 
+export GEM_HOME=~/.local/gem
+export GOPATH=~/.local/go:~
 export HOMEBREW_CASK_OPTS='--appdir=~/Applications'
+export NPM_CONFIG_PREFIX=~/.local/npm

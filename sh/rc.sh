@@ -91,13 +91,6 @@ alias g=git
 
 
 
-### Go {{{1
-
-export GOPATH=~/.local/go:~
-
-
-
-
 ### Gurobi Optimizer {{{1
 
 case "$OSTYPE" in
