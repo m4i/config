@@ -1,19 +1,18 @@
-#!/bin/bash
-
-set -eu
+#!/bin/bash -eu
 
 function main() {
+  ### XDG_CONFIG_HOME
+  cd config
+  for file in $(ls -A); do
+    run ln -snf "$PWD/$file" ~/.config
+  done
+  cd ..
+
   ### dotfiles
 
   cd dotfiles
   for file in $(ls -A); do
-    if [[ "$file" = .config ]]; then
-      for _file in $(ls -A "$file"); do
-        link_to_dotfile "$file/$_file"
-      done
-    else
-      link_to_dotfile "$file"
-    fi
+    link_to_dotfile "$file"
   done
   cd ..
 
@@ -40,5 +39,5 @@ function run() {
   "$@"
 }
 
-cd $(dirname $0)/..
+cd $(dirname $0)
 main
