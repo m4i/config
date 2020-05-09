@@ -9,6 +9,7 @@ call plug#begin('~/.local/share/vim/plugged')
 Plug 'Shougo/denite.nvim', { 'commit': '1b24883' }
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'junegunn/vim-easy-align'
+Plug 'kana/vim-fakeclip'
 Plug 'm4i/gitbackup'
 Plug 'nanotech/jellybeans.vim'
 Plug 'sheerun/vim-polyglot'

@@ -1,0 +1,44 @@
+#!/bin/bash -eu
+
+using_ami_ids="$(aws ec2 describe-instances \
+  --query 'Reservations[].Instances[].[ImageId]' \
+  --output text \
+  | sort | uniq)"
+
+all_images="$(aws ec2 describe-images \
+  --owners self \
+  --query 'Images[].[Name, ImageId, BlockDeviceMappings[0].Ebs.SnapshotId]' \
+  --output text \
+  | sort)"
+
+ami_names=()
+ami_ids=()
+snapshot_ids=()
+
+echo IN USE
+while read line; do
+  ami_name=$(echo $line | cut -d' ' -f1)
+  ami_id=$(echo $line | cut -d' ' -f2)
+  if echo "$using_ami_ids" | grep -q $ami_id; then
+    echo $ami_id $ami_name
+    continue
+  fi
+  ami_ids+=($ami_id)
+  ami_names+=($ami_name)
+  snapshot_ids+=($(echo $line | cut -d' ' -f3))
+done <<EOF
+$all_images
+EOF
+
+echo
+echo NOT IN USE
+for i in $(seq 0 $((${#ami_ids[@]} - 1))); do
+  echo ${ami_ids[$i]} ${ami_names[$i]}
+  echo -n 'Delete? [yN]: '
+  read input
+
+  if [[ "$input" = y ]]; then
+    aws ec2 deregister-image --image-id ${ami_ids[$i]}
+    aws ec2 delete-snapshot --snapshot-id ${snapshot_ids[$i]}
+  fi
+done

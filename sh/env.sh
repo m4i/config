@@ -74,7 +74,7 @@ _set_locale 'en_US.UTF-\?8' 'C.UTF-\?8'
 if [[ $OSTYPE =~ ^darwin ]]; then
   # Homebrew
   _prepend_path PATH /usr/local/opt/coreutils/libexec/gnubin
-  _prepend_path PATH /usr/local/opt/python/libexec/bin
+  #_prepend_path PATH /usr/local/opt/python/libexec/bin
 fi
 
 _prepend_path PATH /usr/local/sbin
@@ -94,6 +94,21 @@ _prepend_path PATH ~/bin
 ### Environment Variables {{{1
 
 export GEM_HOME=~/.local/gem
-export GOPATH=~/.local/go:~
+export GOPATH=~/.local/go
 export HOMEBREW_CASK_OPTS='--appdir=~/Applications'
 export NPM_CONFIG_PREFIX=~/.local/npm
+
+
+
+
+### Homebrew {{{1
+
+test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+
+
+
+### anyenv {{{1
+
+eval "$(nodenv init -)"
+eval "$(rbenv init -)"

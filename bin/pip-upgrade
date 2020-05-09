@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -eu
+
+pip list --outdated --format=legacy | cut -d' ' -f1 | xargs -rt pip install --upgrade
+pip check

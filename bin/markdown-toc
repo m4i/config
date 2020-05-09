@@ -1,0 +1,138 @@
+#!/usr/bin/env ruby
+
+require 'stringio'
+
+module MarkdownTOC
+  TOC_TAG_REGEX = /\{% *toc +(\d) +(\d) *%\}/
+
+  class << self
+    def apply(text)
+      if text[TOC_TAG_REGEX]
+        target_levels = $1.to_i .. $2.to_i
+      else
+        $stderr.puts 'cannot find toc tag'
+        exit 1
+      end
+
+      headers       = Headers.new
+      anchored_text = parse_markdown(text, headers, target_levels)
+      toc           = build_toc(headers)
+
+      print anchored_text.sub(/^#{TOC_TAG_REGEX}\n|#{TOC_TAG_REGEX}/, toc)
+    end
+
+    private
+
+    def parse_markdown(text, headers, target_levels)
+      anchored_text = StringIO.new
+
+      text.each_line do |line|
+        if (line =~ /^```/) ... (line =~ /^```/)
+          anchored_text.print line
+          next
+        end
+
+        if line =~ /^(#+)(.*)/
+          header_level = $1.length.to_i
+          header_text  = $2.strip
+
+          unless target_levels.include?(header_level)
+            anchored_text.print line
+            next
+          end
+
+          header  = Header.new(header_text, header_level)
+          indexes = headers.append(header)
+
+          anchored_text.puts '%s <a name="h-%s"></a>%s <a href="#toc-%s">^</a>' % [
+            '#' * header.level,
+            build_anchor(indexes),
+            header.text,
+            build_anchor(indexes),
+          ]
+
+        else
+          anchored_text.print line
+        end
+      end
+
+      anchored_text.rewind
+      anchored_text.read
+    end
+
+    def build_toc(headers)
+      toc = StringIO.new
+
+      headers.root.each do |root_header|
+        print_toc(root_header, [root_header.index], toc)
+      end
+
+      toc.rewind
+      toc.read
+    end
+
+    def print_toc(header, indexes, io = $stdout)
+      io.puts '%s* <a name="toc-%s" href="#h-%s">%s</a>' % [
+        ' ' * 4 * (indexes.length - 1),
+        build_anchor(indexes),
+        build_anchor(indexes),
+        header.text,
+      ]
+
+      header.children.each do |child|
+        child_indexes = indexes + [child.index]
+        print_toc(child, child_indexes, io)
+      end
+    end
+
+    def build_anchor(indexes)
+      indexes.join('-')
+    end
+  end
+
+
+  class Headers
+    attr_reader :root, :stack
+
+    def initialize
+      @root  = []
+      @stack = []
+    end
+
+    def append(header)
+      # 直前の上位の header が見つかるまで下位の header を削除
+      @stack.pop while @stack.last && header.level <= @stack.last.level
+
+      siblings =
+        if parent_header = @stack.last
+          parent_header.children
+        else
+          @root
+        end
+
+      header.index = siblings.length
+      siblings << header
+
+      @stack << header
+
+      @stack.map(&:index)
+    end
+  end
+
+
+  class Header
+    attr_reader   :text, :level, :children
+    attr_accessor :index
+
+    def initialize(text, level)
+      @text     = text
+      @level    = level
+      @children = []
+    end
+  end
+end
+
+
+
+
+print MarkdownTOC.apply(File.read(ARGV.first))

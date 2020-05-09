@@ -1,0 +1,68 @@
+#!/bin/sh -eux
+
+# sudo mkdir /mnt/host
+# sudo chown $USER. /mnt/host
+# vmhgfs-fuse -o auto_unmount .host:/ /mnt/host
+
+sudo pacman-mirrors --country Japan
+
+sudo pacman -Syu --noconfirm
+
+sudo pacman -S --noconfirm \
+  yay
+
+sudo pacman -S --noconfirm \
+  fcitx-configtool \
+  fcitx-im \
+  fcitx-mozc
+
+# 一度ログアウト後にすべて使えるようになる
+sudo pacman -S --noconfirm \
+  noto-fonts-cjk
+
+# xfce4-settings-manager の "Preferred Applications" で Chromium を選択する
+sudo pacman -S --noconfirm \
+  chromium
+
+sudo pacman -S --noconfirm \
+  nodejs \
+  npm
+
+sudo pacman -S --noconfirm \
+  ruby \
+  ruby-irb
+
+sudo pacman -S --noconfirm \
+  docker \
+  docker-compose \
+  jq \
+  nmap \
+  packer \
+  terraform \
+  tig \
+  tmux \
+  vim \
+  xclip
+
+# dig, nslookup
+sudo pacman -S --noconfirm \
+  bind-tools
+
+sudo pacman -S --noconfirm \
+  python-pip
+
+ln -snf /usr/share/git/diff-highlight/diff-highlight ~/bin
+
+pip install --user \
+  athena-cli \
+  awscli
+
+# sudo usermod -aG docker $USER
+# sudo systemctl start docker
+
+yay -S --noconfirm \
+  awslogs \
+  direnv \
+  ghq-bin \
+  peco \
+  visual-studio-code-bin

@@ -62,6 +62,7 @@ alias -g V='| xargs vim-tty'
 alias -g V-='| vim -R -'
 alias -g X='| xargs'
 alias -g FX='-print0 | xargs -0'
+alias -g CLIP=' | xclip && xclip -o | xclip -sel c'
 
 
 
