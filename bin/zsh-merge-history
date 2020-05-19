@@ -1,43 +1,38 @@
 #!/usr/bin/env ruby
 
-$KCODE = 'n'
-
-require 'pathname'
-
 if ARGV.length == 0
   puts "Usage: #{File.basename(__FILE__)} <zsh_history> [<zsh_history> ...]"
   exit 1
 end
 
-files = ARGV.map do |argv|
-  file = Pathname(argv)
-  raise unless file.file? && file.readable?
-  file
-end
-
 commands = []
-files.each do |file|
-  file.each_line do |line|
-    # 1行のコマンドのみ
-    if line !~ /\\\\$/ && line =~ /^: (\d+):0;/
-      commands << [$1.to_i, $']
+ARGV.each do |path|
+  File.read(path, mode: 'rb')
+    .scan(/^: (\d{10}):0;(.+?)(?=^: \d{10}:0;|\z)/m)
+    .each do |time, command|
+      case command.count("\n")
+      when 1
+        # 1行コマンドはそのまま追加
+        next unless command.end_with?("\n")
+        command.rstrip!
+        next if command.end_with?('\\')
+      when 2
+        # 2行コマンドは2行目が空のときだけ、2行目を取り除いて追加
+        next unless command.end_with?("\\\n\n")
+        command = command[0...-3].rstrip
+      else
+        # それ以上は破棄
+        next
+      end
+      commands << [time.to_i, command]
     end
-
-    # 複数行対応
-    #if line =~ /^: (\d+):0;/
-    #  commands << [$1.to_i, $']
-    #else
-    #  $stderr.puts line
-    #  commands.last.last << line
-    #end
-  end
 end
 
-hash_commands = {}
-commands.sort_by{|time,| time }.each do |time, command|
-  hash_commands[command] = time
+unique_commands = {}
+commands.sort_by(&:first).each do |time, command|
+  unique_commands[command] = time
 end
 
-hash_commands.sort_by{|command,time| time }.each do |command, time|
+unique_commands.sort_by(&:last).each do |command, time|
   puts ": #{time}:0;#{command}"
 end
