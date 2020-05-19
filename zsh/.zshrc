@@ -153,6 +153,13 @@ if type direnv >/dev/null; then
   eval "$(direnv hook zsh)"
 fi
 
+# terraform
+_terraform_path="$(command -v terraform)"
+if [[ -n "$_terraform_path" ]]; then
+  complete -o nospace -C $_terraform_path terraform
+fi
+unset _terraform
+
 
 
 
