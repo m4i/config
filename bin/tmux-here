@@ -1,0 +1,9 @@
+#!/bin/sh -eu
+
+session_name=$(pwd | sed -e "s@^$HOME@HOME@" -e s@^/@@ -e 's/[^-[:alnum:]]/_/g')
+
+if tmux list-sessions 2>/dev/null | grep -q "^$session_name:"; then
+    exec tmux attach -t $session_name
+else
+    exec tmux new -s $session_name
+fi
