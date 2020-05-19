@@ -110,5 +110,6 @@ test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew
 
 ### anyenv {{{1
 
-eval "$(nodenv init -)"
-eval "$(rbenv init -)"
+if command -v anyenv >/dev/null; then
+  eval "$(anyenv init -)"
+fi
