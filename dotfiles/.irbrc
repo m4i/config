@@ -1,7 +1,5 @@
-$KCODE = 'u' if RUBY_VERSION < '1.9'
-
 IRB.conf[:AUTO_INDENT]  = true
-IRB.conf[:SAVE_HISTORY] = 10000
+IRB.conf[:SAVE_HISTORY] = 100000
 
 require 'irb/completion'
 
