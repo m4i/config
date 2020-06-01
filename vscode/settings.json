@@ -1,0 +1,166 @@
+{
+  "editor.dragAndDrop": false,                          // default: true
+  "editor.folding": false,                              // default: true
+  "editor.fontSize": 14,                                // default: 12
+  "editor.formatOnPaste": true,                         // default: false
+  "editor.formatOnSave": false,                         // default: false
+  "editor.formatOnType": true,                          // default: false
+  "editor.glyphMargin": false,                          // default: true
+  "editor.lineNumbers": "off",                          // default: "on"
+  "editor.minimap.enabled": false,                      // default: true
+  "editor.renderControlCharacters": true,               // default: false
+  "editor.renderFinalNewline": false,                   // default: true
+  "editor.renderWhitespace": "all",                     // default: "selection"
+  "editor.rulers": [80, 100, 120, 160, 200],            // default: []
+  "editor.scrollBeyondLastLine": false,                 // default: true
+  "editor.tabCompletion": "on",                         // default: "off"
+  "editor.quickSuggestions": {
+    "comments": true,
+    "other": true,
+    "strings": true
+  },
+
+  "files.eol": "\n",                                    // default: "auto"
+  "files.insertFinalNewline": true,                     // default: false
+  "files.trimTrailingWhitespace": true,                 // default: false
+
+  "terminal.integrated.copyOnSelection": true,          // default: false
+  "terminal.integrated.fontSize": 14,                   // default: 12
+
+  "window.zoomLevel": 0,
+
+  "workbench.editor.enablePreviewFromQuickOpen": false, // default: true
+  "workbench.panel.defaultLocation": "right",           // default: "bottom"
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  "vim.useSystemClipboard": false, // default: false
+
+  "[bat]": {
+      "files.encoding": "shiftjis"
+  },
+  "[javascript]": {
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": false, // conflict with eslint.autoFixOnSave
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[javascriptreact]": {
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": false, // conflict with eslint.autoFixOnSave
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[ruby]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[shellscript]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4
+  },
+  "[terraform]": {
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": false, // conflict with eslint.autoFixOnSave
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[typescriptreact]": {
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": false, // conflict with eslint.autoFixOnSave
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[yaml]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+
+  // Go
+
+  // https://github.com/golang/tools/blob/master/gopls/doc/vscode.md
+  "go.useLanguageServer": true,
+  "[go]": {
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+    },
+    // Optional: Disable snippets, as they conflict with completion ranking.
+    "editor.snippetSuggestions": "none",
+  },
+  "gopls": {
+    // Add parameter placeholders when completing a function.
+    "usePlaceholders": true,
+
+    // If true, enable additional analyses with staticcheck.
+    // Warning: This will significantly increase memory usage.
+    "staticcheck": false,
+  },
+
+  // https://github.com/golangci/golangci-lint#editor-integration
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": [
+    "--fast"
+  ],
+
+  "files.associations": {
+    ".irbrc": "ruby"
+  },
+
+  // Visual Studio IntelliCode
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+
+  // terraform
+  "terraform.indexing": {
+    "enabled": false,
+    "liveIndexing": false,
+    "delay": 500,
+    "exclude": [
+      ".terraform/**/*",
+      "**/.terraform/**/*"
+    ]
+  },
+  "terraform.languageServer": {
+    "enabled": true,
+    "args": []
+  },
+
+  // cSpell
+  "cSpell.userWords": [
+    "UUID",
+    "bootcmd",
+    "chmod",
+    "chown",
+    "mkdir",
+    "mkfs",
+    "mtakeuchi",
+    "nofail",
+    "passwd",
+    "runcmd",
+    "skel",
+    "sshd",
+    "useradd",
+    "userdel"
+  ]
+}
