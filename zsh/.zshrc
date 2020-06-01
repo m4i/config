@@ -168,3 +168,10 @@ unset _terraform
 # 最初の include 時点だとうまくいかないものはここで
 
 source $ZDOTDIR/peco.zsh
+
+# VSCode の Terminal 起動時に tmux を起動する
+if [[ "$TERM_PROGRAM" = vscode ]] && [[ -z "$TMUX" ]]; then
+  if type tmux-here >/dev/null; then
+    tmux-here
+  fi
+fi
