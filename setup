@@ -1,42 +1,52 @@
 #!/bin/bash -eu
 
 function main() {
-  ### XDG_CONFIG_HOME
-  cd config
-  for file in $(ls -A); do
-    run ln -snf "$PWD/$file" ~/.config
-  done
-  cd ..
+	### XDG_CONFIG_HOME
+	cd config
+	for file in $(ls -A); do
+		case $file in
+			git)
+				run ln -snf "$PWD/$file" ~/.config
+				;;
+		esac
+	done
+	cd ..
 
-  ### dotfiles
+	### dotfiles
 
-  cd dotfiles
-  for file in $(ls -A); do
-    link_to_dotfile "$file"
-  done
-  cd ..
+	cd dotfiles
+	for file in $(ls -A); do
+		case $file in
+			.docker|.irbrc|.tmux.conf|.zshenv)
+				link_to_dotfile "$file"
+				;;
+		esac
+	done
+	cd ..
 
-  ### misc
-
-  run mkdir -p ~/tmp
-  run chmod 0700 ~/tmp
+	# Ubuntu 20.04
+	if [[ -e /usr/share/doc/git/contrib/diff-highlight/diff-highlight ]]; then
+		run mkdir -p ~/bin
+		run cp /usr/share/doc/git/contrib/diff-highlight/diff-highlight ~/bin
+		run chmod +x ~/bin/diff-highlight
+	fi
 }
 
 function link_to_dotfile() {
-  local file="$1"
+	local file="$1"
 
-  local target="$PWD/$file"
-  local link=~/"$file"
+	local target="$PWD/$file"
+	local link=~/"$file"
 
-  if [[ -e  "$link" ]] && [[ ! -L "$link" ]]; then
-    run mv "$link" "$link.$(date +%Y%m%dT%H%M%S)"
-  fi
-  run ln -snf "$target" "$link"
+	if [[ -e	"$link" ]] && [[ ! -L "$link" ]]; then
+		run mv "$link" "$link.$(date +%Y%m%dT%H%M%S)"
+	fi
+	run ln -snf "$target" "$link"
 }
 
 function run() {
-  echo "$@"
-  "$@"
+	echo "$@"
+	"$@"
 }
 
 cd $(dirname $0)

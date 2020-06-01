@@ -85,7 +85,6 @@ _prepend_path PATH '~/.local/*/bin'
 _prepend_path PATH ~/.local/bin
 _prepend_path PATH '~/Library/Python/*/bin'
 _prepend_path PATH ~/src/github.com/m4i/config/bin
-_prepend_path PATH ~/src/bitbucket.org/m4i/config/bin
 _prepend_path PATH ~/bin
 
 
