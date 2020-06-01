@@ -1,0 +1,23 @@
+# Usage: apt-get install $(grep -v ^# Aptfile | sort | uniq)
+
+build-essential
+colordiff
+docker-compose
+docker.io
+unzip
+zip
+zsh
+
+# https://github.com/rbenv/ruby-build/wiki#ubuntudebianmint
+autoconf
+bison
+build-essential
+libssl-dev
+libyaml-dev
+libreadline6-dev
+zlib1g-dev
+libncurses5-dev
+libffi-dev
+libgdbm6
+libgdbm-dev
+libdb-dev
