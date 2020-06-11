@@ -27,8 +27,6 @@
   "terminal.integrated.copyOnSelection": true,          // default: false
   "terminal.integrated.fontSize": 14,                   // default: 12
 
-  "window.zoomLevel": 0,
-
   "workbench.editor.enablePreviewFromQuickOpen": false, // default: true
   "workbench.panel.defaultLocation": "right",           // default: "bottom"
 

@@ -2,6 +2,7 @@
 
 function main() {
 	### XDG_CONFIG_HOME
+	mkdir -p ~/.config
 	cd config
 	for file in $(ls -A); do
 		case $file in
@@ -32,6 +33,12 @@ function main() {
 			run chmod +x ~/bin/diff-highlight
 		fi
 	done
+
+	# vscode
+	if [[ -e "$HOME/Library/Application Support/Code/User" ]]; then
+		run ln -snf "$PWD/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User"
+		run ln -snf "$PWD/vscode/settings.json" "$HOME/Library/Application Support/Code/User"
+	fi
 }
 
 function link_to_dotfile() {
