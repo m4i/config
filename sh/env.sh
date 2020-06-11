@@ -94,7 +94,6 @@ _prepend_path PATH ~/bin
 
 export GEM_HOME=~/.local/gem
 export GOPATH=~/.local/go
-export HOMEBREW_CASK_OPTS='--appdir=~/Applications'
 export NPM_CONFIG_PREFIX=~/.local/npm
 
 
