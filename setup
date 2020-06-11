@@ -24,12 +24,14 @@ function main() {
 	done
 	cd ..
 
-	# Ubuntu 20.04
-	if [[ -e /usr/share/doc/git/contrib/diff-highlight/diff-highlight ]]; then
-		run mkdir -p ~/bin
-		run cp /usr/share/doc/git/contrib/diff-highlight/diff-highlight ~/bin
-		run chmod +x ~/bin/diff-highlight
-	fi
+	#          macOS Homebrew            Ubuntu 20.04
+	for git in /usr/local/share/git-core /usr/share/doc/git; do
+		if [[ -e $git/contrib/diff-highlight/diff-highlight ]]; then
+			run mkdir -p ~/bin
+			run cp $git/contrib/diff-highlight/diff-highlight ~/bin
+			run chmod +x ~/bin/diff-highlight
+		fi
+	done
 }
 
 function link_to_dotfile() {
