@@ -150,6 +150,8 @@
     "bootcmd",
     "chmod",
     "chown",
+    "dnsmasq",
+    "fqdn",
     "mkdir",
     "mkfs",
     "mtakeuchi",
@@ -158,7 +160,9 @@
     "runcmd",
     "skel",
     "sshd",
+    "systemd",
     "useradd",
-    "userdel"
+    "userdel",
+    "winworksone"
   ]
 }
