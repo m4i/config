@@ -17,7 +17,8 @@ function setup_apt {
 
 function setup_homebrew {
 	if ! type brew >/dev/null; then
-		run /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+		echo '$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 	fi
 	run brew bundle
 	if [[ $(uname) = Darwin ]]; then
@@ -82,7 +83,7 @@ function link_to_dotfile() {
 }
 
 function run() {
-	echo "$@"
+	echo "$ $@"
 	"$@"
 }
 
