@@ -62,7 +62,8 @@ function setup_misc() {
 	done
 
 	# vscode
-	if [[ -e "$HOME/Library/Application Support/Code/User" ]]; then
+	if [[ $(uname) = Darwin ]]; then
+		run mkdir -p "$HOME/Library/Application Support/Code/User"
 		run ln -snf "$PWD/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User"
 		run ln -snf "$PWD/vscode/settings.json" "$HOME/Library/Application Support/Code/User"
 	fi
