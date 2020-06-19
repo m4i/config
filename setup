@@ -1,8 +1,32 @@
 #!/bin/bash -eu
 
 function main() {
-	### XDG_CONFIG_HOME
-	mkdir -p ~/.config
+	setup_apt
+	setup_homebrew
+	setup_xdg_config_home
+	setup_dotfiles
+	setup_misc
+}
+
+function setup_apt {
+	if [[ $(uname) = Linux ]]; then
+		run sudo apt update
+		run sudo apt-get install $(grep -v ^# Aptfile | sort | uniq)
+	fi
+}
+
+function setup_homebrew {
+	if ! type brew >/dev/null; then
+		run /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+	fi
+	run brew bundle
+	if [[ $(uname) = Darwin ]]; then
+		run brew bundle --file Brewfile-mac
+	fi
+}
+
+function setup_xdg_config_home {
+	run mkdir -p ~/.config
 	cd config
 	for file in $(ls -A); do
 		case $file in
@@ -12,9 +36,9 @@ function main() {
 		esac
 	done
 	cd ..
+}
 
-	### dotfiles
-
+function setup_dotfiles {
 	cd dotfiles
 	for file in $(ls -A); do
 		case $file in
@@ -24,7 +48,10 @@ function main() {
 		esac
 	done
 	cd ..
+}
 
+function setup_misc() {
+	# diff-highlight
 	#          macOS Homebrew            Ubuntu 20.04
 	for git in /usr/local/share/git-core /usr/share/doc/git; do
 		if [[ -e $git/contrib/diff-highlight/diff-highlight ]]; then
