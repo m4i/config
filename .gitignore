@@ -1,2 +1,3 @@
 /Brewfile*.lock.json
+/dotfiles/.bundle/cache/
 /zsh/.zcompdump

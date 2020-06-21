@@ -1,15 +1,24 @@
 #!/bin/bash -eu
 
 function main() {
-	setup_apt
-	setup_homebrew
+	local user=0
+	if (($# > 0)); then
+		if [[ $1 == user ]]; then
+			user=1
+		fi
+	fi
+
+	if (($user == 0)); then
+		setup_apt
+		setup_homebrew
+	fi
 	setup_xdg_config_home
 	setup_dotfiles
 	setup_misc
 }
 
 function setup_apt {
-	if [[ $(uname) = Linux ]]; then
+	if [[ $(uname) == Linux ]]; then
 		run sudo apt update
 		run sudo apt-get install $(grep -v ^# Aptfile | sort | uniq)
 	fi
@@ -21,7 +30,7 @@ function setup_homebrew {
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 	fi
 	run brew bundle
-	if [[ $(uname) = Darwin ]]; then
+	if [[ $(uname) == Darwin ]]; then
 		run brew bundle --file Brewfile-mac
 	fi
 }
@@ -43,7 +52,7 @@ function setup_dotfiles {
 	cd dotfiles
 	for file in $(ls -A); do
 		case $file in
-			.docker|.irbrc|.tmux.conf|.zshenv)
+			.bundle|.docker|.irbrc|.tmux.conf|.zshenv)
 				link_to_dotfile "$file"
 				;;
 		esac
@@ -63,7 +72,7 @@ function setup_misc() {
 	done
 
 	# vscode
-	if [[ $(uname) = Darwin ]]; then
+	if [[ $(uname) == Darwin ]]; then
 		run mkdir -p "$HOME/Library/Application Support/Code/User"
 		run ln -snf "$PWD/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User"
 		run ln -snf "$PWD/vscode/settings.json" "$HOME/Library/Application Support/Code/User"
@@ -88,4 +97,4 @@ function run() {
 }
 
 cd $(dirname $0)
-main
+main "$@"
