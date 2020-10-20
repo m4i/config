@@ -1,4 +1,5 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+set -euo pipefail
 
 function main() {
 	local user=0
@@ -80,6 +81,12 @@ function setup_misc() {
 
 	# ignore changes
 	run git update-index --assume-unchanged dotfiles/.docker/config.json
+
+	# install anyenv update
+	if [[ ! -e $(anyenv root)/plugins/anyenv-update ]]; then
+		run mkdir -p $(anyenv root)/plugins
+		run git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
+	fi
 }
 
 function link_to_dotfile() {
