@@ -52,7 +52,7 @@ function setup_dotfiles {
 	cd dotfiles
 	for file in $(ls -A); do
 		case $file in
-			.bundle|.docker|.irbrc|.tmux.conf|.zshenv)
+			.bundle|.docker|.irbrc|.tigrc|.tmux.conf|.zshenv)
 				link_to_dotfile "$file"
 				;;
 		esac
@@ -77,6 +77,9 @@ function setup_misc() {
 		run ln -snf "$PWD/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User"
 		run ln -snf "$PWD/vscode/settings.json" "$HOME/Library/Application Support/Code/User"
 	fi
+
+	# ignore changes
+	run git update-index --assume-unchanged dotfiles/.docker/config.json
 }
 
 function link_to_dotfile() {

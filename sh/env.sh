@@ -94,7 +94,7 @@ _prepend_path PATH ~/bin
 
 export GEM_HOME=~/.local/gem
 export GOPATH=~/.local/go
-export NPM_CONFIG_PREFIX=~/.local/npm
+#export NPM_CONFIG_PREFIX=~/.local/npm
 
 
 
