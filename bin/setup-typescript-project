@@ -1,0 +1,230 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+function run() {
+	echo -e "\e[32m$ $@\e[m"
+	if (($# > 1)); then
+		"$@"
+	else
+		eval "$1"
+	fi
+}
+
+function run_and_commit() {
+	local command="$1"
+	run "$command"
+	run git add --all
+	run "git commit -m \"$command\""
+}
+
+function setup_raw_typescript() {
+	run git init
+	run_and_commit 'curl -o .gitignore https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore'
+	run_and_commit 'echo {} > package.json'
+	run_and_commit 'npm i -D typescript ts-node @types/node'
+	run_and_commit 'npx tsc --init'
+
+	# ref. https://stackoverflow.com/questions/59787574/typescript-tsconfig-settings-for-node-js-12
+	run patch tsconfig.json <<'__EOF__'
+@@ -4,9 +4,9 @@
+
+     /* Basic Options */
+     // "incremental": true,                   /* Enable incremental compilation */
+-    "target": "es5",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
++    "target": "es2019",                       /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
+     "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
+-    // "lib": [],                             /* Specify library files to be included in the compilation. */
++    "lib": ["es2020"],                        /* Specify library files to be included in the compilation. */
+     // "allowJs": true,                       /* Allow javascript files to be compiled. */
+     // "checkJs": true,                       /* Report errors in .js files. */
+     // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+@@ -14,8 +14,8 @@
+     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
+     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
+     // "outFile": "./",                       /* Concatenate and emit output to single file. */
+-    // "outDir": "./",                        /* Redirect output structure to the directory. */
+-    // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
++    "outDir": "dist",                         /* Redirect output structure to the directory. */
++    "rootDir": "src",                         /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+     // "composite": true,                     /* Enable project compilation */
+     // "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
+     // "removeComments": true,                /* Do not emit comments to output. */
+@@ -37,7 +37,7 @@
+     /* Additional Checks */
+     // "noUnusedLocals": true,                /* Report errors on unused locals. */
+     // "noUnusedParameters": true,            /* Report errors on unused parameters. */
+-    // "noImplicitReturns": true,             /* Report error when not all code paths in function return a value. */
++    "noImplicitReturns": true,                /* Report error when not all code paths in function return a value. */
+     // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
+
+     /* Module Resolution Options */
+@@ -55,8 +55,8 @@
+     /* Source Map Options */
+     // "sourceRoot": "",                      /* Specify the location where debugger should locate TypeScript files instead of source locations. */
+     // "mapRoot": "",                         /* Specify the location where debugger should locate map files instead of generated locations. */
+-    // "inlineSourceMap": true,               /* Emit a single file with source maps instead of having a separate file. */
+-    // "inlineSources": true,                 /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
++    "inlineSourceMap": true,                  /* Emit a single file with source maps instead of having a separate file. */
++    "inlineSources": true,                    /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
+
+     /* Experimental Options */
+     // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
+__EOF__
+	run git add --all
+	run 'git commit -m "Modify tsconfig.json for Node.js"'
+}
+
+function setup_cdk_typescript() {
+	# git init してから cdk init すると勝手にコミットされないのでそうする
+	run git init
+	run_and_commit 'npx cdk init app --language=typescript'
+	run_and_commit 'npx npm-check-updates --upgrade'
+	run_and_commit 'npm install'
+
+	run patch tsconfig.json <<'__EOF__'
+@@ -1,23 +1,21 @@
+ {
+   "compilerOptions": {
+-    "target": "ES2018",
++    "target": "ES2019",
+     "module": "commonjs",
+-    "lib": ["es2018"],
+-    "declaration": true,
++    "lib": ["es2020"],
++
+     "strict": true,
+-    "noImplicitAny": true,
+-    "strictNullChecks": true,
+-    "noImplicitThis": true,
+-    "alwaysStrict": true,
+     "noUnusedLocals": false,
+     "noUnusedParameters": false,
+     "noImplicitReturns": true,
+     "noFallthroughCasesInSwitch": false,
++
+     "inlineSourceMap": true,
+     "inlineSources": true,
+     "experimentalDecorators": true,
+-    "strictPropertyInitialization": false,
+-    "typeRoots": ["./node_modules/@types"]
++
++    "esModuleInterop": true,
++    "resolveJsonModule": true
+   },
+-  "exclude": ["cdk.out"]
++  "include": ["app", "bin", "lib", "test"]
+ }
+__EOF__
+	run git add --all
+	run 'git commit -m "Modify tsconfig.json for Node.js"'
+}
+
+function setup_eslint() {
+	run_and_commit 'npm i -D eslint'
+
+	# installed by `eslint --init`
+	run_and_commit 'npm i -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-airbnb-base eslint-plugin-import'
+
+	run_and_commit 'npm i -D eslint-import-resolver-typescript'
+	run_and_commit 'npm i -D eslint-config-prettier prettier'
+
+	run patch package.json <<'__EOF__'
+@@ -8,6 +8,11 @@
+     "build": "tsc",
+     "watch": "tsc -w",
+     "test": "jest",
++    "test:updateSnapshot": "jest --updateSnapshot",
++    "lint": "eslint --ext .ts bin lib test",
++    "prettier:base": "prettier '{app,bin,lib,test}/**/*.ts'",
++    "prettier:check": "npm run prettier:base --silent -- --check",
++    "prettier:write": "npm run prettier:base --silent -- --write",
+     "cdk": "cdk"
+   },
+   "devDependencies": {
+__EOF__
+
+	cat <<'__EOF__' > .eslintrc.yml
+env:
+  es2020: true
+  node: true
+parser: "@typescript-eslint/parser"
+parserOptions:
+  project: ./tsconfig.json
+extends:
+  - eslint:recommended
+  - airbnb-base
+  - plugin:@typescript-eslint/recommended
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
+  - prettier
+  - prettier/@typescript-eslint
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+rules:
+  no-continue: off
+  no-constant-condition:
+    - warn # default
+    - checkLoops: false
+  no-restricted-syntax:
+    - error # default
+    # airbnb-base without ForOfStatement
+    # https://github.com/airbnb/javascript/blob/eslint-config-airbnb-base-v14.2.0/packages/eslint-config-airbnb-base/rules/style.js#L332-L352
+    - ForInStatement
+    - LabeledStatement
+    - WithStatement
+    # https://www.kabuku.co.jp/developers/good-bye-typescript-enum
+    - TSEnumDeclaration
+  sort-imports:
+    - error # default
+    - allowSeparatedGroups: true
+  import/extensions:
+    - error # default
+    - json: always
+      ts: never
+  # https://basarat.gitbook.io/typescript/main-1/defaultisbad
+  import/no-default-export: error
+  import/prefer-default-export: off
+  "@typescript-eslint/strict-boolean-expressions": error
+settings:
+  import/resolver:
+    # https://www.npmjs.com/package/eslint-import-resolver-typescript
+    typescript:
+      alwaysTryTypes: true
+__EOF__
+
+	cat <<'__EOF__' > .prettierrc.yml
+semi: true
+singleQuote: false
+trailingComma: all
+
+overrides:
+  - files:
+      - "*.js"
+      - "*.ts"
+    options:
+      printWidth: 100
+      singleQuote: true
+__EOF__
+
+	run git add --all
+	run 'git commit -m '"'"'Add "npm run test:updateSnapshot/lint", .eslintrc.yml and .prettierrc.yml'"'"
+}
+
+if (($#)); then
+	case "$1" in
+		raw)
+			setup_raw_typescript
+			setup_eslint
+			;;
+		cdk)
+			setup_cdk_typescript
+			setup_eslint
+			;;
+		lambda)
+			run_and_commit 'npm i aws-sdk'
+			run_and_commit 'npm i -D @types/aws-lambda'
+			;;
+	esac
+else
+	echo "Usage: $(basename "$0") <raw|cdk|lambda>" >&2
+fi
