@@ -63,13 +63,6 @@ alias l.='ll -d .*'
 
 
 
-### Git {{{1
-
-alias g=git
-
-
-
-
 ### Gurobi Optimizer {{{1
 
 case "$OSTYPE" in
