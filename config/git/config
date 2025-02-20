@@ -71,6 +71,9 @@
 [push]
 	default = simple
 
+[rebase]
+	autostash = true
+
 [ghq]
 	root = ~/src
 

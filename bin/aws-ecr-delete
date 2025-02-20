@@ -23,17 +23,21 @@ if [[ "$pattern" != UNTAGGED ]]; then
   images="$(echo "$images" | jq "$filter")"
 fi
 
-echo "$images"
+echo "$images" | jq -r '.imageIds[].imageTag' | sort
+echo $(echo "$images" | jq '.imageIds | length') images
 echo -n 'Delete? [yN]: '
 read input
 
 if [[ "$input" = y ]]; then
-  # TODO: divide into a group of 100
-  tmpfile=$(mktemp --suffix .${0##*/})
-  trap 'rm $tmpfile' EXIT
-  echo "$images" > $tmpfile
+  length=$(echo "$images" | jq '.imageIds | length')
+  for n in $(seq 0 100 $length); do
+    tmpfile=$(mktemp --suffix .${0##*/})
+    trap 'rm $tmpfile' EXIT
+    echo "$images" | jq "{ imageIds: .imageIds[$n:$((n+100))] }" > $tmpfile
 
-  aws ecr batch-delete-image \
-    --repository-name $repository_name \
-    --cli-input-json file://$tmpfile
+    aws ecr batch-delete-image \
+      --no-cli-pager \
+      --repository-name $repository_name \
+      --cli-input-json file://$tmpfile
+  done
 fi

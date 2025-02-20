@@ -44,6 +44,8 @@ esac
 
 alias tig='tig --find-renames --find-copies'
 
+alias gg='git grep'
+
 
 
 
