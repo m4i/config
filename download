@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+sudo dnf group install 'Development Tools' -y
+
+if [[ ! -e ~/src/github.com/m4i/config ]]; then
+  git clone https://github.com/m4i/config.git ~/src/github.com/m4i/config
+fi
+
+~/src/github.com/m4i/config/setup
