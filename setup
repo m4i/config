@@ -1,6 +1,61 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+
+
+
+### Homebrew
+
+if [[ ! -e /home/linuxbrew ]]; then
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+if type brew >/dev/null; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+brew bundle
+
+
+
+
+### link
+
+ln -snf $PWD/dotfiles/.zshenv ~/.zshenv
+
+mkdir -p ~/.config
+ln -snf $PWD/config/bash ~/.config
+ln -snf $PWD/config/zellij ~/.config
+ln -snf $PWD/config/zsh ~/.config
+
+
+
+
+### bash
+
+if ! grep -q 'source ~/.config/bash/bashrc' ~/.bashrc; then
+  echo >> ~/.bashrc
+  echo 'source ~/.config/bash/bashrc' >> ~/.bashrc
+fi
+
+
+
+
+### docker
+
+mkdir -p ~/.docker
+ln -snf /home/linuxbrew/.linuxbrew/lib/docker/cli-plugins ~/.docker
+
+
+
+
+exit
+
+
+
+
 function main() {
 	local user=0
 	if (($# > 0)); then

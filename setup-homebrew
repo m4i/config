@@ -1,4 +1,0 @@
-#!/bin/bash -eux
-
-brew install vim --with-luajit --with-override-system-vi
-#brew install macvim --with-luajit
