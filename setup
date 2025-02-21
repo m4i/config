@@ -9,7 +9,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 ### Homebrew
 
 if [[ ! -e /home/linuxbrew ]]; then
-  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 if type brew >/dev/null; then
