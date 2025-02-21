@@ -12,7 +12,7 @@ if [[ ! -e /home/linuxbrew ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-if type brew >/dev/null; then
+if ! type brew >/dev/null; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
