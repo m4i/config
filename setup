@@ -26,9 +26,14 @@ brew bundle
 ln -snf $PWD/dotfiles/.zshenv ~/.zshenv
 
 mkdir -p ~/.config
+#ln -snf $PWD/config/* ~/.config
 ln -snf $PWD/config/bash ~/.config
 ln -snf $PWD/config/zellij ~/.config
 ln -snf $PWD/config/zsh ~/.config
+
+mkdir -p ~/bin
+#ln -snf $PWD/bin/* ~/bin
+ln -snf $PWD/bin/zellij-here ~/bin
 
 
 
