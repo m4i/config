@@ -8,13 +8,20 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 ### Homebrew
 
-if [[ ! -e /home/linuxbrew ]]; then
+_homebrew_prefix=/home/linuxbrew/.linuxbrew
+if [[ $(uname) == Darwin ]]; then
+  _homebrew_prefix=/opt/homebrew
+fi
+
+if [[ ! -e $_homebrew_prefix ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 if ! type brew >/dev/null; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  eval "$($_homebrew_prefix/bin/brew shellenv)"
 fi
+
+unset _homebrew_prefix
 
 brew bundle
 
@@ -27,9 +34,13 @@ ln -snf $PWD/dotfiles/.zshenv ~/.zshenv
 
 mkdir -p ~/.config
 #ln -snf $PWD/config/* ~/.config
-ln -snf $PWD/config/bash ~/.config
+ln -snf $PWD/config/git ~/.config
 ln -snf $PWD/config/zellij ~/.config
 ln -snf $PWD/config/zsh ~/.config
+
+if [[ $(uname) == Linux ]]; then
+  ln -snf $PWD/config/bash ~/.config
+fi
 
 mkdir -p ~/bin
 #ln -snf $PWD/bin/* ~/bin
@@ -40,9 +51,11 @@ ln -snf $PWD/bin/zellij-here ~/bin
 
 ### bash
 
-if ! grep -q 'source ~/.config/bash/bashrc' ~/.bashrc; then
-  echo >> ~/.bashrc
-  echo 'source ~/.config/bash/bashrc' >> ~/.bashrc
+if [[ $(uname) == Linux ]]; then
+  if ! grep -q 'source ~/.config/bash/bashrc' ~/.bashrc; then
+    echo >> ~/.bashrc
+    echo 'source ~/.config/bash/bashrc' >> ~/.bashrc
+  fi
 fi
 
 
@@ -50,8 +63,10 @@ fi
 
 ### docker
 
-mkdir -p ~/.docker
-ln -snf /home/linuxbrew/.linuxbrew/lib/docker/cli-plugins ~/.docker
+if [[ $(uname) == Linux ]]; then
+  mkdir -p ~/.docker
+  ln -snf /home/linuxbrew/.linuxbrew/lib/docker/cli-plugins ~/.docker
+fi
 
 
 
@@ -62,108 +77,108 @@ exit
 
 
 function main() {
-	local user=0
-	if (($# > 0)); then
-		if [[ $1 == user ]]; then
-			user=1
-		fi
-	fi
+  local user=0
+  if (($# > 0)); then
+    if [[ $1 == user ]]; then
+      user=1
+    fi
+  fi
 
-	if (($user == 0)); then
-		setup_apt
-		setup_homebrew
-	fi
-	setup_xdg_config_home
-	setup_dotfiles
-	setup_misc
+  if (($user == 0)); then
+    setup_apt
+    setup_homebrew
+  fi
+  setup_xdg_config_home
+  setup_dotfiles
+  setup_misc
 }
 
 function setup_apt {
-	if [[ $(uname) == Linux ]]; then
-		run sudo apt update
-		run sudo apt-get install $(grep -v ^# Aptfile | sort | uniq)
-	fi
+  if [[ $(uname) == Linux ]]; then
+    run sudo apt update
+    run sudo apt-get install $(grep -v ^# Aptfile | sort | uniq)
+  fi
 }
 
 function setup_homebrew {
-	if ! type brew >/dev/null; then
-		echo '$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-	fi
-	run brew bundle
-	if [[ $(uname) == Darwin ]]; then
-		run brew bundle --file Brewfile-mac
-	fi
+  if ! type brew >/dev/null; then
+    echo '$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  fi
+  run brew bundle
+  if [[ $(uname) == Darwin ]]; then
+    run brew bundle --file Brewfile-mac
+  fi
 }
 
 function setup_xdg_config_home {
-	run mkdir -p ~/.config
-	cd config
-	for file in $(ls -A); do
-		case $file in
-			git)
-				run ln -snf "$PWD/$file" ~/.config
-				;;
-		esac
-	done
-	cd ..
+  run mkdir -p ~/.config
+  cd config
+  for file in $(ls -A); do
+    case $file in
+      git)
+        run ln -snf "$PWD/$file" ~/.config
+        ;;
+    esac
+  done
+  cd ..
 }
 
 function setup_dotfiles {
-	cd dotfiles
-	for file in $(ls -A); do
-		case $file in
-			.bundle|.docker|.irbrc|.tigrc|.tmux.conf|.zshenv)
-				link_to_dotfile "$file"
-				;;
-		esac
-	done
-	cd ..
+  cd dotfiles
+  for file in $(ls -A); do
+    case $file in
+      .bundle|.docker|.irbrc|.tigrc|.tmux.conf|.zshenv)
+        link_to_dotfile "$file"
+        ;;
+    esac
+  done
+  cd ..
 }
 
 function setup_misc() {
-	# diff-highlight
-	#          macOS Homebrew            Ubuntu 20.04
-	for git in /usr/local/share/git-core /usr/share/doc/git; do
-		if [[ -e $git/contrib/diff-highlight/diff-highlight ]]; then
-			run mkdir -p ~/bin
-			run cp $git/contrib/diff-highlight/diff-highlight ~/bin
-			run chmod +x ~/bin/diff-highlight
-		fi
-	done
+  # diff-highlight
+  #          macOS Homebrew            Ubuntu 20.04
+  for git in /usr/local/share/git-core /usr/share/doc/git; do
+    if [[ -e $git/contrib/diff-highlight/diff-highlight ]]; then
+      run mkdir -p ~/bin
+      run cp $git/contrib/diff-highlight/diff-highlight ~/bin
+      run chmod +x ~/bin/diff-highlight
+    fi
+  done
 
-	# vscode
-	if [[ $(uname) == Darwin ]]; then
-		run mkdir -p "$HOME/Library/Application Support/Code/User"
-		run ln -snf "$PWD/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User"
-		run ln -snf "$PWD/vscode/settings.json" "$HOME/Library/Application Support/Code/User"
-	fi
+  # vscode
+  if [[ $(uname) == Darwin ]]; then
+    run mkdir -p "$HOME/Library/Application Support/Code/User"
+    run ln -snf "$PWD/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User"
+    run ln -snf "$PWD/vscode/settings.json" "$HOME/Library/Application Support/Code/User"
+  fi
 
-	# ignore changes
-	run git update-index --assume-unchanged dotfiles/.docker/config.json
+  # ignore changes
+  run git update-index --assume-unchanged dotfiles/.docker/config.json
 
-	# install anyenv update
-	if [[ ! -e $(anyenv root)/plugins/anyenv-update ]]; then
-		run mkdir -p $(anyenv root)/plugins
-		run git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
-	fi
+  # install anyenv update
+  if [[ ! -e $(anyenv root)/plugins/anyenv-update ]]; then
+    run mkdir -p $(anyenv root)/plugins
+    run git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
+  fi
 }
 
 function link_to_dotfile() {
-	local file="$1"
+  local file="$1"
 
-	local target="$PWD/$file"
-	local link=~/"$file"
+  local target="$PWD/$file"
+  local link=~/"$file"
 
-	if [[ -e "$link" ]] && [[ ! -L "$link" ]]; then
-		run mv "$link" "$link.$(date +%Y%m%dT%H%M%S)"
-	fi
-	run ln -snf "$target" "$link"
+  if [[ -e "$link" ]] && [[ ! -L "$link" ]]; then
+    run mv "$link" "$link.$(date +%Y%m%dT%H%M%S)"
+  fi
+  run ln -snf "$target" "$link"
 }
 
 function run() {
-	echo "$ $@"
-	"$@"
+  echo "$ $@"
+  "$@"
 }
 
 cd $(dirname $0)

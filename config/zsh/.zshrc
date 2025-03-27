@@ -1,3 +1,13 @@
+# VSCode の Terminal 起動時に zellij を起動する
+if [[ "$TERM_PROGRAM" = vscode ]] && [[ -o interactive ]]; then
+  if [[ -z "$ZELLIJ" ]] && type zellij-here >/dev/null; then
+    exec zellij-here
+  fi
+fi
+
+
+
+
 ### history
 
 mkdir -p "$XDG_STATE_HOME/zsh"
@@ -25,7 +35,7 @@ alias hist='history -t "%F %T" -D'
 
 PROMPT=$'\n'
 PROMPT="$PROMPT"'%F{blue}%D{%dT%T}%f'           # DDThh:mm:ss
-PROMPT="$PROMPT"' %F{green}%n@%m:%~%f'          # user@host:~/current/directory
+PROMPT="$PROMPT"' %F{green}%m:%~%f'             # host:~/current/directory
 PROMPT="$PROMPT"$'\n'
 PROMPT="$PROMPT"'%(?.%F{green}.%F{red})%#%f '   # % ($?==0 ? green : red)
 
@@ -39,5 +49,22 @@ mkdir -p "$XDG_CACHE_HOME/zsh"
 autoload -Uz compinit
 compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 
+
+
+
+### fzf
+
+if type fzf >/dev/null; then
+  source <(fzf --zsh)
+fi
+
+
+
+
+### alias
+
 alias l=eza
 alias ll='eza -la'
+alias lt='eza -la -T -I ".git|node_modules"'
+
+alias diff='git diff --no-index'

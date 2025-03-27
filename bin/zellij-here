@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-session_name=$(pwd | sed -e "s@^$HOME\>@HOME@" -e s@^/@@ -e 's/[^-[:alnum:]]/_/g')
+session_name=$(pwd | sed -e "s@^$HOME/@HOME/@" -e s@^/@@ -e 's/[^-[:alnum:]]/_/g')
 
 exec zellij attach --create $session_name

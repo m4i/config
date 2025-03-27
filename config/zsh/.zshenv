@@ -9,10 +9,19 @@ mkdir -p \
   "$XDG_DATA_HOME" \
   "$XDG_STATE_HOME"
 
-if [[ -e /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+_homebrew_prefix=/home/linuxbrew/.linuxbrew
+if [[ $(uname) == Darwin ]]; then
+  _homebrew_prefix=/opt/homebrew
 fi
+if [[ -e $_homebrew_prefix/bin/brew ]]; then
+  eval "$($_homebrew_prefix/bin/brew shellenv)"
+fi
+unset _homebrew_prefix
 
 if type mise >/dev/null; then
   eval "$(mise activate zsh)"
+fi
+
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+  export PATH="$HOME/bin:$PATH"
 fi
