@@ -22,8 +22,36 @@ alias hist='history -t "%F %T" -D'
 
 ### prompt
 
+setopt PROMPT_SUBST
+
 PROMPT=$'\n'
 PROMPT="$PROMPT"'%F{blue}%D{%dT%T}%f'           # DDThh:mm:ss
+
+### git-prompt
+if [[ -e /usr/share/git-core/contrib/completion/git-prompt.sh ]]; then
+  source /usr/share/git-core/contrib/completion/git-prompt.sh
+elif [[ -e /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh ]]; then
+  source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+fi
+if type __git_ps1 &>/dev/null; then
+  GIT_PS1_SHOWDIRTYSTATE=true
+  GIT_PS1_SHOWSTASHSTATE=true
+  GIT_PS1_SHOWUNTRACKEDFILES=true
+  GIT_PS1_SHOWUPSTREAM=auto
+  GIT_PS1_SHOWCONFLICTSTATE=yes
+  GIT_PS1_DESCRIBE_STYLE=branch
+  GIT_PS1_SHOWCOLORHINTS=true
+  PROMPT="$PROMPT"'$(__git_ps1)'
+fi
+
+# AWS_PROFILE
+function _aws_profile() {
+  if [[ -n $AWS_PROFILE ]]; then
+    echo " %F{yellow}AWS:$AWS_PROFILE%f"
+  fi
+}
+PROMPT="$PROMPT"'$(_aws_profile)'
+
 PROMPT="$PROMPT"' %F{green}%m:%~%f'             # host:~/current/directory
 PROMPT="$PROMPT"$'\n'
 PROMPT="$PROMPT"'%(?.%F{green}.%F{red})%#%f '   # % ($?==0 ? green : red)
@@ -52,6 +80,9 @@ if [[ -n $HOMEBREW_PREFIX ]]; then
     $HOMEBREW_PREFIX/share/zsh-completions(N-/)
     $fpath
   )
+  if [[ -d $HOMEBREW_PREFIX/share/zsh-autocomplete ]]; then
+    source $HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+  fi
 fi
 
 # 重複を削除する

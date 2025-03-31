@@ -1,3 +1,5 @@
+brew "awscli"
+brew "awslogs"
 brew "bat"
 brew "docker-compose" if OS.linux?
 brew "eza"
@@ -6,7 +8,7 @@ brew "jq" if OS.linux?
 brew "mise"
 brew "pwgen"
 brew "zellij"
-brew "zsh" if OS.linux?
+brew "zsh-autocomplete"
 brew "zsh-completions"
 
 brew "gnupg" if OS.linux? # for `mise install node`
