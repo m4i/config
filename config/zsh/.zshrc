@@ -1,13 +1,3 @@
-# VSCode の Terminal 起動時に zellij を起動する
-if [[ "$TERM_PROGRAM" = vscode ]] && [[ -o interactive ]]; then
-  if [[ -z "$ZELLIJ" ]] && type zellij-here >/dev/null; then
-    exec zellij-here
-  fi
-fi
-
-
-
-
 ### history
 
 mkdir -p "$XDG_STATE_HOME/zsh"
@@ -30,7 +20,6 @@ alias hist='history -t "%F %T" -D'
 
 
 
-
 ### prompt
 
 PROMPT=$'\n'
@@ -41,26 +30,6 @@ PROMPT="$PROMPT"'%(?.%F{green}.%F{red})%#%f '   # % ($?==0 ? green : red)
 
 
 
-
-#bindkey -e
-#zstyle :compinstall filename '/home/mtakeuchi/.zshrc'
-
-mkdir -p "$XDG_CACHE_HOME/zsh"
-autoload -Uz compinit
-compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
-
-
-
-
-### fzf
-
-if type fzf >/dev/null; then
-  source <(fzf --zsh)
-fi
-
-
-
-
 ### alias
 
 alias l=eza
@@ -68,3 +37,42 @@ alias ll='eza -la'
 alias lt='eza -la -T -I ".git|node_modules"'
 
 alias diff='git diff --no-index'
+
+
+
+
+### completion
+
+#bindkey -e
+#zstyle :compinstall filename '/home/mtakeuchi/.zshrc'
+
+if [[ -n $HOMEBREW_PREFIX ]]; then
+  fpath=(
+    $HOMEBREW_PREFIX/share/zsh/site-functions(N-/)
+    $HOMEBREW_PREFIX/share/zsh-completions(N-/)
+    $fpath
+  )
+fi
+
+# 重複を削除する
+typeset -U fpath
+
+mkdir -p "$XDG_CACHE_HOME/zsh"
+autoload -Uz compinit
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
+
+
+
+### mise
+
+if type mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+fi
+
+
+
+### fzf
+
+if type fzf &>/dev/null; then
+  source <(fzf --zsh)
+fi

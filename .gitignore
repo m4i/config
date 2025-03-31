@@ -1,4 +1,3 @@
-/Brewfile*.lock.json
+/config/zsh/.zsh_sessions/
 /dotfiles/.bundle/cache/
 /dotfiles/.docker/.buildNodeID
-/zsh/.zcompdump

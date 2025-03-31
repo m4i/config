@@ -25,6 +25,11 @@ unset _homebrew_prefix
 
 brew bundle
 
+# https://formulae.brew.sh/formula/zsh-completions
+rm -f ~/.cache/zsh/zcompdump
+chmod go-w $HOMEBREW_PREFIX/share
+chmod -R go-w $HOMEBREW_PREFIX/share/zsh
+
 
 
 

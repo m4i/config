@@ -1,15 +1,15 @@
 brew "bat"
+brew "docker-compose" if OS.linux?
 brew "eza"
 brew "fzf"
+brew "jq" if OS.linux?
 brew "mise"
 brew "pwgen"
 brew "zellij"
+brew "zsh" if OS.linux?
+brew "zsh-completions"
 
-if OS.linux?
-  brew "docker-compose"
-  brew "jq"
-  brew "zsh"
-end
+brew "gnupg" if OS.linux? # for `mise install node`
 
 if OS.mac?
   brew "mas"
@@ -18,6 +18,7 @@ if OS.mac?
   cask "google-chrome"
   cask "karabiner-elements"
   cask "microsoft-edge"
+  #cask "minecraft-education"
   cask "slack"
   cask "visual-studio-code"
   cask "zoom"
