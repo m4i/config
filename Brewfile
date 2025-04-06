@@ -21,6 +21,7 @@ if OS.mac?
   cask "karabiner-elements"
   cask "microsoft-edge"
   #cask "minecraft-education"
+  cask "onedrive"
   cask "slack"
   cask "visual-studio-code"
   cask "zoom"

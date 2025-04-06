@@ -4,7 +4,7 @@ set -euo pipefail
 session_name=$(pwd | sed -e "s@^$HOME/@HOME/@" -e s@^/@@ -e 's/[^-[:alnum:]]/_/g')
 
 # https://github.com/zellij-org/zellij/issues/3213 が fix されたら削除する
-if [[ $(uname) == Darwin ]]; then
+if [[ $OSTYPE =~ ^darwin ]]; then
   if [[ ${#session_name} -gt 36 ]]; then
     session_name=${session_name: -36}
   fi

@@ -27,7 +27,7 @@ setopt PROMPT_SUBST
 PROMPT=$'\n'
 PROMPT="$PROMPT"'%F{blue}%D{%dT%T}%f'           # DDThh:mm:ss
 
-### git-prompt
+# git-prompt
 if [[ -e /usr/share/git-core/contrib/completion/git-prompt.sh ]]; then
   source /usr/share/git-core/contrib/completion/git-prompt.sh
 elif [[ -e /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh ]]; then
@@ -107,3 +107,9 @@ fi
 if type fzf &>/dev/null; then
   source <(fzf --zsh)
 fi
+
+
+
+###
+
+source $XDG_CONFIG_HOME/zsh/deprecated-net-tools.sh

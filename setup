@@ -9,7 +9,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 if ! type brew &>/dev/null; then
   _homebrew_prefix=/home/linuxbrew/.linuxbrew
-  if [[ $(uname) == Darwin ]]; then
+  if [[ $OSTYPE =~ ^darwin ]]; then
     _homebrew_prefix=/opt/homebrew
   fi
 

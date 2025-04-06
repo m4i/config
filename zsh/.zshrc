@@ -130,11 +130,6 @@ alias zmv='noglob zmv'
 
 ### misc {{{1
 
-chpwd() {
-  _cdd_chpwd
-  ls -l >&2
-}
-
 # aws-cli
 pyenv_prefix="$(pyenv prefix 2>/dev/null)"
 if [[ -n "$pyenv_prefix" ]]; then
