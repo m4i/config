@@ -43,3 +43,20 @@ ln -snf $PWD/config/zsh ~/.config
 mkdir -p ~/bin
 #ln -snf $PWD/bin/* ~/bin
 ln -snf $PWD/bin/zellij-here ~/bin
+
+
+
+### others
+
+# fzf-tab
+if [[ -e ~/src/github.com/Aloxaf/fzf-tab ]]; then
+  (cd ~/src/github.com/Aloxaf/fzf-tab && git pull)
+else
+  git clone https://github.com/Aloxaf/fzf-tab.git ~/src/github.com/Aloxaf/fzf-tab
+fi
+
+# docker compose
+if [[ -e /home/linuxbrew/.linuxbrew/lib/docker/cli-plugins ]]; then
+  mkdir -p ~/.docker
+  ln -snf /home/linuxbrew/.linuxbrew/lib/docker/cli-plugins ~/.docker
+fi

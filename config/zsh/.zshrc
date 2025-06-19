@@ -62,7 +62,7 @@ PROMPT="$PROMPT"'%(?.%F{green}.%F{red})%#%f '   # % ($?==0 ? green : red)
 
 alias l=eza
 alias ll='eza -la'
-alias lt='eza -la -T -I ".git|node_modules"'
+alias lt='eza -la -T -I ".git|node_modules|cdk.out"'
 
 alias diff='git diff --no-index'
 
@@ -80,9 +80,9 @@ if [[ -n $HOMEBREW_PREFIX ]]; then
     $HOMEBREW_PREFIX/share/zsh-completions(N-/)
     $fpath
   )
-  if [[ -d $HOMEBREW_PREFIX/share/zsh-autocomplete ]]; then
-    source $HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-  fi
+  #if [[ -d $HOMEBREW_PREFIX/share/zsh-autocomplete ]]; then
+  #  source $HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+  #fi
 fi
 
 # 重複を削除する
@@ -91,6 +91,10 @@ typeset -U fpath
 mkdir -p "$XDG_CACHE_HOME/zsh"
 autoload -Uz compinit
 compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
+
+if [[ -e ~/src/github.com/Aloxaf/fzf-tab/fzf-tab.plugin.zsh ]]; then
+  source ~/src/github.com/Aloxaf/fzf-tab/fzf-tab.plugin.zsh
+fi
 
 
 

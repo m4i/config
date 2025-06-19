@@ -1,3 +1,9 @@
+[alias]
+	init-commit = "!git init && git commit --allow-empty -m 'Set up git' -m 'git init' -m 'git commit --allow-empty -m ...'"
+
+[init]
+	defaultBranch = main
+
 [include]
 	path = ~/.config/git/config-user
 
