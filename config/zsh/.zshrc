@@ -62,7 +62,7 @@ PROMPT="$PROMPT"'%(?.%F{green}.%F{red})%#%f '   # % ($?==0 ? green : red)
 
 alias l=eza
 alias ll='eza -la'
-alias lt='eza -la -T -I ".git|node_modules|cdk.out"'
+alias lt='eza -la -T -I ".git|.venv|node_modules|cdk.out"'
 
 alias diff='git diff --no-index'
 

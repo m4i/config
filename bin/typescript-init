@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+# Set up git
+
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+  git init-commit
+fi
+
+# Set up mise
+
+mise use node@22.14.0
+echo 'mise.*.local.toml' > .gitignore
+echo mise.local.toml >> .gitignore
+
+git add .gitignore mise.toml
+git commit -m 'Set up mise' \
+  -m 'mise use node@22.14.0' \
+  -m "echo 'mise.*.local.toml' > .gitignore" \
+  -m 'echo mise.local.toml >> .gitignore'
+
+# Set up node
+
+echo node_modules/ >> .gitignore
+cat << __EOF__ > package.json
+{
+  "type": "module"
+}
+__EOF__
+
+git add .gitignore package.json
+git commit -m 'Set up node' \
+  -m 'echo node_modules/ >> .gitignore' \
+  -m "echo '{ \"type\": \"module\" }' > package.json"
+
+# Set up typescript
+
+mise exec node -- npm install --save-dev typescript tsx @types/node
+curl -O https://gist.githubusercontent.com/m4i/7792227e495ccb29f45cc4329e6be028/raw/tsconfig.json
+
+git add package.json package-lock.json tsconfig.json
+git commit -m 'Set up typescript' \
+  -m 'npm install --save-dev typescript tsx @types/node' \
+  -m 'curl -O https://gist.githubusercontent.com/m4i/7792227e495ccb29f45cc4329e6be028/raw/tsconfig.json'

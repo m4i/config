@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+# Set up git
+
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+  git init-commit
+fi
+
+# cdk init
+
+npx cdk init app --language=typescript --generate-only
+git add .
+git commit -m 'Initialize CDK project with TypeScript' \
+  -m 'npx cdk init app --language=typescript --generate-only'
+
+# customize CDK project
+# ref. https://dev.classmethod.jp/articles/remove-redundant-for-cdk-init/
+
+rm .npmignore
+rm README.md
+rm jest.config.js
+rm -r test
+
+cat <<__EOF__ > .gitignore
+cdk.out/
+mise.*.local.toml
+mise.local.toml
+node_modules/
+__EOF__
+
+jq 'del(.bin)
+  | del(.scripts.build)
+  | del(.scripts.test)
+  | del(.scripts.cdk)
+  | .devDependencies |= with_entries(select(.key | test("jest|ts-node") | not))
+' package.json > package.json.tmp
+mv package.json.tmp package.json
+
+sed -i 's/npx ts-node --prefer-ts-exts bin/npx tsx bin/' cdk.json
+
+curl -O https://gist.githubusercontent.com/m4i/7792227e495ccb29f45cc4329e6be028/raw/tsconfig.json
+
+npx npm-check-updates --upgrade
+
+npm install --save-dev tsx
+
+git add .
+git commit -m 'Customize CDK project'

@@ -42,6 +42,8 @@ ln -snf $PWD/config/zsh ~/.config
 
 mkdir -p ~/bin
 #ln -snf $PWD/bin/* ~/bin
+ln -snf $PWD/bin/cdk-init ~/bin
+ln -snf $PWD/bin/typescript-init ~/bin
 ln -snf $PWD/bin/zellij-here ~/bin
 
 
