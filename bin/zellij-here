@@ -10,9 +10,4 @@ if [[ $OSTYPE =~ ^darwin ]]; then
   fi
 fi
 
-# scrollback_editor に vscode を指定
-if type code &>/dev/null; then
-  export VISUAL=code
-fi
-
 exec zellij attach --create $session_name
