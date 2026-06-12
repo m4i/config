@@ -1,64 +1,37 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
+
+function run() {
+  echo "$@"
+  "$@"
+}
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 
+### ~/.config
 
-### Homebrew
+run ln -snf $PWD/dotfiles/.zshenv ~
 
-if ! type brew &>/dev/null; then
-  _homebrew_prefix=/home/linuxbrew/.linuxbrew
-  if [[ $OSTYPE =~ ^darwin ]]; then
-    _homebrew_prefix=/opt/homebrew
-  fi
+run mkdir -p ~/.config
+files=(
+  aquaproj-aqua
+  git
+  sheldon
+  starship.toml
+  zellij
+  zsh
+  zsh-abbr
+)
+for file in "${files[@]}"; do
+  run ln -snf $PWD/config/$file ~/.config
+done
 
-  if [[ ! -e $_homebrew_prefix ]]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  fi
 
-  eval "$($_homebrew_prefix/bin/brew shellenv)"
+### aqua
 
-  unset _homebrew_prefix
+if [[ ! -d ~/.local/share/aquaproj-aqua ]]; then
+  curl -sSfL https://raw.githubusercontent.com/aquaproj/aqua-installer/v4.0.4/aqua-installer | bash
 fi
-
-brew bundle
-
-# https://formulae.brew.sh/formula/zsh-completions
-chmod go-w $HOMEBREW_PREFIX/share
-chmod -R go-w $HOMEBREW_PREFIX/share/zsh
-
-
-
-### link
-
-ln -snf $PWD/dotfiles/.zshenv ~/.zshenv
-
-mkdir -p ~/.config
-#ln -snf $PWD/config/* ~/.config
-ln -snf $PWD/config/git ~/.config
-ln -snf $PWD/config/zellij ~/.config
-ln -snf $PWD/config/zsh ~/.config
-
-mkdir -p ~/bin
-#ln -snf $PWD/bin/* ~/bin
-ln -snf $PWD/bin/cdk-init ~/bin
-ln -snf $PWD/bin/typescript-init ~/bin
-ln -snf $PWD/bin/zellij-here ~/bin
-
-
-
-### others
-
-# fzf-tab
-if [[ -e ~/src/github.com/Aloxaf/fzf-tab ]]; then
-  (cd ~/src/github.com/Aloxaf/fzf-tab && git pull)
-else
-  git clone https://github.com/Aloxaf/fzf-tab.git ~/src/github.com/Aloxaf/fzf-tab
-fi
-
-# docker compose
-if [[ -e /home/linuxbrew/.linuxbrew/lib/docker/cli-plugins ]]; then
-  mkdir -p ~/.docker
-  ln -snf /home/linuxbrew/.linuxbrew/lib/docker/cli-plugins ~/.docker
-fi
+PATH=$HOME/.local/share/aquaproj-aqua/bin:$PATH
+run aqua install --all

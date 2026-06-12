@@ -9,6 +9,8 @@
 
 [includeIf "gitdir:~/src/github.com/winworks/"]
 	path = ~/.config/git/config-winworks
+[includeIf "gitdir:/winworks/"]
+	path = ~/.config/git/config-winworks
 
 [includeIf "os:darwin"]
 	path = ~/.config/git/config-darwin

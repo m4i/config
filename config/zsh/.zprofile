@@ -20,8 +20,15 @@ typeset -U path
 ### Zellij
 
 # VSCode の Terminal 起動時に zellij を起動する
-if [[ "$TERM_PROGRAM" = vscode ]] && [[ -o interactive ]]; then
-  if [[ -z "$ZELLIJ" ]] && type zellij-here &>/dev/null; then
-    exec zellij-here
+if [[ "$TERM_PROGRAM" = vscode ]] && [[ -o interactive ]] && [[ -z "$ZELLIJ" ]] && type zellij &>/dev/null; then
+  session_name=$(pwd | sed -e "s@^$HOME/@HOME/@" -e s@^/@@ -e 's/[^-[:alnum:]]/_/g')
+
+  # https://github.com/zellij-org/zellij/issues/3213 が fix されたら削除する
+  if [[ $OSTYPE =~ ^darwin ]]; then
+    if [[ ${#session_name} -gt 36 ]]; then
+      session_name=${session_name: -36}
+    fi
   fi
+
+  exec zellij attach --create $session_name
 fi

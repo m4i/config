@@ -1,0 +1,16 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+add_newline = true
+
+[character]
+success_symbol = '[\$](bold green)'
+error_symbol = '[\$](bold red)'
+
+[directory]
+truncation_length = 0
+truncate_to_repo = false
+
+[hostname]
+format = '[$hostname]($style):'
+
+[username]
+disabled = true

@@ -8,3 +8,10 @@ mkdir -p \
   "$XDG_CONFIG_HOME" \
   "$XDG_DATA_HOME" \
   "$XDG_STATE_HOME"
+
+# aqua
+path=(~/.local/share/aquaproj-aqua/bin(N-/) $path)
+typeset -U path # 重複を削除
+if [[ -z "$AQUA_GLOBAL_CONFIG" ]]; then
+  export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
+fi

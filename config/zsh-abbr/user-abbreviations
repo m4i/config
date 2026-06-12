@@ -1,0 +1,4 @@
+abbr "gs"="git status"
+abbr "hist"="history -t \"%F %T\" -D"
+abbr "l"="eza"
+abbr "ll"="eza -la"
