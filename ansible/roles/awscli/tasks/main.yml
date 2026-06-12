@@ -1,3 +1,0 @@
-- pip:
-    name: awscli
-    executable: "{{ pip3 }}"

@@ -1,5 +1,0 @@
-- when: ansible_os_family == 'Debian'
-  include: debian.yml
-
-- when: ansible_os_family == 'Darwin'
-  include: darwin.yml
