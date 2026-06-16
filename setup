@@ -33,5 +33,16 @@ done
 if [[ ! -d ~/.local/share/aquaproj-aqua ]]; then
   curl -sSfL https://raw.githubusercontent.com/aquaproj/aqua-installer/v4.0.4/aqua-installer | bash
 fi
+
 PATH=$HOME/.local/share/aquaproj-aqua/bin:$PATH
+export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
 run aqua install --all
+
+
+### git user
+
+cd ..
+if [[ ! -d config-private ]]; then
+  git clone https://github.com/m4i/config-private.git
+fi
+cp config-private/git/* config/config/git
