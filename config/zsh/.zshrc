@@ -50,12 +50,20 @@ autoload -Uz compinit
 compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 
 
+
+### sheldon
+
+export SHELDON_DATA_DIR="$HOME/dotfiles/.share/sheldon"
+
+
+
 ### others
 
-type fzf      &>/dev/null && source <(fzf --zsh)
-type mise     &>/dev/null && eval "$(mise activate zsh)"
-type sheldon  &>/dev/null && eval "$(sheldon source)"
-type starship &>/dev/null && eval "$(starship init zsh)"
+command -v fzf      &>/dev/null && source <(fzf --zsh)
+command -v mise     &>/dev/null && eval "$(mise activate zsh)"
+command -v sheldon  &>/dev/null && eval "$(sheldon source)"
+command -v starship &>/dev/null && eval "$(starship init zsh)"
+
 
 
 ### oh-my-zsh

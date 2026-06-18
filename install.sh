@@ -6,12 +6,29 @@ function run() {
   "$@"
 }
 
+function relpath() {
+  dst="$1"
+  src="$2"
+  if command -v realpath &>/dev/null; then
+    realpath --relative-to="$src" "$dst" || echo "$dst"
+  else
+    python3 -c "import os.path, sys; print(os.path.relpath(sys.argv[1], start=sys.argv[2]))" "$dst" "$src"
+  fi
+}
+
+function ln_rel() {
+  dst="$1"
+  src="$2"
+  run ln -snf "$(relpath "$dst" "$src")" "$src"
+}
+
+
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 
 ### ~/.config
 
-run ln -snf $PWD/dotfiles/.zshenv ~
+ln_rel dotfiles/.zshenv ~
 
 run mkdir -p ~/.config
 files=(
@@ -24,7 +41,7 @@ files=(
   zsh-abbr
 )
 for file in "${files[@]}"; do
-  run ln -snf $PWD/config/$file ~/.config
+  ln_rel config/$file ~/.config
 done
 
 
@@ -41,8 +58,8 @@ run aqua install --all
 
 ### git user
 
-cd ..
 if [[ ! -d config-private ]]; then
-  git clone https://github.com/m4i/config-private.git
+  run git clone https://github.com/m4i/config-private.git
 fi
-cp config-private/git/* config/config/git
+ln_rel config-private/git/config-user config/git
+ln_rel config-private/git/config-winworks config/git

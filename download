@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if ! type git &>/dev/null; then
+if ! command -v git &>/dev/null; then
   sudo dnf group install 'Development Tools' -y
 fi
 
-if [[ ! -e ~/src/github.com/m4i/config ]]; then
-  git clone https://github.com/m4i/config.git ~/src/github.com/m4i/config
+if [[ ! -e ~/dotfiles ]]; then
+  git clone https://github.com/m4i/dotfiles.git ~/dotfiles
 fi
 
-~/src/github.com/m4i/config/setup
+~/dotfiles/install.sh
