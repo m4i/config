@@ -10,7 +10,7 @@ function relpath() {
   dst="$1"
   src="$2"
   if command -v realpath &>/dev/null; then
-    realpath --relative-to="$src" "$dst" || echo "$dst"
+    realpath --relative-to="$src" "$dst"
   else
     python3 -c "import os.path, sys; print(os.path.relpath(sys.argv[1], start=sys.argv[2]))" "$dst" "$src"
   fi
