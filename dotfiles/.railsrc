@@ -1,4 +1,0 @@
---database postgresql
---skip-bundle
---skip-coffee
---skip-turbolinks

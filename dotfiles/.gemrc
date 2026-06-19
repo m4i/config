@@ -1,2 +1,0 @@
-install: --no-document --no-user-install
-update: --no-document --no-user-install
