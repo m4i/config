@@ -34,9 +34,6 @@ alias lt='eza -la -T -I ".git|.venv|node_modules|cdk.out"'
 
 ### completion
 
-#bindkey -e
-#zstyle :compinstall filename '/home/mtakeuchi/.zshrc'
-
 if [[ -n $HOMEBREW_PREFIX ]]; then
   fpath=(
     $HOMEBREW_PREFIX/share/zsh/site-functions(N-/)

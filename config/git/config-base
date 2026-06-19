@@ -1,43 +1,31 @@
-[alias]
-	init-commit = "!git init && git commit --allow-empty -m 'Set up git' -m 'git init' -m 'git commit --allow-empty -m ...'"
+[include]
+	path = config-user
+[includeIf "os:darwin"]
+	path = config-darwin
+[includeIf "gitdir:~/winworks/"]
+	path = config-winworks
+[includeIf "gitdir:/winworks/"]
+	path = config-winworks
 
 [init]
 	defaultBranch = main
 
-[include]
-	path = ~/.config/git/config-user
+[rebase]
+	autostash = true
 
-[includeIf "gitdir:~/src/github.com/winworks/"]
-	path = ~/.config/git/config-winworks
-[includeIf "gitdir:/winworks/"]
-	path = ~/.config/git/config-winworks
-
-[includeIf "os:darwin"]
-	path = ~/.config/git/config-darwin
-
-
-#[alias]
-#	#a    = add
-#	#aa   = add --all
-#	#ap   = add --patch
-#	#au   = add --update
-#	#b    = branch
-#	#ci   = commit
-#	#civ  = commit --verbose
-#	co   = "!echo Use git switch or git restore."
+[alias]
+	init-commit = "!git init && git commit --allow-empty -m 'Set up git' -m 'git init' -m 'git commit --allow-empty -m ...'"
 #	#d    = diff -M -C --color-words
 #	#dc   = diff -M -C --color-words --cached
 #	#dh   = diff -M -C --color-words HEAD
 #	#di   = diff -M -C
 #	#dic  = diff -M -C --cached
 #	#dih  = diff -M -C HEAD
-#	#g    = grep
 #	#gca  = gc --aggressive
 #	#pl   = pull
 #	#plr  = pull --rebase
 #	#ps   = push
 #	#pst  = push --tags
-#	s    = status
 #	#st   = stash
 #	#stl  = stash list
 #	#stp  = stash pop  --index
@@ -68,7 +56,6 @@
 #	lop  = "!git log-own-patch"
 #	lopw = "!git log-own-patch-words"
 #
-#	initialize-commit = commit --allow-empty -m 'Initialize repository'
 #	export            = "!rm -rf git-export; git archive --prefix=git-export/ HEAD | tar x"
 #
 #[color]
@@ -76,21 +63,9 @@
 #
 #[core]
 #	attributesfile    = ~/.config/git/attributes
-#	autocrlf          = false
 #	precomposeunicode = true
 #	quotepath         = false
 #	safecrlf          = false
 #
-#[pager]
-#	diff = diff-highlight | less
-#	log  = diff-highlight | less
-#	show = diff-highlight | less
-#
 #[push]
 #	default = simple
-#
-#[rebase]
-#	autostash = true
-#
-#[ghq]
-#	root = ~/src

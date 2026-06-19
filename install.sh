@@ -31,17 +31,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 ln_rel dotfiles/.zshenv ~
 
 run mkdir -p ~/.config
-files=(
-  aquaproj-aqua
-  git
-  sheldon
-  starship.toml
-  zellij
-  zsh
-  zsh-abbr
-)
-for file in "${files[@]}"; do
-  ln_rel config/$file ~/.config
+for file in config/*; do
+  ln_rel $file ~/.config
 done
 
 
@@ -56,7 +47,15 @@ export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
 run aqua install --all
 
 
-### git user
+### git
+
+# ~/.config/git/config は書き込まれることがあるので git 管理しない
+if [[ ! -f ~/.config/git/config ]]; then
+  cat > ~/.config/git/config <<'__EOF__'
+[include]
+	path = config-base
+__EOF__
+fi
 
 if [[ ! -d config-private ]]; then
   run git clone https://github.com/m4i/config-private.git

@@ -1,4 +1,5 @@
 /.share/
 /config-private/
+/config/git/config
 /config/git/config-user
 /config/git/config-winworks
