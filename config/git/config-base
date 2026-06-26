@@ -2,10 +2,6 @@
 	path = config-user
 [includeIf "os:darwin"]
 	path = config-darwin
-[includeIf "gitdir:~/winworks/"]
-	path = config-winworks
-[includeIf "gitdir:/winworks/"]
-	path = config-winworks
 
 [init]
 	defaultBranch = main
