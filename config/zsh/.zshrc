@@ -56,10 +56,11 @@ export SHELDON_DATA_DIR="$HOME/dotfiles/.share/sheldon"
 
 ### others
 
-command -v fzf      &>/dev/null && source <(fzf --zsh)
-command -v mise     &>/dev/null && eval "$(mise activate zsh)"
-command -v sheldon  &>/dev/null && eval "$(sheldon source)"
-command -v starship &>/dev/null && eval "$(starship init zsh)"
+# aqua による shim があるため command -v では確認できない
+fzf      --version &>/dev/null && source <(fzf --zsh)
+mise     --version &>/dev/null && eval "$(mise activate zsh)"
+sheldon  --version &>/dev/null && eval "$(sheldon source)"
+starship --version &>/dev/null && eval "$(starship init zsh)"
 
 
 
