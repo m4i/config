@@ -2,17 +2,19 @@
 set -euo pipefail
 
 function run() {
-  echo "$@"
+  echo "+ $@"
   "$@"
 }
 
 function relpath() {
   dst="$1"
   src="$2"
-  if command -v realpath &>/dev/null; then
-    realpath --relative-to="$src" "$dst"
-  else
+  if command -v python3 &>/dev/null; then
+    # Linux, macOS
     python3 -c "import os.path, sys; print(os.path.relpath(sys.argv[1], start=sys.argv[2]))" "$dst" "$src"
+  else
+    # python3 のない devcontainer
+    realpath --relative-to="$src" "$dst"
   fi
 }
 
@@ -38,12 +40,36 @@ done
 
 ### aqua
 
+PATH=~/.local/share/aquaproj-aqua/bin:~/.cargo/bin:$PATH
+export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
+AQUA_LINUX_CONFIG=~/.config/aquaproj-aqua/aqua-linux.yaml
+
+# aqua は macOS では cargo が必要
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  if [[ ! -e ~/.cargo/bin/cargo ]]; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
+  fi
+  # aqua でインストールするバイナリが Homebrew を前提としているものは動かないので cargo install する
+  sed -En 's! *- +name: +[^/]+/([^@]+)@([^ ]+) *$!\1 \2!p' "$AQUA_LINUX_CONFIG" |
+    while read -r crate version; do
+      case "$crate" in
+        sheldon)
+          options=(--features vendored-openssl)
+          ;;
+        *)
+          options=()
+          ;;
+      esac
+      run cargo install "$crate" --version "$version" --locked "${options[@]}"
+    done
+else
+  AQUA_GLOBAL_CONFIG=$AQUA_LINUX_CONFIG:$AQUA_GLOBAL_CONFIG
+fi
+
 if [[ ! -d ~/.local/share/aquaproj-aqua ]]; then
   curl -sSfL https://raw.githubusercontent.com/aquaproj/aqua-installer/v4.0.4/aqua-installer | bash
 fi
 
-PATH=$HOME/.local/share/aquaproj-aqua/bin:$PATH
-export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
 run aqua install --all
 
 

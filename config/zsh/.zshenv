@@ -9,9 +9,12 @@ mkdir -p \
   "$XDG_DATA_HOME" \
   "$XDG_STATE_HOME"
 
-# aqua
+path=(~/.cargo/bin(N-/) $path)
 path=(~/.local/share/aquaproj-aqua/bin(N-/) $path)
 typeset -U path # 重複を削除
-if [[ -z "$AQUA_GLOBAL_CONFIG" ]]; then
-  export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
+
+# aqua
+export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua-linux.yaml:$AQUA_GLOBAL_CONFIG
 fi
