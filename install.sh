@@ -34,8 +34,26 @@ ln_rel dotfiles/.zshenv ~
 
 run mkdir -p ~/.config
 for file in config/*; do
+  # config/git は後で処理するのでスキップ
+  if [[ "$file" == config/git ]]; then continue; fi
   ln_rel $file ~/.config
 done
+
+
+### git
+
+# ~/.config/git/config は書き込まれる(credential helper 等)のでディレクトリごと
+# symlink せず、git が既定パスで読む attributes/ignore だけ symlink する
+run mkdir -p ~/.config/git
+ln_rel config/git/attributes ~/.config/git
+ln_rel config/git/ignore ~/.config/git
+
+if [[ ! -f ~/.config/git/config ]]; then
+  cat > ~/.config/git/config <<'__EOF__'
+[include]
+	path = ../../dotfiles/config/git/config
+__EOF__
+fi
 
 
 ### aqua
@@ -75,15 +93,7 @@ fi
 run aqua install --all
 
 
-### git
-
-# ~/.config/git/config は書き込まれることがあるので git 管理しない
-if [[ ! -f ~/.config/git/config ]]; then
-  cat > ~/.config/git/config <<'__EOF__'
-[include]
-	path = config-base
-__EOF__
-fi
+### private
 
 if [[ ! -d config-private ]]; then
   run git clone https://github.com/m4i/config-private.git

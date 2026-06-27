@@ -1,5 +1,5 @@
 [include]
-	path = config-user
+	path = ../../config-private/git/config-user
 [includeIf "os:darwin"]
 	path = config-darwin
 
