@@ -15,6 +15,8 @@ typeset -U path # 重複を削除
 
 # aqua
 export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
-if [[ "$(uname -s)" != "Darwin" ]]; then
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua-macos.yaml:$AQUA_GLOBAL_CONFIG
+else
   AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua-linux.yaml:$AQUA_GLOBAL_CONFIG
 fi

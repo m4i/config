@@ -42,6 +42,7 @@ done
 
 PATH=~/.local/share/aquaproj-aqua/bin:~/.cargo/bin:$PATH
 export AQUA_GLOBAL_CONFIG=~/.config/aquaproj-aqua/aqua.yaml
+AQUA_MACOS_CONFIG=~/.config/aquaproj-aqua/aqua-macos.yaml
 AQUA_LINUX_CONFIG=~/.config/aquaproj-aqua/aqua-linux.yaml
 
 # aqua は macOS では cargo が必要
@@ -62,6 +63,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
       esac
       run cargo install "$crate" --version "$version" --locked "${options[@]}"
     done
+  AQUA_GLOBAL_CONFIG=$AQUA_MACOS_CONFIG:$AQUA_GLOBAL_CONFIG
 else
   AQUA_GLOBAL_CONFIG=$AQUA_LINUX_CONFIG:$AQUA_GLOBAL_CONFIG
 fi
@@ -86,5 +88,4 @@ fi
 if [[ ! -d config-private ]]; then
   run git clone https://github.com/m4i/config-private.git
 fi
-ln_rel config-private/git/config-user config/git
-ln_rel config-private/git/config-winworks config/git
+config-private/install.sh

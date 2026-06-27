@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+user=$1
+instance_name=$2
+profile=$3
+public_key_path=$4
+
+instance_id=$(aws ec2 describe-instances \
+    --filters Name=tag:Name,Values=$instance_name Name=instance-state-name,Values=running \
+    --query 'Reservations[0].Instances[0].InstanceId' \
+    --output text \
+    --profile $profile)
+
+aws ec2-instance-connect send-ssh-public-key \
+    --instance-id $instance_id \
+    --instance-os-user $user \
+    --ssh-public-key file://$public_key_path \
+    --profile $profile \
+    >/dev/null
+
+exec aws ec2-instance-connect open-tunnel \
+    --instance-id $instance_id \
+    --profile $profile
